@@ -1,0 +1,39 @@
+﻿body 
+{
+    font-family: Verdana, Heletica, Sans-Serif;
+    margin: 0px;
+    font-size: 8pt;
+}
+
+a {
+    color: #654848;
+}
+
+a.bigWhiteLink {
+    color: White;
+    text-decoration: none;
+}
+
+img {
+    border: 0px solid white;
+    display:block; 
+    margin:0px;    
+}
+
+td.labl 
+{
+    text-align: right;
+    font-weight: bold;
+}
+
+.textbox 
+{
+    background-color: White;
+}
+
+.LoginStyle 
+{
+    border: 1px solid #01743B;
+    padding: 10px;
+}
+

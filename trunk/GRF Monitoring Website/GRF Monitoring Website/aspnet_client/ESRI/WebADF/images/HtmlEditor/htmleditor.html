@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Untitled Page</title>
+</head>
+<body style="height:100%;width:100%;border:1px;padding:0px;margin:0px;font-size:8pt;font-family:Verdana;">
+    <span>HTML Editor</span>
+</body>
+<script type="text/javascript">
+function init(){
+	 parentPageDomain = document.location.href.split('#')[1];
+	 if (parentPageDomain) {
+			document.domain = parentPageDomain;
+	 }
+}
+window.onload = init;
+window.onfocus = function() {
+	document.designMode = 'On';
+}
+</script>
+</html>

@@ -1,0 +1,102 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Telerik.Charting;
+using Telerik.Web.UI;
+using System.Drawing;
+
+public partial class MWMT : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            Master.selectNavButton("reports");
+            List<DS.SiteInfoRow> sites = DB.getSiteInfo();
+            cboSites.DataSource = sites;
+            cboSites.DataBind();
+        }
+    }
+
+    protected void btnGo_click(object sender, EventArgs e)
+    {
+        renderChart();
+    }
+    private void renderChart()
+    {
+        List<String> sites = new List<string>();
+
+        bool allChecked = (cboSites.Header.FindControl("chk1") as CheckBox).Checked;
+
+        foreach (RadComboBoxItem item in cboSites.Items)
+        {
+            CheckBox chk = (CheckBox)item.FindControl("chk1");
+
+            if (chk.Checked || allChecked)
+                sites.Add(item.Value);
+        }
+
+        RadChart1.PlotArea.XAxis.Appearance.LabelAppearance.RotationAngle = 300;
+        RadChart1.PlotArea.XAxis.Appearance.ValueFormat = Telerik.Charting.Styles.ChartValueFormat.ShortDate;
+        RadChart1.PlotArea.XAxis.AutoScale = false;
+
+        DateTime startDate;
+        DateTime endDate;
+
+        if (dpStartDate.SelectedDate == null)
+            startDate = new DateTime(2007, 1, 1);
+        else
+            startDate = (DateTime)dpStartDate.SelectedDate;
+
+        if (dpEndDate.SelectedDate == null)
+            endDate = new DateTime(2020, 12, 31);
+        else
+            endDate = (DateTime)dpEndDate.SelectedDate;
+
+
+        TimeSpan ts = endDate.Subtract(startDate);
+        int days = ts.Days;
+        int period = days / 10;
+        RadChart1.PlotArea.XAxis.AddRange(startDate.ToOADate(), endDate.ToOADate(), period);
+
+        List<WeeklyTemp> mwmt = WeeklyTemp.getMWMTData();
+
+        // first pick out the distinct locations
+        var selectedSites = (from m in mwmt
+                             where m.date >= startDate && m.date <= endDate
+                             && sites.Contains(m.siteID)
+                             select new { m.siteID, m.siteName }).Distinct();
+
+        RadChart1.Series.Clear();
+
+        foreach (var t in selectedSites)
+        {
+            ChartSeries s = new Telerik.Charting.ChartSeries(t.siteName);
+            s.Appearance.FillStyle.FillType = Telerik.Charting.Styles.FillType.Solid;
+            string colorText = DB.getSiteColor(t.siteID);
+            s.Appearance.FillStyle.MainColor = System.Drawing.ColorTranslator.FromHtml(colorText);
+            s.DefaultLabelValue = "";
+
+            // add data to the series
+            var data = from m in mwmt
+                       where m.siteID == t.siteID
+                       && m.date >= startDate && m.date <= endDate
+                       select new { m.date, m.movAvg };
+
+            foreach (var d in data)
+            {
+                s.Items.Add(new Telerik.Charting.ChartSeriesItem(d.date.ToOADate(), d.movAvg));
+            }
+
+            RadChart1.Series.Add(s);
+        }
+
+        RadChart1.DefaultType = ChartSeriesType.Line;
+        RadChart1.Visible = true;
+
+    }
+
+}

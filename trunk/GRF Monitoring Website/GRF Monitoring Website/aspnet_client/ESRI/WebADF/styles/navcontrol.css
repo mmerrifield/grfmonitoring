@@ -1,0 +1,33 @@
+﻿.NavBodyStyle 
+{
+    position: absolute; 
+    left: 0px; 
+    top: 0px;
+}
+ 
+.NavDragStyle 
+{
+    position: absolute; 
+    left: 28px; 
+    top: 30px; 
+    width: 13px; 
+    height: 11px;
+}
+ 
+.NavZoomInStyle 
+{
+    position: absolute; 
+    left: 28px; 
+    top: 20px; 
+    width: 13px; 
+    height: 9px;
+}
+
+.NavZoomOutStyle
+{
+    position: absolute; 
+    left: 28px; 
+    top: 42px; 
+    width: 13px; 
+    height: 10px;
+}
