@@ -1,0 +1,124 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Garcia.master.cs" Inherits="Garcia" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>Garcia River Forest Monitoring Database</title>
+    <link rel="Stylesheet" href="Styles/Styles.css" />
+    <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+    <script type="text/javascript">
+        function mouseOver(img) {
+            if (img.src.indexOf("selected") == -1)
+                img.src = "Images/" + img.id + "Button_over.jpg";
+        }
+        function mouseOut(img) {
+            //alert(img.id + " out");
+            if (img.src.indexOf("selected") == -1)
+                img.src = "Images/" + img.id + "Button_off.jpg";
+        }
+        function pageLoad(sender, e) {
+            displayMessage();
+        }
+
+
+
+    </script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:HiddenField runat="server" ID="hfMessage" Value="" />
+        <table align="center" cellpadding="0" cellspacing="0" width="800" style="min-height: 500px;" >
+            <tr>
+                <td valign="top">
+                    <table cellpadding="0" cellspacing="0" style="" border="0" align="center" width="800">
+                        <tr height="80">
+                            <td width="300" valign="bottom">
+                                <div style="font-size: 17pt; line-height: 1.3em; font-weight: bold;">Garcia River Forest<br />Monitoring Database</div>
+                            </td>
+                            <td width="500" align="right" valign="bottom">
+                                <table cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <a href="Home.aspx">
+                                                <img runat="server" id="home" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)" border="0" src="Images/homeButton_off.jpg" />
+                                            </a>
+                                        </td>
+                                        <td width="5"></td>
+                                        <td>
+                                            <a href="ImportData.aspx">
+                                                <img runat="server" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"  id="data" src="Images/dataButton_off.jpg" />
+                                            </a>
+                                        </td>
+                                        <td width="5"></td>
+                                        <td>
+                                            <a href="Reports.aspx">
+                                                <img runat="server" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"  id="reports" src="Images/reportsButton_off.jpg" />
+                                            </a>
+                                        </td>
+                                        <td width="5"></td>
+                                        <td>
+                                            <a href="ViewMap.aspx">
+                                                <img runat="server" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"  id="map" src="Images/mapButton_off.jpg" />
+                                            </a>
+                                        </td>
+                                        <td width="5"></td>
+                                        <td>
+                                            <a href="Contact.aspx">
+                                                <img runat="server" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"  id="contact" src="Images/contactButton_off.jpg" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                
+                    <div align="right" style="margin-top: 10px;">
+                        <asp:LoginView ID="LoginView1" runat="server">
+                            <LoggedInTemplate>
+                                Welcome: <asp:LoginName ID="LoginName1" runat="server" />
+                                <a href="ChangePassword.aspx">Change Password</a>
+                            </LoggedInTemplate>
+                            <AnonymousTemplate>
+                                Welcome: Guest
+                            </AnonymousTemplate>
+                        </asp:LoginView>
+                        <asp:LoginStatus runat="server" ID="LoginStatus1" LogoutAction="Redirect" LoginText="Log in" />
+                    </div>
+
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+                </td>
+            </tr>
+            <tr>
+                <td valign="bottom">
+                    <table cellpadding="0" cellspacing="0" style="margin-top: 5px; width="800" align="center">
+                        <tr>
+                            <td valign="top" width="140">
+                                Version 1.1
+                            </td>
+                            <td valign="middle" width="200">
+                                <a href="http://www.tnc.org">The Nature Conservancy</a>
+                            </td>
+                            <td valign="middle" width="145">
+                                <a href="http://www.nature.org/aboutus/misc/?src=f6">Privacy Policy</a>
+                            </td>
+                            <td valign="middle" width="200">
+                                <a href="http://www.nature.org/aboutus/misc/art5096.html?src=f9">Legal Disclosure</a>
+                            </td>
+                            <td>
+                                <a href="http://www.tnc.org">
+                                    <img src="Images/TNCLogo.jpg" />
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

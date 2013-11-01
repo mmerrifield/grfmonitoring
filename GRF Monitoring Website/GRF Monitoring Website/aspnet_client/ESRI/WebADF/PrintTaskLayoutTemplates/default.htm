@@ -1,0 +1,101 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>Map</title>
+		<style type="text/css">
+		        body
+		        {
+		        	font-family:Verdana,sans-serif;
+		        }
+		        #mapImage
+		        {	
+		        	border: 2px solid black;
+		        }
+		        #taskResultsSection
+		        {
+		        	padding:0px 5px 5px 5px; 
+		        	font-size:10px;
+		        }
+		        #legendSection
+		        {
+		        	font-size: 10px;
+		        }
+		        .legendLabel
+		        {
+		            font-size: 7.5pt;
+		            vertical-align: middle;
+		        }
+		        .taskResultHeader
+		        {
+		        	 font-size: 12px;
+		        	 font-weight: bold;
+		        	 padding-bottom: 10px;
+		        	 padding-top: 5px;
+		        }
+		        .taskResultsTable
+		        {
+		        	border: 1px solid gray;		        	
+		        	border-collapse: collapse;
+		        	font-size: 8pt;
+		        	padding-bottom: 8px;
+		        }
+		        .taskResultsTableCaption
+		        {
+		        	text-align: left;		        	
+		        }	
+		        .resultCellHeader
+		        {
+		        	 border: 1px solid gray;
+		        }
+		        .resultCell
+		        {
+		        	 border: 1px solid gray;
+		        }	        
+		        #mapCopyrightTitle
+		        {
+		        	font-weight: bold;
+		        	font-size: 12px;
+		        	padding: 0px 5px 5px 0px;
+		        }
+		        #mapCopyrightText
+		        {
+		        	padding: 0px;
+		        	font-size: 10px;
+		        }
+		</style>	
+	    <script type="text/javascript">
+	        function checkForRefresh() {
+	            var ck = document.cookie;
+	            if (ck.length > 0) {
+	                c_start = ck.indexOf("_printTaskParent=");
+	                if (c_start != -1) {
+	                    c_start += 17;
+	                    c_end = ck.indexOf(";", c_start);
+	                    if (c_end == -1) { c_end = ck.length; }
+	                    var id = unescape(ck.substring(c_start, c_end));
+	                    if (id && opener && opener.$find && opener.$find(id) && !opener.$find(id).isRenderingContent()) {
+	                        opener.$find(id)._printToPopup();
+	                    }
+	                }
+	            }
+	        }
+	    </script>
+	</head>
+	<body onload="checkForRefresh();">
+	    <div>
+	        <h1 id="mapTitle"></h1>
+	        <img id="mapImage" style="display:none;" src="" alt="" />
+	        <!--<div id="mapImageBorder">
+	            
+	        </div>	        -->
+	        <div id="legendSection">
+	        </div>	        
+	        <div id="taskResultsSection">
+	        </div>
+	        <div id="mapCopyrightTitle">
+	        </div>                       
+            <div id="mapCopyrightText">
+            </div> 
+	    </div>
+	</body>
+</html>
