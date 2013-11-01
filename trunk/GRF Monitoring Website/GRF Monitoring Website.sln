@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "GRF Monitoring Website", "GRF Monitoring Website\", "{001226DD-09AC-48AA-97B0-DE0D6F782445}"
 	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = "Svn"
+		SccAuxPath = "Svn"
+		SccLocalPath = "Svn"
+		SccProvider = "SubversionScc"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/GRF Monitoring Website"
 		Debug.AspNetCompiler.PhysicalPath = "D:\Dev Projects\Portal Solutions\TNC Garcia\GRF Monitoring Website\"
@@ -22,6 +26,10 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "GRF Monitoring Website", "G
 	EndProjectSection
 EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 	EndGlobalSection
