@@ -40,13 +40,14 @@ public partial class ManageSites : System.Web.UI.Page
     {
         if (Page.User.IsInRole("Admin") == false)
             Response.Redirect("NotAuthorized.aspx");
-
+      /*
         if (!IsPostBack)
         {
             bindSites();
-        }
+        }*/
     }
 
+  /*
     private void bindSites()
     {
         IEnumerable<GarciaSite> sites = GarciaSite.getSites();
@@ -191,5 +192,5 @@ public partial class ManageSites : System.Web.UI.Page
         gvSites.EditIndex = 0;
         bindSites();
         btnNewSite.Enabled = false;
-    }
+    }*/
 }

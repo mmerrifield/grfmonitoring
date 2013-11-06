@@ -8,23 +8,9 @@
     <asp:ScriptManager runat="server" ID="ScriptManager1" EnablePartialRendering="false"></asp:ScriptManager>
     
     <div style="background-color: #F2F2F2; padding: 20px; min-height: 440px; margin-top: 5px;">
-
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <td style="width: 700px;">
-                    <span style="font-size: 14pt; font-weight: bold;">Data: </span>
-                    <a href="ImportData.aspx" style="font-weight: bold; font-size: 12pt;">Import</a>
-                    <span style="font-size: 12pt; font-weight: bold;"> / Export</span>                
-                </td>
-                <td style="width: 100px;" align="right">
-                    <asp:HyperLink runat="server" ID="hlManageSites" Text="Manage Sites" NavigateUrl="~/ManageSites.aspx"></asp:HyperLink>
-                </td>
-
-            </tr>
-        </table>
-        
+      <div class='DataMgmtActions'><a href='ImportData.aspx'>Import Data</a> | Export Data <span id='adminSites' runat='server'>| <a href='ManageSites.aspx'>Manage Sites</a></span></div>
+       
         <div style="background-image:url('Images/GrayVerticalGradient3.jpg'); background-repeat:repeat-x; border: 1px solid gray; height: 80px; margin: 20px; padding: 0px 20px 20px 20px;">
-            <h3 style="margin-bottom: 0px;">Export HOBO Data</h3>
             <asp:Label runat="server" ID="lblInstructions" style="margin-top: 0px; margin-bottom: 10px;">Choose the date range and site below and click the Export button.</asp:Label><br /><br />
             
             <table style="margin-top: -5px;">

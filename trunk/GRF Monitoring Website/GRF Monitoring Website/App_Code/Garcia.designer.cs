@@ -21,7 +21,7 @@ using System.Reflection;
 
 
 
-[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="garcia")]
+[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Garcia")]
 public partial class GarciaDataContext : System.Data.Linq.DataContext
 {
 	
@@ -32,6 +32,12 @@ public partial class GarciaDataContext : System.Data.Linq.DataContext
   partial void InsertHOBO(HOBO instance);
   partial void UpdateHOBO(HOBO instance);
   partial void DeleteHOBO(HOBO instance);
+  partial void InsertSiteInfo(SiteInfo instance);
+  partial void UpdateSiteInfo(SiteInfo instance);
+  partial void DeleteSiteInfo(SiteInfo instance);
+  partial void InsertSiteHobo(SiteHobo instance);
+  partial void UpdateSiteHobo(SiteHobo instance);
+  partial void DeleteSiteHobo(SiteHobo instance);
   #endregion
 	
 	public GarciaDataContext() : 
@@ -93,6 +99,22 @@ public partial class GarciaDataContext : System.Data.Linq.DataContext
 		get
 		{
 			return this.GetTable<SITE>();
+		}
+	}
+	
+	public System.Data.Linq.Table<SiteInfo> SiteInfos
+	{
+		get
+		{
+			return this.GetTable<SiteInfo>();
+		}
+	}
+	
+	public System.Data.Linq.Table<SiteHobo> SiteHobos
+	{
+		get
+		{
+			return this.GetTable<SiteHobo>();
 		}
 	}
 }
@@ -626,6 +648,418 @@ public partial class SITE
 			{
 				this._Shape = value;
 			}
+		}
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.lut_SITE_INFO")]
+public partial class SiteInfo : INotifyPropertyChanging, INotifyPropertyChanged
+{
+	
+	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+	
+	private int _OBJECTID;
+	
+	private string _Site_ID;
+	
+	private string _SITE_NAME;
+	
+	private string _Directions;
+	
+	private string _Color;
+	
+	private System.Nullable<System.DateTime> _DataStartDate;
+	
+	private System.Nullable<System.DateTime> _DataEndDate;
+	
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnOBJECTIDChanging(int value);
+    partial void OnOBJECTIDChanged();
+    partial void OnSite_IDChanging(string value);
+    partial void OnSite_IDChanged();
+    partial void OnSITE_NAMEChanging(string value);
+    partial void OnSITE_NAMEChanged();
+    partial void OnDirectionsChanging(string value);
+    partial void OnDirectionsChanged();
+    partial void OnColorChanging(string value);
+    partial void OnColorChanged();
+    partial void OnDataStartDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnDataStartDateChanged();
+    partial void OnDataEndDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnDataEndDateChanged();
+    #endregion
+	
+	public SiteInfo()
+	{
+		OnCreated();
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OBJECTID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+	public int OBJECTID
+	{
+		get
+		{
+			return this._OBJECTID;
+		}
+		set
+		{
+			if ((this._OBJECTID != value))
+			{
+				this.OnOBJECTIDChanging(value);
+				this.SendPropertyChanging();
+				this._OBJECTID = value;
+				this.SendPropertyChanged("OBJECTID");
+				this.OnOBJECTIDChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Site_ID", DbType="NVarChar(12)")]
+	public string Site_ID
+	{
+		get
+		{
+			return this._Site_ID;
+		}
+		set
+		{
+			if ((this._Site_ID != value))
+			{
+				this.OnSite_IDChanging(value);
+				this.SendPropertyChanging();
+				this._Site_ID = value;
+				this.SendPropertyChanged("Site_ID");
+				this.OnSite_IDChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SITE_NAME", DbType="NVarChar(150)")]
+	public string SITE_NAME
+	{
+		get
+		{
+			return this._SITE_NAME;
+		}
+		set
+		{
+			if ((this._SITE_NAME != value))
+			{
+				this.OnSITE_NAMEChanging(value);
+				this.SendPropertyChanging();
+				this._SITE_NAME = value;
+				this.SendPropertyChanged("SITE_NAME");
+				this.OnSITE_NAMEChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Directions", DbType="NVarChar(MAX)")]
+	public string Directions
+	{
+		get
+		{
+			return this._Directions;
+		}
+		set
+		{
+			if ((this._Directions != value))
+			{
+				this.OnDirectionsChanging(value);
+				this.SendPropertyChanging();
+				this._Directions = value;
+				this.SendPropertyChanged("Directions");
+				this.OnDirectionsChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Color", DbType="VarChar(15)")]
+	public string Color
+	{
+		get
+		{
+			return this._Color;
+		}
+		set
+		{
+			if ((this._Color != value))
+			{
+				this.OnColorChanging(value);
+				this.SendPropertyChanging();
+				this._Color = value;
+				this.SendPropertyChanged("Color");
+				this.OnColorChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataStartDate", DbType="DateTime")]
+	public System.Nullable<System.DateTime> DataStartDate
+	{
+		get
+		{
+			return this._DataStartDate;
+		}
+		set
+		{
+			if ((this._DataStartDate != value))
+			{
+				this.OnDataStartDateChanging(value);
+				this.SendPropertyChanging();
+				this._DataStartDate = value;
+				this.SendPropertyChanged("DataStartDate");
+				this.OnDataStartDateChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataEndDate", DbType="DateTime")]
+	public System.Nullable<System.DateTime> DataEndDate
+	{
+		get
+		{
+			return this._DataEndDate;
+		}
+		set
+		{
+			if ((this._DataEndDate != value))
+			{
+				this.OnDataEndDateChanging(value);
+				this.SendPropertyChanging();
+				this._DataEndDate = value;
+				this.SendPropertyChanged("DataEndDate");
+				this.OnDataEndDateChanged();
+			}
+		}
+	}
+	
+	public event PropertyChangingEventHandler PropertyChanging;
+	
+	public event PropertyChangedEventHandler PropertyChanged;
+	
+	protected virtual void SendPropertyChanging()
+	{
+		if ((this.PropertyChanging != null))
+		{
+			this.PropertyChanging(this, emptyChangingEventArgs);
+		}
+	}
+	
+	protected virtual void SendPropertyChanged(String propertyName)
+	{
+		if ((this.PropertyChanged != null))
+		{
+			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.lut_SITE_x_HOBO")]
+public partial class SiteHobo : INotifyPropertyChanging, INotifyPropertyChanged
+{
+	
+	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+	
+	private int _OBJECTID;
+	
+	private string _SITE_ID;
+	
+	private string _HOBO_ID;
+	
+	private string _YEAR_;
+	
+	private string _TYPE;
+	
+	private string _CONTRIBUTOR;
+	
+	private string _COMMENTS;
+	
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnOBJECTIDChanging(int value);
+    partial void OnOBJECTIDChanged();
+    partial void OnSITE_IDChanging(string value);
+    partial void OnSITE_IDChanged();
+    partial void OnHOBO_IDChanging(string value);
+    partial void OnHOBO_IDChanged();
+    partial void OnYEAR_Changing(string value);
+    partial void OnYEAR_Changed();
+    partial void OnTYPEChanging(string value);
+    partial void OnTYPEChanged();
+    partial void OnCONTRIBUTORChanging(string value);
+    partial void OnCONTRIBUTORChanged();
+    partial void OnCOMMENTSChanging(string value);
+    partial void OnCOMMENTSChanged();
+    #endregion
+	
+	public SiteHobo()
+	{
+		OnCreated();
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OBJECTID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+	public int OBJECTID
+	{
+		get
+		{
+			return this._OBJECTID;
+		}
+		set
+		{
+			if ((this._OBJECTID != value))
+			{
+				this.OnOBJECTIDChanging(value);
+				this.SendPropertyChanging();
+				this._OBJECTID = value;
+				this.SendPropertyChanged("OBJECTID");
+				this.OnOBJECTIDChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SITE_ID", DbType="NVarChar(20)")]
+	public string SITE_ID
+	{
+		get
+		{
+			return this._SITE_ID;
+		}
+		set
+		{
+			if ((this._SITE_ID != value))
+			{
+				this.OnSITE_IDChanging(value);
+				this.SendPropertyChanging();
+				this._SITE_ID = value;
+				this.SendPropertyChanged("SITE_ID");
+				this.OnSITE_IDChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HOBO_ID", DbType="NVarChar(50)")]
+	public string HOBO_ID
+	{
+		get
+		{
+			return this._HOBO_ID;
+		}
+		set
+		{
+			if ((this._HOBO_ID != value))
+			{
+				this.OnHOBO_IDChanging(value);
+				this.SendPropertyChanging();
+				this._HOBO_ID = value;
+				this.SendPropertyChanged("HOBO_ID");
+				this.OnHOBO_IDChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_YEAR_", DbType="NVarChar(50)")]
+	public string YEAR_
+	{
+		get
+		{
+			return this._YEAR_;
+		}
+		set
+		{
+			if ((this._YEAR_ != value))
+			{
+				this.OnYEAR_Changing(value);
+				this.SendPropertyChanging();
+				this._YEAR_ = value;
+				this.SendPropertyChanged("YEAR_");
+				this.OnYEAR_Changed();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TYPE", DbType="NVarChar(25)")]
+	public string TYPE
+	{
+		get
+		{
+			return this._TYPE;
+		}
+		set
+		{
+			if ((this._TYPE != value))
+			{
+				this.OnTYPEChanging(value);
+				this.SendPropertyChanging();
+				this._TYPE = value;
+				this.SendPropertyChanged("TYPE");
+				this.OnTYPEChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CONTRIBUTOR", DbType="NVarChar(50)")]
+	public string CONTRIBUTOR
+	{
+		get
+		{
+			return this._CONTRIBUTOR;
+		}
+		set
+		{
+			if ((this._CONTRIBUTOR != value))
+			{
+				this.OnCONTRIBUTORChanging(value);
+				this.SendPropertyChanging();
+				this._CONTRIBUTOR = value;
+				this.SendPropertyChanged("CONTRIBUTOR");
+				this.OnCONTRIBUTORChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMMENTS", DbType="NVarChar(255)")]
+	public string COMMENTS
+	{
+		get
+		{
+			return this._COMMENTS;
+		}
+		set
+		{
+			if ((this._COMMENTS != value))
+			{
+				this.OnCOMMENTSChanging(value);
+				this.SendPropertyChanging();
+				this._COMMENTS = value;
+				this.SendPropertyChanged("COMMENTS");
+				this.OnCOMMENTSChanged();
+			}
+		}
+	}
+	
+	public event PropertyChangingEventHandler PropertyChanging;
+	
+	public event PropertyChangedEventHandler PropertyChanged;
+	
+	protected virtual void SendPropertyChanging()
+	{
+		if ((this.PropertyChanging != null))
+		{
+			this.PropertyChanging(this, emptyChangingEventArgs);
+		}
+	}
+	
+	protected virtual void SendPropertyChanged(String propertyName)
+	{
+		if ((this.PropertyChanged != null))
+		{
+			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

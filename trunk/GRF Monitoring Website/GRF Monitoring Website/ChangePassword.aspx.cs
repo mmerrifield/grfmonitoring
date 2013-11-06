@@ -23,4 +23,8 @@ public partial class ChangePassword : System.Web.UI.Page
         e.Cancel = true;
     }
 
+    protected void ChangePassword1_CancelButtonClick(object sender, EventArgs e)
+    {
+      Response.Redirect("Home.aspx");
+    }
 }
