@@ -10,8 +10,8 @@
                 <td width="800" valign="top" style="background-image: url('Images/Riverbed2.jpg'); background-repeat:no-repeat; height: 258px;">
                     <table cellpadding="0" cellspacing="0" border="0" style="margin-left: 30px; margin-top: 30px; ">
                         <tr>
-                            <td valign="top" style="">
-                                <uc1:LoginControl runat="server" ID="LoginControl1" />
+                            <td valign="top" style="" width="260">
+                                <!--<uc1:LoginControl runat="server" ID="LoginControl1" />-->
                             </td>
                             <td width="40"></td>
                             <td valign="top" style="font-size: 8pt; line-height: 1.8em; font-weight: normal; padding-right: 35px;">

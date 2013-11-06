@@ -20,11 +20,7 @@ public partial class ExportData : System.Web.UI.Page
             addNullToDropdown();
             Master.selectNavButton("data");
 
-            if (Page.User.IsInRole("Admin") == false)
-                hlManageSites.Visible = false;
-            else
-                hlManageSites.Visible = true;
-
+            adminSites.Visible = Page.User.IsInRole("Admin");
         }
     }
 

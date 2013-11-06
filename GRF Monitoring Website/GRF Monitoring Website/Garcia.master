@@ -7,6 +7,12 @@
     <title>Garcia River Forest Monitoring Database</title>
     <link rel="Stylesheet" href="Styles/Styles.css" />
     <link rel="shortcut icon" type="image/ico" href="favicon.ico">
+    <link rel='Stylesheet' href='Styles/excite-bike/jquery-ui-1.9.2.custom.min.css' />
+    <link rel='Stylesheet' href="Styles/ui.jqgrid.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="scripts/i18n/grid.locale-en.js" type="text/javascript"></script>
+    <script src="Scripts/jquery.jqGrid.min.js"></script>
     <script type="text/javascript">
         function mouseOver(img) {
             if (img.src.indexOf("selected") == -1)
@@ -20,9 +26,6 @@
         function pageLoad(sender, e) {
             displayMessage();
         }
-
-
-
     </script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
@@ -33,6 +36,18 @@
         <table align="center" cellpadding="0" cellspacing="0" width="800" style="min-height: 500px;" >
             <tr>
                 <td valign="top">
+                    <div align="right" style="margin-top: 10px;">
+                        <asp:LoginView ID="LoginView1" runat="server"  >
+                            <LoggedInTemplate>
+                                <div class='LoginHeader'>Welcome: <asp:LoginName ID="LoginName1" runat="server" /></div>
+                                <a href="ChangePassword.aspx">Change Password</a>&nbsp|
+                            </LoggedInTemplate>
+                            <AnonymousTemplate>
+                                <div class='LoginHeader'>Welcome: Guest</div>
+                            </AnonymousTemplate>
+                        </asp:LoginView>
+                        <asp:LoginStatus runat="server" ID="LoginStatus1" LogoutAction="Redirect" LoginText="Log in" />
+                    </div>
                     <table cellpadding="0" cellspacing="0" style="" border="0" align="center" width="800">
                         <tr height="80">
                             <td width="300" valign="bottom">
@@ -75,20 +90,6 @@
                             </td>
                         </tr>
                     </table>
-                
-                    <div align="right" style="margin-top: 10px;">
-                        <asp:LoginView ID="LoginView1" runat="server">
-                            <LoggedInTemplate>
-                                Welcome: <asp:LoginName ID="LoginName1" runat="server" />
-                                <a href="ChangePassword.aspx">Change Password</a>
-                            </LoggedInTemplate>
-                            <AnonymousTemplate>
-                                Welcome: Guest
-                            </AnonymousTemplate>
-                        </asp:LoginView>
-                        <asp:LoginStatus runat="server" ID="LoginStatus1" LogoutAction="Redirect" LoginText="Log in" />
-                    </div>
-
                     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
                 </td>
             </tr>
@@ -96,9 +97,8 @@
                 <td valign="bottom">
                     <table cellpadding="0" cellspacing="0" style="margin-top: 5px; width="800" align="center">
                         <tr>
-                            <td valign="top" width="140">
-                                Version 1.1
-                            </td>
+                            <td valign="middle" width="140">
+                                Version 2.0</td>
                             <td valign="middle" width="200">
                                 <a href="http://www.tnc.org">The Nature Conservancy</a>
                             </td>

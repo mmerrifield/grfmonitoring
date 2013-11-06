@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="garcia" Class="GarciaDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Garcia" Class="GarciaDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=Garcia;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="GarciaConnection" Provider="System.Data.SqlClient" />
   <Table Name="dbo.HOBO" Member="HOBOs">
     <Type Name="HOBO">
@@ -37,6 +37,28 @@
       <Column Name="OBJECTID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Site_ID" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
       <Column Name="Shape" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.lut_SITE_INFO" Member="SiteInfos">
+    <Type Name="SiteInfo">
+      <Column Name="OBJECTID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Site_ID" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="SITE_NAME" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="Directions" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Color" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="DataStartDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DataEndDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.lut_SITE_x_HOBO" Member="SiteHobos">
+    <Type Name="SiteHobo">
+      <Column Name="OBJECTID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SITE_ID" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="HOBO_ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="YEAR_" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="TYPE" Type="System.String" DbType="NVarChar(25)" CanBeNull="true" />
+      <Column Name="CONTRIBUTOR" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="COMMENTS" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
     </Type>
   </Table>
 </Database>

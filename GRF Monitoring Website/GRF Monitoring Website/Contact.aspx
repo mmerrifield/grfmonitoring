@@ -1,14 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Garcia.master" %>
-<%@ MasterType VirtualPath="~/Garcia.master" %>
-
-<script runat="server">
-    protected void Page_Load(object sender, EventArgs e) 
-    {
-        if (!IsPostBack)
-            Master.selectNavButton("contact");
-    }
-</script>
-
+﻿<%@ Page Title="Contact" Language="C#" MasterPageFile="~/Garcia.master" AutoEventWireup="true" CodeFile="Contact.aspx.cs" Inherits="Contact" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -16,12 +6,11 @@
         <tr>
             <td>
             <h3 align="center">Contact Information</h3>
-                Jennifer Carah<br />
-                Field Scientist<br />
-                North Coast Ecoregion<br />
-                <a href="mailto:jcarah@tnc.org">jcarah@tnc.org</a>
+            <asp:Literal ID='POC' runat='server'></asp:Literal><br />
+            <asp:Literal ID='JobTitle' runat='server'></asp:Literal><br />
+            <asp:Literal ID='Region' runat='server'></asp:Literal><br />
+            <a id='EmailLink' runat='server'></a>
             </td>
         </tr>
     </table>
 </asp:Content>
-

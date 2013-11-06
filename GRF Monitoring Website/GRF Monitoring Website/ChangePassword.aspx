@@ -6,8 +6,10 @@
         <tr>
             <td valign="top">
                 <asp:ChangePassword runat="server" ID="ChangePassword1" BorderStyle="Groove" BackColor="AliceBlue" 
-                    ContinueDestinationPageUrl="Home.aspx" OnSendingMail="ChangePassword1_SendingMail">
-                    <TitleTextStyle Font-Bold="true" />
+                    ContinueDestinationPageUrl="Home.aspx" 
+                  OnSendingMail="ChangePassword1_SendingMail" 
+                  oncancelbuttonclick="ChangePassword1_CancelButtonClick">
+                    <TitleTextStyle Font-Bold="true"  />
                 </asp:ChangePassword>
             </td>
         </tr>
