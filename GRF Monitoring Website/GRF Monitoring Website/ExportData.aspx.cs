@@ -12,18 +12,12 @@ public partial class ExportData : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            cboSeason.DataSource = DB.getYears();
-            cboSeason.DataBind();
-
-            cboSites.DataSource = GarciaSite.getSites();
-            cboSites.DataBind();
-            addNullToDropdown();
             Master.selectNavButton("data");
-
             adminSites.Visible = Page.User.IsInRole("Admin");
         }
     }
 
+  /*
     private void addNullToDropdown()
     {
         RadComboBoxItem tem = new RadComboBoxItem("", "");
@@ -255,5 +249,5 @@ public partial class ExportData : System.Web.UI.Page
     {
 
     }
-
+  */
 }

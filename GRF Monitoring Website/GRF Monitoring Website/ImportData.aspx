@@ -9,7 +9,7 @@
     <div class='DataMgmtActions'>
       Import Data | <a href='ExportData.aspx'>Export Data</a> <span id='adminSites' runat='server'>
         | <a href='ManageSites.aspx'>Manage Sites</a></span></div>
-    <div style="border: 1px solid Gray; background-color: #aaaaaa;margin-top:10px">
+    <div class='PageCtrls'>
       <div id='ImportDeviceContainer'>
         <h3>
           Import HOBO Devices</h3>
