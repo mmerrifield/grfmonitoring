@@ -1,4 +1,5 @@
 ﻿$(function () {
+  var colorPicker;
   $("#sites").jqGrid({
     datatype: function (pdata) {
       getSites(pdata);
@@ -6,8 +7,8 @@
     colNames: ['Site Id', 'Site Name', 'Directions', 'Color', 'Data Start Date', 'Data End Date'],
     colModel: [
       { name: 'SiteId', index: 'SiteId', width: '100', editable: true },
-      { name: 'SiteName', index: 'SiteName', width: '200', editable: true, edittype: 'textarea', editrules: { required: true }, editoptions: { size: 20 }, cellattr: function () { return 'style="white-space: normal";' } },
-      { name: 'Directions', index: 'Comment', editable: true, width: '375', edittype: 'textarea', editrules: { required: false }, editoptions: { size: 20 }, cellattr: function () { return 'style="white-space: normal";' } },
+      { name: 'SiteName', index: 'SiteName', width: '200', editable: true, edittype: 'textarea', editrules: { required: true }, editoptions: { 'rows': '2', 'cols': '40' }, cellattr: function () { return 'style="white-space: normal";' } },
+      { name: 'Directions', index: 'Comment', editable: true, width: '375', edittype: 'textarea', editrules: { required: false }, editoptions: { 'rows': '5', 'cols': '40' }, cellattr: function () { return 'style="white-space: normal";' } },
       { name: 'Color', index: 'Color', editable: true, width: '75', editable: true, edittype: 'custom', editoptions: { custom_element: getColorPicker, custom_value: updateColorValue }, formatter: function (cellValue) { return '<div style="width:20px;height:15px;background-color:' + cellValue + '"><input type="hidden" value="' + cellValue + '"></input></div>' } },
       { name: 'DtStart', index: 'DtStart', editable: false, width: '175', align: 'right', formatter: 'date', editoptions: { dataInit: function (el) { setTimeout(function () { $(el).datepicker(); }, 200); } } },
       { name: 'DtEnd', index: 'DtEnd', editable: false, width: '175', align: 'right', formatter: 'date', editoptions: { dataInit: function (el) { setTimeout(function () { $(el).datepicker(); }, 200); } } }
@@ -35,22 +36,22 @@
         params: ['SiteId']
       }
     ]
-  }).navGrid('#navsites', { view: false, edit: true, add: true, del: true, search: false },
-    { editCaption: 'Edit Site', afterSubmit: function (response, postdata) {
+  }).navGrid('#navsites', { view: false, edit: true, add: true, del: false, search: false },
+    { editCaption: 'Edit Site', width: 380, afterSubmit: function (response, postdata) {
       $('#loading').hide();
       var v = jQuery.parseJSON(response.responseText);
-      msg = v != null ? v.d : '';
-      success = msg.length == 0;
+      msg = v !== null ? v.d : '';
+      success = msg === null || msg.length === 0;
       return [success, msg, 0];
     },
       beforeShowForm: function (formid) { $('#SiteId').attr('readonly', 'readonly'); $('#SiteName').attr('readonly', 'readonly'); },
       afterComplete: function (response, formdata, formid) { $('#loading').hide(); }
     },
-    { addCaption: 'Add Site', afterSubmit: function (response, postdata) {
+    { addCaption: 'Add Site', width: 380, afterSubmit: function (response, postdata) {
       $('#loading').hide();
       var v = jQuery.parseJSON(response.responseText);
-      msg = v != null ? v.d : '';
-      success = msg.length == 0;
+      msg = v !== null ? v.d : '';
+      success = msg === null || msg.length === 0;
       return [success, msg, 0];
     },
       beforeShowForm: function (formid) { $('#SiteId').removeAttr('readonly'); $('#SiteName').removeAttr('readonly'); },
@@ -111,27 +112,33 @@ function getHobos(rowidprm) {
 function getColorPicker(value, options) {
   var el = document.createElement("input");
   el.type = "text";
-  var html = $.parseHTML(value);
-  var x = html[0].firstChild.value;
+  var x = '0';
+  if (value !== null && value.length !== 0) {
+    html = $.parseHTML(value);
+    var x = html[0].firstChild.value !== null ? html[0].firstChild.value : '0';
+  }
   el.value = x;
-  var myPicker = new jscolor.color(el, {});
-  myPicker.fromString(x);
+  colorPicker = new jscolor.color(el, {required:false});
+  colorPicker.fromString(x);
   return el;
 }
 
 function updateColorValue(elem, operation, value) {
-  //alert(operation + ": " + value);
-  if (operation === 'get') {
-    var html = $.parseHTML(value);
-    return html[0].firstChild.value;
-    //return value.substring(value.indexOf('#') + 1, 6);
-    return $(elem).val(); // change this to get value from color picker
-  } else if (operation === 'set') {
-    var html = $.parseHTML(value);
-    var val = html[0].firstChild.value;
-    var picker = new jscolor.color(elem, {});
-    picker.fromString(val);
-    //$('#cpicker').color.fromString(val);
-    //$('input', elem).fromString(val); // val(val);
+  if (operation === 'set') {
+    var color = '000000';
+    if (value !== null && value.length > 0) {
+      var html = $.parseHTML(value);
+      if (html[0].firstChild.value !== null)
+        color = html[0].firstChild.value;
+      if (color === 'null' || color.length === 0)
+        color = null;
+    }
+    if (color !== null)
+      colorPicker.fromString(color);
+    else
+      colorPicker.clear();
+  }
+  else if (operation === 'get') {
+    return $(elem).val();
   }
 }

@@ -106,6 +106,20 @@ div.Results
   font-size:12px;
 }
 
+/* Export Page styles */
+#ExportContainer
+{
+  background-color: #F2F2F2; 
+  padding: 20px; 
+  margin-top: 5px;
+}
+
+div.PageCtrls
+{
+  border: 1px solid Gray; 
+  background-color: #aaaaaa;
+  margin-top:10px;
+}
 /* Standard button style */
 .aGRFStd 
 {

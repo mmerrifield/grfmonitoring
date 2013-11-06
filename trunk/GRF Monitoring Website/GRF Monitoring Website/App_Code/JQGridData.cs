@@ -30,3 +30,9 @@ public class JQGridData
     public List<string> cell { get; set; }
   }
 }
+
+public class HOBOExport
+{
+  public bool IsWater { get; set; }
+  public JQGridData Data { get; set; }
+}
