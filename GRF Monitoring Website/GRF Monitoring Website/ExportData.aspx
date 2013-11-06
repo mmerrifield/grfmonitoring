@@ -53,7 +53,7 @@
               <input type='text' id='ToDate' style='width: 100px' />
             </td>
             <td>
-              <input type='button' id='btnExport' value='Export' />
+              <input type='button' id='btnExport' value='Get Data' />
             </td>
           </tr>
         </table>
