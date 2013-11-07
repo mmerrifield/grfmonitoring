@@ -30,14 +30,19 @@ $(function () {
     caption: 'Garcia HOBO Data',
     footerrow: false,
     pager: '#navexport',
+    toolbar: [true, 'top'],
     pgbuttons: true,
     pginput: true
   });
+  $("#t_export").append("<input type='button' value='Export to Excel' style='height:20px;font-size:-3;float:right'/>");
+  $("input", "#t_export").click(function () {
+    var urlStr = 'GRFService.svc/DownloadData?year='+ $('#Year').val() + '&site=' + $('#Site').val() + '&type=' + $('#Type').val() + '&from=' + $('#FromDate').val() + '&to=' + $('#ToDate').val();
+    $('#export').jqGrid('excelExport', { url: urlStr });
+  });
   $('#export').setGridHeight('600px');
-
   $('#Year').on('change', function () { if (!Export.initing) { Export.initing = true; clearData(); updateDates(); getSites(); getTypes(); Export.initing = false; } });
   $('#Site').on('change', function () { if (!Export.initing) { Export.initing = true; clearData(); updateDates(); getYears(); getTypes(); Export.initing = false; } });
-  $('#Type').on('change', function () { if (!Export.initing) { Export.initing = true; clearData();  getYears(), getSites(); Export.initing = false; } });
+  $('#Type').on('change', function () { if (!Export.initing) { Export.initing = true; clearData(); getYears(), getSites(); Export.initing = false; } });
   $('#btnExport').on('click', function () {
     if (!dataValid()) {
       alert("Please provide values for all search fields.");
@@ -50,6 +55,9 @@ $(function () {
   getYears();
   updateDates();
 });
+function genCSV() {
+  alert('called');
+}
 function getData(pdata) {
   var grid = $('#export');
   clearData();

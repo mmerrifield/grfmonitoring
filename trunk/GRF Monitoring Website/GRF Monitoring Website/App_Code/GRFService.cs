@@ -285,6 +285,66 @@ public class GRFService
 
   [OperationContract]
   [WebGet]
+  public Stream DownloadData(string year, string site, string type, string from, string to)
+  {
+    using (var context = new GarciaDataContext())
+    {
+      bool isWater = string.Compare(type,"water",true) == 0;
+      DateTime fromDate, toDate;
+      DateTime.TryParse(from, out fromDate);
+      DateTime.TryParse(to, out toDate);
+      fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
+      toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
+
+      var siteInfo = context.SiteInfos.FirstOrDefault(s => s.Site_ID == site);
+      var hoboIds = context.SiteHobos.Where(sh => sh.YEAR_ == year && sh.TYPE == type && sh.SITE_ID == site).Select(sh => sh.HOBO_ID).ToList();
+      var results = context.HOBOs.Where(h => hoboIds.Contains(h.HOBO_ID) && h._DateTime.HasValue && h._DateTime.Value >= fromDate && h._DateTime.Value <= toDate);
+
+      StringBuilder sb = new StringBuilder();
+      sb.Append("<table>");
+      if (isWater)
+        sb.Append("<tr><td>Id</td><td>Hobo Id</td><td>Site</td><td>Date-Time</td><td>Temp</td><td>Date Uploaded</td><td>Uploaded By</td></tr>");
+      else
+        sb.Append("<tr><td>Id</td><td>Hobo Id</td><td>Site</td><td>Date-Time</td><td>Temp</td><td>Dew Point</td><td>Abs Humidity</td><td>RH</td><td>Date Uploaded</td><td>Uploaded By</td></tr>");
+      foreach (var hobo in results)
+      {
+        if (isWater)
+          sb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td></tr>",
+          hobo.ID.ToString(),
+          hobo.HOBO_ID,
+          siteInfo != null ? siteInfo.SITE_NAME : string.Empty,
+          hobo._DateTime.ToString(),
+          hobo.Temp.HasValue ? hobo.Temp.Value.ToString("0.00") : string.Empty,
+          hobo.DateUploaded.HasValue ? hobo.DateUploaded.Value.ToString() : string.Empty,
+          hobo.UploadedBy);
+        else
+          sb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td>{7}</td><td>{8}</td><td>{9}</td></tr>",
+          hobo.ID.ToString(),
+          hobo.HOBO_ID,
+          siteInfo != null ? siteInfo.SITE_NAME : string.Empty,
+          hobo._DateTime.ToString(),
+          hobo.Temp.HasValue ? hobo.Temp.Value.ToString("0.00") : string.Empty,
+          hobo.DewPoint.HasValue ? hobo.DewPoint.Value.ToString("0.00") : string.Empty,
+          hobo.AbsHumidity.HasValue ? hobo.AbsHumidity.Value.ToString("0.00") : string.Empty,
+          hobo.RH.HasValue ? hobo.RH.Value.ToString("0.00") : string.Empty,
+          hobo.DateUploaded.HasValue ? hobo.DateUploaded.Value.ToString() : string.Empty,
+          hobo.UploadedBy);
+      }
+      sb.Append("</table>");
+
+      WebOperationContext.Current.OutgoingResponse.ContentType = "application/ms-excel";
+      string filename = "filename=HOBOExport.xls";
+      WebOperationContext.Current.OutgoingResponse.Headers.Add("Content-Disposition", "attachment; " + filename);
+
+      System.Text.ASCIIEncoding encoding = new ASCIIEncoding();
+      Byte[] bytes = encoding.GetBytes(sb.ToString());
+      return new MemoryStream(bytes);
+    }
+  }
+
+
+  [OperationContract]
+  [WebGet]
   public HOBOExport SiteExport(string year, string site, string type, string from, string to,
     int pageIndex, int pageSize, string sortIndex, string sortDirection)
   {
@@ -295,7 +355,9 @@ public class GRFService
       DateTime fromDate, toDate;
       DateTime.TryParse(from, out fromDate);
       DateTime.TryParse(to, out toDate);
-      
+      fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
+      toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
+
       var siteInfo = context.SiteInfos.FirstOrDefault(s => s.Site_ID == site);
       var hoboIds = context.SiteHobos.Where(sh => sh.YEAR_ == year && sh.TYPE == type && sh.SITE_ID == site).Select(sh => sh.HOBO_ID).ToList();
       var results = context.HOBOs.Where(h => hoboIds.Contains(h.HOBO_ID) && h._DateTime.HasValue && h._DateTime.Value >= fromDate && h._DateTime.Value <= toDate);
