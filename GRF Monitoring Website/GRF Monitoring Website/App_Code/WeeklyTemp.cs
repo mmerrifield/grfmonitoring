@@ -30,8 +30,12 @@ public class WeeklyTemp
 
     #region Constructors
 
+    public WeeklyTemp()
+    {
+    }
+
     public WeeklyTemp(DS.FinalMWATRow dr)
-	{
+	  {
         siteID = dr.SiteID;
         siteName = dr.SITE_NAME;
         date = dr.Date;

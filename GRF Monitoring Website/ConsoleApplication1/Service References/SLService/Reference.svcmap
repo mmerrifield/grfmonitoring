@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2edb1fa1-4c12-4590-9e59-758806dccd27" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:51332/GRF%20Monitoring%20Website/SLService.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SLService.xsd" MetadataType="Schema" ID="d1c172c6-3d61-4a08-be8b-fc3e63b98bd9" SourceId="1" SourceUrl="http://localhost:51332/GRF Monitoring Website/SLService.svc?xsd=xsd0" />
+    <MetadataFile FileName="SLService.wsdl" MetadataType="Wsdl" ID="e5a01f69-c4f9-4553-95e2-e89223da474e" SourceId="1" SourceUrl="http://localhost:51332/GRF Monitoring Website/SLService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="SLService1.xsd" MetadataType="Schema" ID="6c929dde-cc55-4fb8-9b1a-44e07847a632" SourceId="1" SourceUrl="http://localhost:51332/GRF Monitoring Website/SLService.svc?xsd=xsd1" />
+    <MetadataFile FileName="SLService1.wsdl" MetadataType="Wsdl" ID="e1c4133b-86ad-4d79-beb3-ab03f0f0f254" SourceId="1" SourceUrl="http://localhost:51332/GRF Monitoring Website/SLService.svc?wsdl" />
+    <MetadataFile FileName="SLService2.xsd" MetadataType="Schema" ID="324be657-0060-4f85-b702-283d2f5c4f5f" SourceId="1" SourceUrl="http://localhost:51332/GRF Monitoring Website/SLService.svc?xsd=xsd3" />
+    <MetadataFile FileName="SLService3.xsd" MetadataType="Schema" ID="8f3a36ed-97d7-4ea4-9909-874938811a42" SourceId="1" SourceUrl="http://localhost:51332/GRF Monitoring Website/SLService.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

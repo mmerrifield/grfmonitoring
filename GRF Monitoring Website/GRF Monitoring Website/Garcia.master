@@ -69,7 +69,7 @@
                                         </td>
                                         <td width="5"></td>
                                         <td>
-                                            <a href="Reports.aspx">
+                                            <a href="Reports2.aspx">
                                                 <img runat="server" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"  id="reports" src="Images/reportsButton_off.jpg" />
                                             </a>
                                         </td>

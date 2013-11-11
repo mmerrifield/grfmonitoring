@@ -107,9 +107,28 @@ public abstract class DB
         }
     }
 
+    private static DS.lut_SITE_x_HOBODataTable tSiteHoboTbl;
+    private static DS.lut_SITE_x_HOBODataTable lutSiteHoboTbl
+    {
+      get
+      {
+        if (tSiteHoboTbl == null)
+        {
+          DSTableAdapters.lut_SITE_x_HOBOTableAdapter da = new DSTableAdapters.lut_SITE_x_HOBOTableAdapter();
+          tSiteHoboTbl = da.getSiteXHoboData();
+          da.Dispose();
+        }
+        return tSiteHoboTbl;
+      }
+    }
     #endregion
 
     #region Sites
+
+    public static bool hoboExists(string hoboId)
+    {
+      return lutSiteHoboTbl.Where(t => t.HOBO_ID == hoboId).Count() > 0;
+    }
 
     public static List<DS.SiteInfoRow> getSiteInfo()
     {

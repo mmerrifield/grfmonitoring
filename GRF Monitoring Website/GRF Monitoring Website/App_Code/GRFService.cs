@@ -67,6 +67,25 @@ public class GRFService
     return data;
   }
 
+  [OperationContract]
+  [WebGet]
+  public List<ReportSite> ReportSites(int startMon, int startYr, int endMon, int endYr)
+  {
+    using (var context = new GarciaDataContext())
+    {
+      try
+      {
+        DateTime startDate = new DateTime(startYr, startMon, 1);
+        DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr, endMon));
+        return context.SiteInfos.Where(s => s.DataStartDate <= endDate && s.DataEndDate >= startDate).Select(s => new ReportSite { Id = s.Site_ID, Name = s.SITE_NAME }).OrderBy(s => s.Name).ToList();
+      }
+      catch
+      {
+        return new List<ReportSite>();
+      }
+    }
+  }
+
   /// <summary>
   /// Method called when a user add or edits a site definition.
   /// </summary>
@@ -399,5 +418,142 @@ public class GRFService
     return exp;
   }
   #endregion
+
+  #region -- Reporting Support --
+  [OperationContract]
+  [WebGet]
+  public List<ChartSeries> WeeklyMWATData(int startMon, int startYr, int endMon, int endYr, string sites)
+  {
+    try
+    {
+      DateTime startDate = new DateTime(startYr, startMon, 1);
+      DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr,endMon));
+      List<ChartSeries> series = new List<ChartSeries>();
+      
+      DateTime refDate = new DateTime(1970,1,1);
+
+      using (var context = new GarciaDataContext())
+      {
+        foreach (var id in sites.Split(new string[]{","}, StringSplitOptions.RemoveEmptyEntries))
+        {
+          ChartSeries cs = new ChartSeries();
+          IEnumerable<FinalMWAT> datapts = context.FinalMWATs.Where(s => s.SiteID == id && s.Date >= startDate && s.Date <= endDate).OrderBy(s => s.Date);
+          if (datapts.Count() == 0) continue;
+          cs.name = datapts.First().SITE_NAME;
+          cs.type = "line";
+          cs.data = new List<DataPoint>();
+          foreach (var pt in datapts)
+          {
+            if (pt.movAvg.HasValue && pt.movAvg.Value != 0.0)
+              cs.data.Add(new DataPoint { x = (pt.Date.Value - refDate).TotalMilliseconds, y = pt.movAvg.Value });
+          }
+          series.Add(cs);
+        }
+        return series;
+      }
+    }
+    catch (Exception ex)
+    {
+      return null;
+    }
+  }
+
+  [OperationContract]
+  [WebGet]
+  public List<ChartSeries> MaxMWATData(int startMon, int startYr, int endMon, int endYr, string sites)
+  {
+    try
+    {
+      DateTime startDate = new DateTime(startYr, startMon, 1);
+      DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr, endMon));
+      List<ChartSeries> series = new List<ChartSeries>();
+
+      DateTime refDate = new DateTime(1970, 1, 1);
+
+      using (var context = new GarciaDataContext())
+      {
+        foreach (var id in sites.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+        {
+          ChartSeries cs = new ChartSeries();
+          IEnumerable<FinalMWMT> datapts = context.FinalMWMTs.Where(s => s.SiteID == id && s.Date >= startDate && s.Date <= endDate).OrderBy(s => s.Date);
+          cs.name = datapts.First().SITE_NAME;
+          cs.type = "line";
+          cs.data = new List<DataPoint>();
+          foreach (var pt in datapts)
+          {
+            if (pt.movAvg.HasValue)
+              cs.data.Add(new DataPoint { x = (pt.Date.Value - refDate).TotalMilliseconds, y = pt.movAvg.Value });
+          }
+        }
+        return series;
+      }
+    }
+    catch (Exception ex)
+    {
+      return null;
+    }
+  }
+
+  [OperationContract]
+  [WebGet]
+  public List<ChartSeries> WeeklyMWMTData(int startMon, int startYr, int endMon, int endYr, string sites)
+  {
+    try
+    {
+      DateTime startDate = new DateTime(startYr, startMon, 1);
+      DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr, endMon));
+      List<ChartSeries> series = new List<ChartSeries>();
+
+      DateTime refDate = new DateTime(1970, 1, 1);
+
+      using (var context = new GarciaDataContext())
+      {
+        foreach (var id in sites.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+        {
+          ChartSeries cs = new ChartSeries();
+          IEnumerable<FinalMWMT> datapts = context.FinalMWMTs.Where(s => s.SiteID == id && s.Date >= startDate && s.Date <= endDate).OrderBy(s => s.Date);
+          if (datapts.Count() == 0) continue;
+          cs.name = datapts.First().SITE_NAME;
+          cs.type = "line";
+          cs.data = new List<DataPoint>();
+          foreach (var pt in datapts)
+          {
+            if (pt.movAvg.HasValue && pt.movAvg.Value != 0.0)
+              cs.data.Add(new DataPoint { x = (pt.Date.Value - refDate).TotalMilliseconds, y = pt.movAvg.Value });
+          }
+          series.Add(cs);
+        } 
+        return series;
+      }
+    }
+    catch (Exception ex)
+    {
+      return null;
+    }
+  }
+
+  public List<MaxTemp> MaxMWMTData(string year, List<string> sites)
+  {
+    return MaxTemp.getMaxMWMTData(year, sites);
+  }
+  #endregion
 }
 
+public class ReportSite
+{
+  public string Id { get; set; }
+  public string Name { get; set; }
+}
+
+public class ChartSeries
+{
+  public string name { get; set; }
+  public string type { get; set; }
+  public List<DataPoint> data { get; set; }
+}
+
+public class DataPoint
+{
+  public double x { get; set; }
+  public double y { get; set; }
+}

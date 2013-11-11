@@ -61,4 +61,78 @@
       <Column Name="COMMENTS" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.FinalMWAT" Member="FinalMWATs">
+    <Type Name="FinalMWAT">
+      <Column Name="SITE_NAME" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="TYPE" Type="System.String" DbType="NVarChar(25)" CanBeNull="true" />
+      <Column Name="HOBO_ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="tavg" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="movAvg" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="hoboday" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="threshold" Type="System.Decimal" DbType="Decimal(28,1)" CanBeNull="true" />
+      <Column Name="YEAR_" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MaxOfmovAvg" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="SiteID" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FinalMWMT" Member="FinalMWMTs">
+    <Type Name="FinalMWMT">
+      <Column Name="SiteID" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="SITE_NAME" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="TYPE" Type="System.String" DbType="NVarChar(25)" CanBeNull="true" />
+      <Column Name="HOBO_ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="tmax" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="movAvg" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="hoboday" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="threshold" Type="System.Decimal" DbType="Decimal(28,1)" CanBeNull="true" />
+      <Column Name="YEAR_" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MaxOfmovAvg" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MWAT" Member="MWATs">
+    <Type Name="MWAT">
+      <Column Name="HOBO_ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="tavg" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="movAvg" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="hoboday" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MWATMax" Member="MWATMaxes">
+    <Type Name="MWATMax">
+      <Column Name="YEAR_" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="HOBO_ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SITE_NAME" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="TYPE" Type="System.String" DbType="NVarChar(25)" CanBeNull="true" />
+      <Column Name="MaxMWAT" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="DaysExceed" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="[Percent]" Member="Percent" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="COMMENTS" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SiteID" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MWMT" Member="MWMTs">
+    <Type Name="MWMT">
+      <Column Name="HOBO_ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="tmax" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="movAvg" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="hoboday" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MWMTMax" Member="MWMTMaxes">
+    <Type Name="MWMTMax">
+      <Column Name="YEAR_" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="HOBO_ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="SITE_NAME" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="TYPE" Type="System.String" DbType="NVarChar(25)" CanBeNull="true" />
+      <Column Name="MaxMWMT" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="DaysExceed" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="[Percent]" Member="Percent" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="COMMENTS" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SiteID" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+    </Type>
+  </Table>
 </Database>

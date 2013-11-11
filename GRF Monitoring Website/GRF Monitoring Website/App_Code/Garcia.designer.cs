@@ -117,6 +117,54 @@ public partial class GarciaDataContext : System.Data.Linq.DataContext
 			return this.GetTable<SiteHobo>();
 		}
 	}
+	
+	public System.Data.Linq.Table<FinalMWAT> FinalMWATs
+	{
+		get
+		{
+			return this.GetTable<FinalMWAT>();
+		}
+	}
+	
+	public System.Data.Linq.Table<FinalMWMT> FinalMWMTs
+	{
+		get
+		{
+			return this.GetTable<FinalMWMT>();
+		}
+	}
+	
+	public System.Data.Linq.Table<MWAT> MWATs
+	{
+		get
+		{
+			return this.GetTable<MWAT>();
+		}
+	}
+	
+	public System.Data.Linq.Table<MWATMax> MWATMaxes
+	{
+		get
+		{
+			return this.GetTable<MWATMax>();
+		}
+	}
+	
+	public System.Data.Linq.Table<MWMT> MWMTs
+	{
+		get
+		{
+			return this.GetTable<MWMT>();
+		}
+	}
+	
+	public System.Data.Linq.Table<MWMTMax> MWMTMaxes
+	{
+		get
+		{
+			return this.GetTable<MWMTMax>();
+		}
+	}
 }
 
 [global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.HOBO")]
@@ -1060,6 +1108,960 @@ public partial class SiteHobo : INotifyPropertyChanging, INotifyPropertyChanged
 		if ((this.PropertyChanged != null))
 		{
 			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.FinalMWAT")]
+public partial class FinalMWAT
+{
+	
+	private string _SITE_NAME;
+	
+	private string _TYPE;
+	
+	private string _HOBO_ID;
+	
+	private System.Nullable<System.DateTime> _Date;
+	
+	private System.Nullable<double> _tavg;
+	
+	private System.Nullable<double> _movAvg;
+	
+	private string _hoboday;
+	
+	private System.Nullable<decimal> _threshold;
+	
+	private string _YEAR_;
+	
+	private System.Nullable<double> _MaxOfmovAvg;
+	
+	private string _SiteID;
+	
+	public FinalMWAT()
+	{
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SITE_NAME", DbType="NVarChar(150)")]
+	public string SITE_NAME
+	{
+		get
+		{
+			return this._SITE_NAME;
+		}
+		set
+		{
+			if ((this._SITE_NAME != value))
+			{
+				this._SITE_NAME = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TYPE", DbType="NVarChar(25)")]
+	public string TYPE
+	{
+		get
+		{
+			return this._TYPE;
+		}
+		set
+		{
+			if ((this._TYPE != value))
+			{
+				this._TYPE = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HOBO_ID", DbType="NVarChar(50)")]
+	public string HOBO_ID
+	{
+		get
+		{
+			return this._HOBO_ID;
+		}
+		set
+		{
+			if ((this._HOBO_ID != value))
+			{
+				this._HOBO_ID = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime")]
+	public System.Nullable<System.DateTime> Date
+	{
+		get
+		{
+			return this._Date;
+		}
+		set
+		{
+			if ((this._Date != value))
+			{
+				this._Date = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tavg", DbType="Float")]
+	public System.Nullable<double> tavg
+	{
+		get
+		{
+			return this._tavg;
+		}
+		set
+		{
+			if ((this._tavg != value))
+			{
+				this._tavg = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_movAvg", DbType="Float")]
+	public System.Nullable<double> movAvg
+	{
+		get
+		{
+			return this._movAvg;
+		}
+		set
+		{
+			if ((this._movAvg != value))
+			{
+				this._movAvg = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_hoboday", DbType="NVarChar(255)")]
+	public string hoboday
+	{
+		get
+		{
+			return this._hoboday;
+		}
+		set
+		{
+			if ((this._hoboday != value))
+			{
+				this._hoboday = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_threshold", DbType="Decimal(28,1)")]
+	public System.Nullable<decimal> threshold
+	{
+		get
+		{
+			return this._threshold;
+		}
+		set
+		{
+			if ((this._threshold != value))
+			{
+				this._threshold = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_YEAR_", DbType="NVarChar(50)")]
+	public string YEAR_
+	{
+		get
+		{
+			return this._YEAR_;
+		}
+		set
+		{
+			if ((this._YEAR_ != value))
+			{
+				this._YEAR_ = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxOfmovAvg", DbType="Float")]
+	public System.Nullable<double> MaxOfmovAvg
+	{
+		get
+		{
+			return this._MaxOfmovAvg;
+		}
+		set
+		{
+			if ((this._MaxOfmovAvg != value))
+			{
+				this._MaxOfmovAvg = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteID", DbType="NVarChar(12)")]
+	public string SiteID
+	{
+		get
+		{
+			return this._SiteID;
+		}
+		set
+		{
+			if ((this._SiteID != value))
+			{
+				this._SiteID = value;
+			}
+		}
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.FinalMWMT")]
+public partial class FinalMWMT
+{
+	
+	private string _SiteID;
+	
+	private string _SITE_NAME;
+	
+	private string _TYPE;
+	
+	private string _HOBO_ID;
+	
+	private System.Nullable<System.DateTime> _Date;
+	
+	private System.Nullable<double> _tmax;
+	
+	private System.Nullable<double> _movAvg;
+	
+	private string _hoboday;
+	
+	private System.Nullable<decimal> _threshold;
+	
+	private string _YEAR_;
+	
+	private System.Nullable<double> _MaxOfmovAvg;
+	
+	public FinalMWMT()
+	{
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteID", DbType="NVarChar(12)")]
+	public string SiteID
+	{
+		get
+		{
+			return this._SiteID;
+		}
+		set
+		{
+			if ((this._SiteID != value))
+			{
+				this._SiteID = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SITE_NAME", DbType="NVarChar(150)")]
+	public string SITE_NAME
+	{
+		get
+		{
+			return this._SITE_NAME;
+		}
+		set
+		{
+			if ((this._SITE_NAME != value))
+			{
+				this._SITE_NAME = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TYPE", DbType="NVarChar(25)")]
+	public string TYPE
+	{
+		get
+		{
+			return this._TYPE;
+		}
+		set
+		{
+			if ((this._TYPE != value))
+			{
+				this._TYPE = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HOBO_ID", DbType="NVarChar(50)")]
+	public string HOBO_ID
+	{
+		get
+		{
+			return this._HOBO_ID;
+		}
+		set
+		{
+			if ((this._HOBO_ID != value))
+			{
+				this._HOBO_ID = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime")]
+	public System.Nullable<System.DateTime> Date
+	{
+		get
+		{
+			return this._Date;
+		}
+		set
+		{
+			if ((this._Date != value))
+			{
+				this._Date = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tmax", DbType="Float")]
+	public System.Nullable<double> tmax
+	{
+		get
+		{
+			return this._tmax;
+		}
+		set
+		{
+			if ((this._tmax != value))
+			{
+				this._tmax = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_movAvg", DbType="Float")]
+	public System.Nullable<double> movAvg
+	{
+		get
+		{
+			return this._movAvg;
+		}
+		set
+		{
+			if ((this._movAvg != value))
+			{
+				this._movAvg = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_hoboday", DbType="NVarChar(255)")]
+	public string hoboday
+	{
+		get
+		{
+			return this._hoboday;
+		}
+		set
+		{
+			if ((this._hoboday != value))
+			{
+				this._hoboday = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_threshold", DbType="Decimal(28,1)")]
+	public System.Nullable<decimal> threshold
+	{
+		get
+		{
+			return this._threshold;
+		}
+		set
+		{
+			if ((this._threshold != value))
+			{
+				this._threshold = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_YEAR_", DbType="NVarChar(50)")]
+	public string YEAR_
+	{
+		get
+		{
+			return this._YEAR_;
+		}
+		set
+		{
+			if ((this._YEAR_ != value))
+			{
+				this._YEAR_ = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxOfmovAvg", DbType="Float")]
+	public System.Nullable<double> MaxOfmovAvg
+	{
+		get
+		{
+			return this._MaxOfmovAvg;
+		}
+		set
+		{
+			if ((this._MaxOfmovAvg != value))
+			{
+				this._MaxOfmovAvg = value;
+			}
+		}
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MWAT")]
+public partial class MWAT
+{
+	
+	private string _HOBO_ID;
+	
+	private System.Nullable<System.DateTime> _Date;
+	
+	private System.Nullable<double> _tavg;
+	
+	private System.Nullable<double> _movAvg;
+	
+	private string _hoboday;
+	
+	public MWAT()
+	{
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HOBO_ID", DbType="NVarChar(50)")]
+	public string HOBO_ID
+	{
+		get
+		{
+			return this._HOBO_ID;
+		}
+		set
+		{
+			if ((this._HOBO_ID != value))
+			{
+				this._HOBO_ID = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime")]
+	public System.Nullable<System.DateTime> Date
+	{
+		get
+		{
+			return this._Date;
+		}
+		set
+		{
+			if ((this._Date != value))
+			{
+				this._Date = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tavg", DbType="Float")]
+	public System.Nullable<double> tavg
+	{
+		get
+		{
+			return this._tavg;
+		}
+		set
+		{
+			if ((this._tavg != value))
+			{
+				this._tavg = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_movAvg", DbType="Float")]
+	public System.Nullable<double> movAvg
+	{
+		get
+		{
+			return this._movAvg;
+		}
+		set
+		{
+			if ((this._movAvg != value))
+			{
+				this._movAvg = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_hoboday", DbType="NVarChar(255)")]
+	public string hoboday
+	{
+		get
+		{
+			return this._hoboday;
+		}
+		set
+		{
+			if ((this._hoboday != value))
+			{
+				this._hoboday = value;
+			}
+		}
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MWATMax")]
+public partial class MWATMax
+{
+	
+	private string _YEAR_;
+	
+	private string _HOBO_ID;
+	
+	private string _SITE_NAME;
+	
+	private string _TYPE;
+	
+	private string _MaxMWAT;
+	
+	private System.Nullable<int> _DaysExceed;
+	
+	private System.Nullable<double> _Percent;
+	
+	private string _COMMENTS;
+	
+	private string _SiteID;
+	
+	public MWATMax()
+	{
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_YEAR_", DbType="NVarChar(50)")]
+	public string YEAR_
+	{
+		get
+		{
+			return this._YEAR_;
+		}
+		set
+		{
+			if ((this._YEAR_ != value))
+			{
+				this._YEAR_ = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HOBO_ID", DbType="NVarChar(50)")]
+	public string HOBO_ID
+	{
+		get
+		{
+			return this._HOBO_ID;
+		}
+		set
+		{
+			if ((this._HOBO_ID != value))
+			{
+				this._HOBO_ID = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SITE_NAME", DbType="NVarChar(150)")]
+	public string SITE_NAME
+	{
+		get
+		{
+			return this._SITE_NAME;
+		}
+		set
+		{
+			if ((this._SITE_NAME != value))
+			{
+				this._SITE_NAME = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TYPE", DbType="NVarChar(25)")]
+	public string TYPE
+	{
+		get
+		{
+			return this._TYPE;
+		}
+		set
+		{
+			if ((this._TYPE != value))
+			{
+				this._TYPE = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxMWAT", DbType="NVarChar(255)")]
+	public string MaxMWAT
+	{
+		get
+		{
+			return this._MaxMWAT;
+		}
+		set
+		{
+			if ((this._MaxMWAT != value))
+			{
+				this._MaxMWAT = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DaysExceed", DbType="Int")]
+	public System.Nullable<int> DaysExceed
+	{
+		get
+		{
+			return this._DaysExceed;
+		}
+		set
+		{
+			if ((this._DaysExceed != value))
+			{
+				this._DaysExceed = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Percent]", Storage="_Percent", DbType="Float")]
+	public System.Nullable<double> Percent
+	{
+		get
+		{
+			return this._Percent;
+		}
+		set
+		{
+			if ((this._Percent != value))
+			{
+				this._Percent = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMMENTS", DbType="NVarChar(255)")]
+	public string COMMENTS
+	{
+		get
+		{
+			return this._COMMENTS;
+		}
+		set
+		{
+			if ((this._COMMENTS != value))
+			{
+				this._COMMENTS = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteID", DbType="NVarChar(12)")]
+	public string SiteID
+	{
+		get
+		{
+			return this._SiteID;
+		}
+		set
+		{
+			if ((this._SiteID != value))
+			{
+				this._SiteID = value;
+			}
+		}
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MWMT")]
+public partial class MWMT
+{
+	
+	private string _HOBO_ID;
+	
+	private System.Nullable<System.DateTime> _Date;
+	
+	private System.Nullable<double> _tmax;
+	
+	private System.Nullable<double> _movAvg;
+	
+	private string _hoboday;
+	
+	public MWMT()
+	{
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HOBO_ID", DbType="NVarChar(50)")]
+	public string HOBO_ID
+	{
+		get
+		{
+			return this._HOBO_ID;
+		}
+		set
+		{
+			if ((this._HOBO_ID != value))
+			{
+				this._HOBO_ID = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime")]
+	public System.Nullable<System.DateTime> Date
+	{
+		get
+		{
+			return this._Date;
+		}
+		set
+		{
+			if ((this._Date != value))
+			{
+				this._Date = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tmax", DbType="Float")]
+	public System.Nullable<double> tmax
+	{
+		get
+		{
+			return this._tmax;
+		}
+		set
+		{
+			if ((this._tmax != value))
+			{
+				this._tmax = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_movAvg", DbType="Float")]
+	public System.Nullable<double> movAvg
+	{
+		get
+		{
+			return this._movAvg;
+		}
+		set
+		{
+			if ((this._movAvg != value))
+			{
+				this._movAvg = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_hoboday", DbType="NVarChar(255)")]
+	public string hoboday
+	{
+		get
+		{
+			return this._hoboday;
+		}
+		set
+		{
+			if ((this._hoboday != value))
+			{
+				this._hoboday = value;
+			}
+		}
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MWMTMax")]
+public partial class MWMTMax
+{
+	
+	private string _YEAR_;
+	
+	private string _HOBO_ID;
+	
+	private string _SITE_NAME;
+	
+	private string _TYPE;
+	
+	private string _MaxMWMT;
+	
+	private System.Nullable<int> _DaysExceed;
+	
+	private System.Nullable<double> _Percent;
+	
+	private string _COMMENTS;
+	
+	private string _SiteID;
+	
+	public MWMTMax()
+	{
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_YEAR_", DbType="NVarChar(50)")]
+	public string YEAR_
+	{
+		get
+		{
+			return this._YEAR_;
+		}
+		set
+		{
+			if ((this._YEAR_ != value))
+			{
+				this._YEAR_ = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HOBO_ID", DbType="NVarChar(50)")]
+	public string HOBO_ID
+	{
+		get
+		{
+			return this._HOBO_ID;
+		}
+		set
+		{
+			if ((this._HOBO_ID != value))
+			{
+				this._HOBO_ID = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SITE_NAME", DbType="NVarChar(150)")]
+	public string SITE_NAME
+	{
+		get
+		{
+			return this._SITE_NAME;
+		}
+		set
+		{
+			if ((this._SITE_NAME != value))
+			{
+				this._SITE_NAME = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TYPE", DbType="NVarChar(25)")]
+	public string TYPE
+	{
+		get
+		{
+			return this._TYPE;
+		}
+		set
+		{
+			if ((this._TYPE != value))
+			{
+				this._TYPE = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaxMWMT", DbType="NVarChar(255)")]
+	public string MaxMWMT
+	{
+		get
+		{
+			return this._MaxMWMT;
+		}
+		set
+		{
+			if ((this._MaxMWMT != value))
+			{
+				this._MaxMWMT = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DaysExceed", DbType="Int")]
+	public System.Nullable<int> DaysExceed
+	{
+		get
+		{
+			return this._DaysExceed;
+		}
+		set
+		{
+			if ((this._DaysExceed != value))
+			{
+				this._DaysExceed = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Percent]", Storage="_Percent", DbType="Float")]
+	public System.Nullable<double> Percent
+	{
+		get
+		{
+			return this._Percent;
+		}
+		set
+		{
+			if ((this._Percent != value))
+			{
+				this._Percent = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMMENTS", DbType="NVarChar(255)")]
+	public string COMMENTS
+	{
+		get
+		{
+			return this._COMMENTS;
+		}
+		set
+		{
+			if ((this._COMMENTS != value))
+			{
+				this._COMMENTS = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SiteID", DbType="NVarChar(12)")]
+	public string SiteID
+	{
+		get
+		{
+			return this._SiteID;
+		}
+		set
+		{
+			if ((this._SiteID != value))
+			{
+				this._SiteID = value;
+			}
 		}
 	}
 }
