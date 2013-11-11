@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="/Imports">
+      <xsd:import schemaLocation="http://localhost:51332/GRF Monitoring Website/SLService.svc?xsd=xsd0" />
+      <xsd:import schemaLocation="http://localhost:51332/GRF Monitoring Website/SLService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:51332/GRF Monitoring Website/SLService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/" />
+      <xsd:import schemaLocation="http://localhost:51332/GRF Monitoring Website/SLService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="SLService_getYears_InputMessage">
+    <wsdl:part name="parameters" element="getYears" />
+  </wsdl:message>
+  <wsdl:message name="SLService_getYears_OutputMessage">
+    <wsdl:part name="parameters" element="getYearsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SLService_getMWATData_InputMessage">
+    <wsdl:part name="parameters" element="getMWATData" />
+  </wsdl:message>
+  <wsdl:message name="SLService_getMWATData_OutputMessage">
+    <wsdl:part name="parameters" element="getMWATDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="SLService_getMaxMWATData_InputMessage">
+    <wsdl:part name="parameters" element="getMaxMWATData" />
+  </wsdl:message>
+  <wsdl:message name="SLService_getMaxMWATData_OutputMessage">
+    <wsdl:part name="parameters" element="getMaxMWATDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="SLService_getMWMTData_InputMessage">
+    <wsdl:part name="parameters" element="getMWMTData" />
+  </wsdl:message>
+  <wsdl:message name="SLService_getMWMTData_OutputMessage">
+    <wsdl:part name="parameters" element="getMWMTDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="SLService_getMaxMWMTData_InputMessage">
+    <wsdl:part name="parameters" element="getMaxMWMTData" />
+  </wsdl:message>
+  <wsdl:message name="SLService_getMaxMWMTData_OutputMessage">
+    <wsdl:part name="parameters" element="getMaxMWMTDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="SLService_getSites_InputMessage">
+    <wsdl:part name="parameters" element="getSites" />
+  </wsdl:message>
+  <wsdl:message name="SLService_getSites_OutputMessage">
+    <wsdl:part name="parameters" element="getSitesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SLService">
+    <wsdl:operation name="getYears">
+      <wsdl:input wsaw:Action="urn:SLService/getYears" message="SLService_getYears_InputMessage" />
+      <wsdl:output wsaw:Action="urn:SLService/getYearsResponse" message="SLService_getYears_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getMWATData">
+      <wsdl:input wsaw:Action="urn:SLService/getMWATData" message="SLService_getMWATData_InputMessage" />
+      <wsdl:output wsaw:Action="urn:SLService/getMWATDataResponse" message="SLService_getMWATData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getMaxMWATData">
+      <wsdl:input wsaw:Action="urn:SLService/getMaxMWATData" message="SLService_getMaxMWATData_InputMessage" />
+      <wsdl:output wsaw:Action="urn:SLService/getMaxMWATDataResponse" message="SLService_getMaxMWATData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getMWMTData">
+      <wsdl:input wsaw:Action="urn:SLService/getMWMTData" message="SLService_getMWMTData_InputMessage" />
+      <wsdl:output wsaw:Action="urn:SLService/getMWMTDataResponse" message="SLService_getMWMTData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getMaxMWMTData">
+      <wsdl:input wsaw:Action="urn:SLService/getMaxMWMTData" message="SLService_getMaxMWMTData_InputMessage" />
+      <wsdl:output wsaw:Action="urn:SLService/getMaxMWMTDataResponse" message="SLService_getMaxMWMTData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getSites">
+      <wsdl:input wsaw:Action="urn:SLService/getSites" message="SLService_getSites_InputMessage" />
+      <wsdl:output wsaw:Action="urn:SLService/getSitesResponse" message="SLService_getSites_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

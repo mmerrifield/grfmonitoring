@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="Garcia">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12, 10.5" name="Garcia">
   <DataContextMoniker Name="/GarciaDataContext" />
   <nestedChildShapes>
     <classShape Id="e848f0f4-f299-4b4a-9186-2a453472353d" absoluteBounds="5.625, 1, 2, 2.5401025390625">
@@ -36,6 +36,42 @@
       <DataClassMoniker Name="/GarciaDataContext/SiteHobo" />
       <nestedChildShapes>
         <elementListCompartment Id="8ee5c030-6a0f-4790-b403-88d4f2895bf6" absoluteBounds="3.1399999999999997, 3.835, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d5cbe852-1de5-4128-8914-8b5eee9ab2a4" absoluteBounds="0.75, 6.75, 2, 2.9247054036458318">
+      <DataClassMoniker Name="/GarciaDataContext/FinalMWAT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e56e6b71-d716-49a0-8c5c-2a4d13cf57ac" absoluteBounds="0.765, 7.21, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="97d97ff9-620c-4179-b66b-e35037d6a9ff" absoluteBounds="3.75, 6.75, 2, 2.9247054036458318">
+      <DataClassMoniker Name="/GarciaDataContext/FinalMWMT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="37c66f0f-17de-4775-a5fc-778de3ff69b5" absoluteBounds="3.765, 7.21, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="79db63a5-eab4-49bb-b7c3-5e4051f72571" absoluteBounds="6.75, 4.75, 2, 1.7708968098958327">
+      <DataClassMoniker Name="/GarciaDataContext/MWAT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d08a3a08-da15-4b9e-8af7-53b24ca5d9a8" absoluteBounds="6.765, 5.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e742d6c7-2bc2-4467-95e6-0805afdbd691" absoluteBounds="6.75, 7.75, 2, 2.5401025390624996">
+      <DataClassMoniker Name="/GarciaDataContext/MWATMax" />
+      <nestedChildShapes>
+        <elementListCompartment Id="64b041b6-e949-4400-933c-0494d9a65d9e" absoluteBounds="6.765, 8.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b7da4b0d-48dd-4f83-850b-330e2999bffd" absoluteBounds="9.75, 4.75, 2, 1.7708968098958327">
+      <DataClassMoniker Name="/GarciaDataContext/MWMT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2e712368-72d0-40ce-a324-898be0b3b4a1" absoluteBounds="9.765, 5.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="18da634c-6589-4d61-929a-90d336f54d30" absoluteBounds="9.75, 7.75, 2, 2.5401025390624996">
+      <DataClassMoniker Name="/GarciaDataContext/MWMTMax" />
+      <nestedChildShapes>
+        <elementListCompartment Id="dce0359a-3ac8-45e2-aef9-e1249791dec2" absoluteBounds="9.765, 8.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

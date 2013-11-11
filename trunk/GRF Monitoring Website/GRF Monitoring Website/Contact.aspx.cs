@@ -10,6 +10,7 @@ public partial class Contact : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+      ((Garcia)Master).selectNavButton("contact");
       POC.Text = ConfigurationManager.AppSettings["POC"];
       JobTitle.Text = ConfigurationManager.AppSettings["Title"];
       Region.Text = ConfigurationManager.AppSettings["Region"];

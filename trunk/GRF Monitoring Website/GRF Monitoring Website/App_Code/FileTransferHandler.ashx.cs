@@ -314,6 +314,11 @@ namespace GRF
 
           hoboID = hoboRecords.First().hoboID;
 
+          if (!DB.hoboExists(hoboID))
+          {
+            msg = string.Format("<span style='font-color:red'>The HOBO ID {0} is not recognized.</span>", hoboID);
+            return;
+          }
           // how do we know if it's air or air_humidity?
           sensorType = hoboRecords.First().dewPoint == null ? "Water" : "Air";
 
@@ -327,6 +332,7 @@ namespace GRF
             return;
           }
 
+          
           // delete pre-existing hobo data for this period
           newStartDate = new DateTime(startDate.Year, 1, 1);
           newEndDate = new DateTime(startDate.Year, 12, 31);
