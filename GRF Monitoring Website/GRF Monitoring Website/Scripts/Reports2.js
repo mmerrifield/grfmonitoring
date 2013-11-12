@@ -26,13 +26,15 @@ $(function () {
       svc += '';
     }
     options.series.length = 0;
-    chart = new Highcharts.Chart(options);
+    report.destroy();
+    report = new Highcharts.Chart(options);
   }
   });
   $('#ChartStyle').multiselect({ header: false, multiple: false, selectedList: 1, height: 'auto', minWidth: 'auto', 'close': function () {
     if (options.series.length > 0) {
       $.each(options.series, function (i, s) { s.type = $('#ChartStyle').val(); });
-      chart = new Highcharts.Chart(options);
+      report.destroy();
+      report = new Highcharts.Chart(options);
     }
   }
   });
@@ -42,11 +44,12 @@ $(function () {
     options.plotOptions.area.marker.enabled = isEnabled;
     options.plotOptions.spline.marker.enabled = isEnabled;
     options.plotOptions.areaspline.marker.enabled = isEnabled;
-    chart = new Highcharts.Chart(options);
+    report.destroy();
+    report = new Highcharts.Chart(options);
   }
   });
   getYears();
-  $('.Filter').on('change', function () { getSites(); options.series.length = 0; chart = new Highcharts.Chart(options); });
+  $('.Filter').on('change', function () { getSites(); options.series.length = 0; report.destroy(); report = new Highcharts.Chart(options); });
   $('#GenReport').button().on('click', updateChart);
   initChart();
 });
