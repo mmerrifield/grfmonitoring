@@ -429,7 +429,8 @@ public class GRFService
       DateTime startDate = new DateTime(startYr, startMon, 1);
       DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr,endMon));
       List<ChartSeries> series = new List<ChartSeries>();
-      
+      double nullSpan = new TimeSpan(7,0,0,0).TotalMilliseconds;
+
       DateTime refDate = new DateTime(1970,1,1);
 
       using (var context = new GarciaDataContext())
@@ -442,10 +443,17 @@ public class GRFService
           cs.name = datapts.First().SITE_NAME;
           cs.type = "line";
           cs.data = new List<DataPoint>();
+          DataPoint prevPt = null;
           foreach (var pt in datapts)
           {
             if (pt.movAvg.HasValue && pt.movAvg.Value != 0.0)
-              cs.data.Add(new DataPoint { x = (pt.Date.Value - refDate).TotalMilliseconds, y = pt.movAvg.Value });
+            {
+              DataPoint newPt = new DataPoint { x = (pt.Date.Value - refDate).TotalMilliseconds, y = pt.movAvg.Value };
+              if (prevPt != null && newPt.x - prevPt.x >= nullSpan)
+                cs.data.Add(new DataPoint { x = prevPt.x + 1, y = null });
+              cs.data.Add(newPt);
+              prevPt = newPt;
+            }
           }
           series.Add(cs);
         }
@@ -549,11 +557,12 @@ public class ChartSeries
 {
   public string name { get; set; }
   public string type { get; set; }
+  public bool connectNulls { get; set; }
   public List<DataPoint> data { get; set; }
 }
 
 public class DataPoint
 {
   public double x { get; set; }
-  public double y { get; set; }
+  public double? y { get; set; }
 }
