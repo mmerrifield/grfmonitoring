@@ -39,7 +39,7 @@
               </select>
             </td>
             <td>
-              <select id='Site'>
+              <select id='Site' style='width:380px'>
               </select>
             </td>
             <td>
@@ -52,8 +52,9 @@
             <td>
               <input type='text' id='ToDate' style='width: 100px' />
             </td>
+            <td><a href='#' id='btnClear'>Clear</a></td>
             <td>
-              <input type='button' id='btnExport' value='Get Data' />
+              <a href='#' id='btnExport' style='width:80px'>Get Data</a>
             </td>
           </tr>
         </table>

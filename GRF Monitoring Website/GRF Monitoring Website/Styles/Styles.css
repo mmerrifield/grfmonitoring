@@ -130,7 +130,14 @@ div.footnotes
   border-radius: 12px;
   margin-left: 2%;
   margin-right: 2%;
+  margin-top:20px;
   text-align: center;
   padding: 5px 5px 5px 5px;
   width: 96%;
+}
+
+.center { width: 640px; margin-left: auto; margin-right: auto; }
+.center .ui-jqgrid {
+    margin-left: auto;
+    margin-right: auto;
 }

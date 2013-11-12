@@ -36,14 +36,23 @@ $(function () {
   });
   $("#t_export").append("<input type='button' value='Export to Excel' style='height:20px;font-size:-3;float:right'/>");
   $("input", "#t_export").click(function () {
-    var urlStr = 'GRFService.svc/DownloadData?year='+ $('#Year').val() + '&site=' + $('#Site').val() + '&type=' + $('#Type').val() + '&from=' + $('#FromDate').val() + '&to=' + $('#ToDate').val();
+    var urlStr = 'GRFService.svc/DownloadData?year=' + $('#Year').val() + '&site=' + $('#Site').val() + '&type=' + $('#Type').val() + '&from=' + $('#FromDate').val() + '&to=' + $('#ToDate').val();
     $('#export').jqGrid('excelExport', { url: urlStr });
   });
   $('#export').setGridHeight('600px');
   $('#Year').on('change', function () { if (!Export.initing) { Export.initing = true; clearData(); updateDates(); getSites(); getTypes(); Export.initing = false; } });
   $('#Site').on('change', function () { if (!Export.initing) { Export.initing = true; clearData(); updateDates(); getYears(); getTypes(); Export.initing = false; } });
   $('#Type').on('change', function () { if (!Export.initing) { Export.initing = true; clearData(); getYears(), getSites(); Export.initing = false; } });
-  $('#btnExport').on('click', function () {
+  $('#btnClear').button().on('click', function () {
+    $('#Year').val('');
+    $('#Site').val('');
+    $('#Type').val('');
+    $('#FromDate').val('');
+    $('#ToDate').val('');
+    clearData();
+    getYears();
+  });
+  $('#btnExport').button().on('click', function () {
     if (!dataValid()) {
       alert("Please provide values for all search fields.");
       return;
@@ -144,8 +153,10 @@ function updateDates() {
       $('#ToDate').removeAttr('disabled');
       $('#FromDate').datepicker('option', 'minDate', new Date(data.d[0]));
       $('#FromDate').datepicker('option', 'maxDate', new Date(data.d[1]));
+      $('#FromDate').datepicker('setDate', new Date(data.d[0]));
       $('#ToDate').datepicker('option', 'minDate', new Date(data.d[0]));
       $('#ToDate').datepicker('option', 'maxDate', new Date(data.d[1]));
+      $('#ToDate').datepicker('setDate',new Date(data.d[1]));
     }
   });
 }

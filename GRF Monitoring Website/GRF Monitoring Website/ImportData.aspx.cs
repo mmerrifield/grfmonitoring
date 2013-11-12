@@ -6,8 +6,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.OleDb;
-using Telerik.Web.UI;
-using Telerik.Web.UI.Upload;
+//using Telerik.Web.UI;
+//using Telerik.Web.UI.Upload;
 using System.Text;
 
 public partial class ImportData : System.Web.UI.Page

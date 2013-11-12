@@ -14,13 +14,16 @@
         <h3>
           Import HOBO Devices</h3>
         <input id="hobo_upload" name="hobo_upload" type="file" multiple="true" />
-        <a href='#' id='btnUploadDevices' class='aGRFStd'>Upload Devices</a>
+        <div style='margin-top:10px'>
+        <a href='#' id='btnUploadDevices' style='margin-left:100px'>Upload Device Files</a></div>
       </div>
       <div id='ImportDataContainer'>
         <h3>
           Import HOBO Data</h3>
         <input id="data_upload" name="data_upload" type="file" multiple="true" />
-        <a href="#" id='btnUploadData' class='aGRFStd'>Upload Data</a><br />
+        <div style='margin-top:10px'>
+        <a href="#" id='btnUploadData' style='margin-left:110px'>Upload Data Files</a>
+        </div>
       </div>
       <div style='clear: both'>
       </div>
