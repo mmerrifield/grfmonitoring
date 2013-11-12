@@ -5,7 +5,7 @@ $(function () {
   $('#ReportType').multiselect({ header: false, multiple: false, selectedList: 1, height: 'auto', minWidth: 'auto' });
   getYears();
   $('.Filter').on('change', getSites);
-  $('#GenReport').on('click', updateChart);
+  $('#GenReport').button().on('click', updateChart);
   initChart();
 });
 function getYears() {  
@@ -64,13 +64,13 @@ function initChart() {
       renderTo: 'container',
       zoomType: 'x'
     },
-    title: { text: 'Title' },
+    title: { text: 'GRF Report' },
     xAxis: {
       labels: { format: '{value:%b %y}',  rotation: 90, align: 'bottom' },
       title: { text: 'Date' },
       type: 'datetime'
     },
-    yAxis: [{ // Primary yAxis
+    yAxis: [{ 
       labels: {
         formatter: function () { return this.value; },
         style: { color: '#89A54E' }
@@ -97,24 +97,39 @@ function initChart() {
 function updateChart() {
   var reportType = $('#ReportType').val();
   var svc = 'GRFService.svc/';
-  if (reportType === 'MWAT')
+  $('.footnotes').hide();
+  if (reportType === 'MWAT') {
     svc += 'WeeklyMWATData';
-  else if (reportType == 'MWMT')
+    $('#MWATfootnote').show();
+    options.title.text = 'MWAT Report';
+  }
+  else if (reportType == 'MWMT') {
+    options.title.text = 'MWMT Report';
     svc += 'WeeklyMWMTData';
-  else if (reportType == 'MaxMWAT')
+    $('#MWMTfootnote').show();
+  }
+  else if (reportType == 'MaxMWAT') {
+    $('#MWATMaxfootnote').show();
     svc += '';
-  else if (reportType == 'MaxMWMT')
+  }
+  else if (reportType == 'MaxMWMT') {
+  $('#MWMTMaxfootnote').show();
     svc += '';
+  }
   var params = getParams();
   if (params === null) return;
-  options.title.text = "Updated title";
   params.sites = [];
   $.each($('#Sites').multiselect('getChecked'), function (i, s) { if (params.sites.length > 0) params.sites += ','; params.sites += s.value; });
   if (params.sites.length === 0)
     return;
   $.get(svc, params, function (data) {
+    //options.chart.height = $('#container').width() * .5;
     options.series.length = 0;
-    $.each(data.d, function (idx, series) { options.series.push(series); options.series.pointStart = Date.UTC(1970, 0, 1); });
+    $.each(data.d, function (idx, series) {
+      series.connectNulls = false;
+      options.series.push(series);
+      options.series.pointStart = Date.UTC(1970, 0, 0);
+    });
     report = new Highcharts.Chart(options);
   });
 }

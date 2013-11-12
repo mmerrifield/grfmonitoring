@@ -1,0 +1,151 @@
+﻿<UserControl xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"  x:Class="GarciaCharts.ChartPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+    xmlns:local="clr-namespace:GarciaCharts"
+    mc:Ignorable="d" d:DesignWidth="800" 
+    >
+    <Canvas x:Name="RealRoot" Background="#F2F2F2">
+        <local:ChartContextMenu x:Name="chartMenu" Visibility="Collapsed" Canvas.ZIndex="1000000" />
+        <StackPanel x:Name="LayoutRoot" Width="800" Background="#F2F2F2">
+            
+            <StackPanel Orientation="Horizontal" Margin="20,20,02,20">
+                <TextBlock Text="Reports: " FontFamily="Verdana, sans-serif" FontSize="19" FontWeight="Bold" VerticalAlignment="Bottom" />
+                <HyperlinkButton x:Name="hlMWAT" 
+                                 FontFamily="Verdana, sans-serif;" FontSize="16" FontWeight="Bold" Foreground="#654848"  VerticalAlignment="Bottom"
+                                 Click="reportType_Click">
+                    <HyperlinkButton.Content>
+                        <TextBlock x:Name="tbMWATLink" Text="MWAT"></TextBlock>
+                    </HyperlinkButton.Content>
+                </HyperlinkButton>
+                
+                <TextBlock Text=" | " FontFamily="Verdana, sans-serif" FontSize="16" FontWeight="Bold" VerticalAlignment="Bottom" />
+                
+                <HyperlinkButton x:Name="hlMWATMax"  
+                                 FontFamily="Verdana, sans-serif;" FontSize="16" FontWeight="Bold" Foreground="#654848"  VerticalAlignment="Bottom" 
+                                 Click="reportType_Click">
+                    <HyperlinkButton.Content>
+                        <TextBlock x:Name="tbMWATMaxLink" Text="MWAT max" TextDecorations="Underline"></TextBlock>                        
+                    </HyperlinkButton.Content>
+                </HyperlinkButton>
+                
+                <TextBlock Text=" | " FontFamily="Verdana, sans-serif" FontSize="16" FontWeight="Bold" VerticalAlignment="Bottom" />
+                
+                <HyperlinkButton x:Name="hlMWMT" 
+                                 FontFamily="Verdana, sans-serif;" FontSize="16" FontWeight="Bold" Foreground="#654848"  VerticalAlignment="Bottom" 
+                                 Click="reportType_Click">
+                    <HyperlinkButton.Content>
+                        <TextBlock x:Name="tbMWMTLink" Text="MWMT" TextDecorations="Underline"></TextBlock>
+                    </HyperlinkButton.Content>
+                </HyperlinkButton>
+                
+                <TextBlock Text=" | " FontFamily="Verdana, sans-serif" FontSize="16" FontWeight="Bold" VerticalAlignment="Bottom" />
+                
+                <HyperlinkButton x:Name="hlMWMTMax" 
+                                 FontFamily="Verdana, sans-serif;" FontSize="16" FontWeight="Bold" Foreground="#654848"  VerticalAlignment="Bottom"
+                                 Click="reportType_Click">
+                    <HyperlinkButton.Content>
+                        <TextBlock x:Name="tbMWMTMaxLink" Text="MWMT max" TextDecorations="Underline"></TextBlock>
+                    </HyperlinkButton.Content>
+                </HyperlinkButton>
+
+            </StackPanel>
+
+            <Border BorderThickness="1" BorderBrush="Gray" Width="720" Margin="40,0,40,0">
+                <StackPanel x:Name="filterPanel" Height="100" >
+            	    <StackPanel.Background>
+            		    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            			    <GradientStop Color="#FF8B8B8B" Offset="0.996"/>
+            			    <GradientStop Color="#FFB2B2B2" Offset="0.004"/>
+            		    </LinearGradientBrush>
+            	    </StackPanel.Background>
+                    <TextBlock x:Name="tbReportTitle" Text="MWAT Report" FontWeight="Bold" Margin="10,10,10,0"></TextBlock>
+                    <TextBlock Text="Select the Year and Site(s) and click Go." Margin="10,0,0,0"></TextBlock>
+                    <StackPanel Orientation="Horizontal" x:Name="spFilterControls" Margin="10,10,0,10">
+                        
+                        <TextBlock VerticalAlignment="Center" Margin="20,0,0,0" Text="Year:"/>
+                        <ComboBox x:Name="cboSeason" SelectionChanged="cboSeason_SelectionChanged" Margin="5,0,0,0" Width="80">
+                            <ComboBox.Items>
+                                <ComboBoxItem IsSelected="True">(Select)</ComboBoxItem>
+                                <ComboBoxItem>1994</ComboBoxItem>
+                                <ComboBoxItem>1995</ComboBoxItem>
+                                <ComboBoxItem>1996</ComboBoxItem>
+                                <ComboBoxItem>1997</ComboBoxItem>
+                                <ComboBoxItem>1998</ComboBoxItem>
+                                <ComboBoxItem>1999</ComboBoxItem>
+                                <ComboBoxItem>2000</ComboBoxItem>
+                                <ComboBoxItem>2001</ComboBoxItem>
+                                <ComboBoxItem>2006</ComboBoxItem>
+                                <ComboBoxItem>2007</ComboBoxItem>
+                                <ComboBoxItem>2008</ComboBoxItem>
+                                <ComboBoxItem>2009</ComboBoxItem>
+                                <ComboBoxItem>2010</ComboBoxItem>
+                            </ComboBox.Items>
+                        </ComboBox>
+                        
+                        <TextBlock VerticalAlignment="Center" Margin="20,0,0,0">Site(s):</TextBlock>
+                        <ComboBox x:Name="cboSites" Width="250" Margin="5,0,0,0" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox x:Name="cbSite" IsChecked="{Binding isSelected, Mode=TwoWay}" Content="{Binding siteName}"></CheckBox>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                
+                        <Button x:Name="btnGenerate" Content="Go" Margin="20,0,0,0" Click="btnGenerate_Click" Padding="10,0,10,0" ></Button>
+                
+                    </StackPanel>
+                </StackPanel>
+                
+            </Border>
+
+            <ScrollViewer x:Name="svResults" Margin="10" HorizontalScrollBarVisibility="Disabled" MaxHeight="600"
+                          VerticalScrollBarVisibility="Auto"  Width="780" BorderThickness="0">
+                <StackPanel>
+                    <StackPanel x:Name="spChart" Visibility="Collapsed" Width="780">
+                        <telerik:RadChart x:Name="radChart1" LegendStyle="{StaticResource ChartLegendStyle}" />
+                    </StackPanel>
+                    <StackPanel x:Name="spGrid" Visibility="Collapsed">
+                        <TextBlock x:Name="tbMaxTitle" Margin="10" HorizontalAlignment="Center" FontSize="14" />
+                        <sdk:DataGrid x:Name="dgMax" IsReadOnly="True"  
+                                      AutoGenerateColumns="False" HeadersVisibility="Column"  GridLinesVisibility="All"  
+                                      VerticalScrollBarVisibility="Auto" 
+                                      HorizontalScrollBarVisibility="Hidden" 
+                            Width="740" MaxHeight="550" >
+                            <sdk:DataGrid.Columns>
+                                <sdk:DataGridTextColumn Header="Year" Binding="{Binding year}" ></sdk:DataGridTextColumn>
+                                <sdk:DataGridTemplateColumn Header="Site Name" Width="200">
+                                    <sdk:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding siteName}" TextWrapping="Wrap" Width="200" />
+                                        </DataTemplate>
+                                    </sdk:DataGridTemplateColumn.CellTemplate>
+                                </sdk:DataGridTemplateColumn>
+                                <sdk:DataGridTextColumn Header="Type" Binding="{Binding type}" ></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="MAX" Binding="{Binding max}" ></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Days Exceeded" Binding="{Binding daysExceed}" ></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Percent" Binding="{Binding percent, StringFormat=P2}" ></sdk:DataGridTextColumn>
+                                <sdk:DataGridTextColumn Header="Comments" Width="*" Binding="{Binding comments}" ></sdk:DataGridTextColumn>
+                            </sdk:DataGrid.Columns>
+                        </sdk:DataGrid>
+                    </StackPanel>
+
+
+                    <TextBlock x:Name="tbFooter" TextWrapping="Wrap" Margin="20">
+                        To calculate mean weekly average temperature (MWAT), first daily average temperatures are determined from the raw water temperature data. Then mean weekly average temperatures are calculated by averaging daily mean temperatures for each 7-day period (with a moving 7-day window) after Welsh et al. (2001).
+                        <LineBreak/><LineBreak/>
+                        * Welsh, H. H., G. R. Hodgson, B. C. Harvey, and M. F. Roche. 2001. Distribution of juvenile coho salmon (Oncorhynchus kisutch) in relation to water temperature in tributaries of the Mattole River, California. North American Journal of Fisheries Management 21: 464-470.
+                    </TextBlock>
+
+                </StackPanel>
+
+                
+            </ScrollViewer>
+
+
+
+        </StackPanel>        
+    </Canvas>
+</UserControl>
