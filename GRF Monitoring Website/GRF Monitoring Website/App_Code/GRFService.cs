@@ -444,7 +444,8 @@ public class GRFService
             if (!thresholds.Contains(thresh))
               thresholds.Add(thresh);
           }
-          series.Add(GetChartSeries(datapts));
+          string color = context.SiteInfos.First(s => s.Site_ID == id).Color;
+          series.Add(GetChartSeries(datapts, color));
         }
         AddThresholdLines(series, thresholds);
 
@@ -481,7 +482,8 @@ public class GRFService
             if (!thresholds.Contains(thresh))
               thresholds.Add(thresh);
           }
-          series.Add(GetChartSeries(datapts));
+          string color = context.SiteInfos.First(s => s.Site_ID == id).Color;
+          series.Add(GetChartSeries(datapts, color));
         }
         AddThresholdLines(series, thresholds);
 
@@ -494,11 +496,13 @@ public class GRFService
     }
   }
 
-  private ChartSeries GetChartSeries(IEnumerable<WeeklyData> datapts)
+  private ChartSeries GetChartSeries(IEnumerable<WeeklyData> datapts, string color)
   {
     ChartSeries cs = new ChartSeries();
 
     cs.name = datapts.First().Name;
+    if (!string.IsNullOrEmpty(color))
+      cs.color = color;
     double nullSpan = new TimeSpan(3, 0, 0, 0).TotalMilliseconds;
     DateTime refDate = new DateTime(1970, 1, 1);
     DataPoint prevPt = null;

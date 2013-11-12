@@ -69,7 +69,9 @@
                                         <tr height="40"><td></td></tr>
                                         <tr>
                                             <td>
+                                              <a href='Reports2.aspx'>
                                                 <img style="margin-left: 10px;" src="Images/BarGraph.png" />
+                                                </a>
                                             </td>
                                             <td width="5"></td>
                                             <td style="line-height: 1.4em;">
