@@ -8,7 +8,7 @@
 <script src='Scripts/highcharts.js'></script>
 <script src='Scripts/exporting.js'></script>
 <link rel='Stylesheet' href='Styles/jquery.multiselect.css' />
-<div style='margin-top:20px;margin-left:40px;'>
+<div style='margin-top:20px;margin-left:30px;margin-right:30px;padding:10px 10px 10px 10px;' class='PageCtrls'>
 From:&nbsp;
         <select id="StartMon" class='Filter Graph'>
         <option value="1" selected="selected">Jan</option>
@@ -69,10 +69,12 @@ From:&nbsp;
        <span class='hdrLabel'>Sites:</span>&nbsp;
        <select id='Sites' >
        </select><br />
+       <div style='margin-top:5px'>
        <a href='#' id='GenReport'>Generate Report</a>
+       </div>
 </div>
-<div id="container" style="min-width: 310px; height: 500px; margin: 0 auto"></div>
-<div id='tblcontainer' style='display:none;text-align:center;width:94%'margin-left:3%;margin-right:3%;margin-top:20px;margin-bottom:20px'>
+<div id="container" style="min-width: 310px; height: 500px; margin: 0 30px 0 30px"></div>
+<div id='tblcontainer' style='display:none;text-align:center;width:94%;margin-left:3%;margin-right:3%;margin-top:20px;margin-bottom:20px'>
 <table id='tblMax' style='margin-left:auto;margin-right:auto' ></table>
 <div id='navTblMax'></div>
 </div>
