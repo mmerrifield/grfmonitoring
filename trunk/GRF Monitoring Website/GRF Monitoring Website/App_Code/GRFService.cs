@@ -573,60 +573,74 @@ public class GRFService
 
   [OperationContract]
   [WebGet]
-  public List<ChartSeries> MaxMWATData(int startMon, int startYr, int endMon, int endYr, string sites)
+  public JQGridData MaxMWATData(int startYr, int endYr, string sites, int pageIndex, int pageSize)
   {
-    /*
-    try
+    JQGridData data = new JQGridData();
+    List<string> years = new List<string>();
+    for (int yr = startYr; yr <= endYr; ++yr)
+      years.Add(yr.ToString());
+    List<string> siteIds = sites.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList();
+    int rowCt = 0;
+    using (var context = new GarciaDataContext())
     {
-      DateTime startDate = new DateTime(startYr, startMon, 1);
-      DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr,endMon));
-
-      string startYear = startYr.ToString();
-      string endYear = endYr.ToString();
-
-      List<ChartSeries> series = new List<ChartSeries>();
-      double nullSpan = new TimeSpan(3,0,0,0).TotalMilliseconds;
-
-      DateTime refDate = new DateTime(1970,1,1);
-
-      using (var context = new GarciaDataContext())
+      var records = context.MWATMaxes.Where(m => years.Contains(m.YEAR_) && siteIds.Contains(m.SiteID)).OrderBy(m => m.SITE_NAME).ThenBy(m => m.YEAR_);
+      data.records = records.Count();
+      foreach (var rec in records.Skip((pageIndex - 1)* pageSize).Take(pageSize) )
       {
-        foreach (var id in sites.Split(new string[]{","}, StringSplitOptions.RemoveEmptyEntries))
-        {
-          ChartSeries cs = new ChartSeries();
-          IEnumerable<MWATMax> datapts = context.MWATMaxes.Where(s => s.SiteID == id); // && s.YEAR_ >= startYear && s.YEAR_ <= endYear).OrderBy(s => s.Date);
-          if (datapts.Count() == 0) continue;
-          cs.name = datapts.First().SITE_NAME;
-          cs.type = "line";
-          cs.data = new List<DataPoint>();
-          DataPoint prevPt = null;
-          foreach (var pt in datapts)
-          {
-            if (pt..HasValue && pt.movAvg.Value != 0.0)
-            {
-              DataPoint newPt = new DataPoint { x = (pt.Date.Value - refDate).TotalMilliseconds, y = pt.movAvg.Value };
-              if (prevPt != null && newPt.x - prevPt.x >= nullSpan)
-                cs.data.Add(new DataPoint { x = prevPt.x + 1, y = null });
-              cs.data.Add(newPt);
-              prevPt = newPt;
-            }
-          }
-          series.Add(cs);
-        }
-        return series;
+        JQGridData.Row row = new JQGridData.Row();
+        row.id = rowCt.ToString();
+        rowCt++;
+        row.cell.Add(rec.SITE_NAME);
+        row.cell.Add(rec.YEAR_);
+        row.cell.Add(rec.TYPE);
+        row.cell.Add(double.Parse(rec.MaxMWAT).ToString("0.00"));
+        row.cell.Add(rec.DaysExceed.HasValue ? rec.DaysExceed.Value.ToString("0.00") : string.Empty);
+        row.cell.Add(rec.Percent.HasValue ? rec.Percent.Value.ToString("0.00%") : string.Empty);
+        row.cell.Add(rec.COMMENTS);
+        data.rows.Add(row);
+      }
     }
-    catch
-    {
-      return null;
-    }*/
-    return null;
+    data.page = pageIndex;
+    data.total = data.records / pageSize;
+    if (data.total % pageSize != 0 || data.total == 0)
+      data.total++;
+    return data;
   }
 
   [OperationContract]
   [WebGet]
-  public List<MaxTemp> MaxMWMTData(string year, List<string> sites)
+  public JQGridData MaxMWMTData(int startYr, int endYr, string sites, int pageIndex, int pageSize)
   {
-    return MaxTemp.getMaxMWMTData(year, sites);
+    JQGridData data = new JQGridData();
+    List<string> years = new List<string>();
+    for (int yr = startYr; yr <= endYr; ++yr)
+      years.Add(yr.ToString());
+    List<string> siteIds = sites.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).ToList();
+    int rowCt = 0;
+    using (var context = new GarciaDataContext())
+    {
+      var records = context.MWMTMaxes.Where(m => years.Contains(m.YEAR_) && siteIds.Contains(m.SiteID)).OrderBy(m => m.SITE_NAME).ThenBy(m => m.YEAR_);
+      data.records = records.Count();
+      foreach (var rec in records.Skip((pageIndex - 1) * pageSize).Take(pageSize))
+      {
+        JQGridData.Row row = new JQGridData.Row();
+        row.id = rowCt.ToString();
+        rowCt++;
+        row.cell.Add(rec.SITE_NAME);
+        row.cell.Add(rec.YEAR_);
+        row.cell.Add(rec.TYPE);
+        row.cell.Add(double.Parse(rec.MaxMWMT).ToString("0.00"));
+        row.cell.Add(rec.DaysExceed.HasValue ? rec.DaysExceed.Value.ToString("0.00") : string.Empty);
+        row.cell.Add(rec.Percent.HasValue ? rec.Percent.Value.ToString("0.00%") : string.Empty);
+        row.cell.Add(rec.COMMENTS);
+        data.rows.Add(row);
+      }
+    }
+    data.page = pageIndex;
+    data.total = data.records / pageSize;
+    if (data.total % pageSize != 0 || data.total == 0)
+      data.total++;
+    return data;
   }
   #endregion
 }

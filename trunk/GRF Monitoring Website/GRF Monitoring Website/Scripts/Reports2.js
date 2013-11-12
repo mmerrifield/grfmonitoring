@@ -8,26 +8,44 @@ $(function () {
     svc = 'GRFService.svc/';
     $('.footnotes').hide();
     if (reportType === 'MWAT') {
+      $('.Graph').show();
+      $('#tblcontainer').hide();
+      $('#container').show();
       svc += 'WeeklyMWATData';
       $('#MWATfootnote').show();
       options.title.text = 'MWAT Report';
     }
     else if (reportType == 'MWMT') {
+      $('.Graph').show();
+      $('#tblcontainer').hide();
+      $('#container').show();
       options.title.text = 'MWMT Report';
       svc += 'WeeklyMWMTData';
       $('#MWMTfootnote').show();
     }
     else if (reportType == 'MaxMWAT') {
+      $('.Graph').hide();
+      $('#container').hide();
+      $('#tblcontainer').show();
       $('#MWATMaxfootnote').show();
-      svc += '';
+      $('#tblMax').jqGrid('clearGridData', true);
+      $('#tblMax').jqGrid('setCaption', 'Max MWAT');
+      svc += 'MaxMWATData';
     }
     else if (reportType == 'MaxMWMT') {
+      $('.Graph').hide();
+      $('#container').hide();
+      $('#tblcontainer').show();
       $('#MWMTMaxfootnote').show();
-      svc += '';
+      $('#tblMax').jqGrid('clearGridData', true);
+      $('#tblMax').jqGrid('setCaption', 'Max MWMT');
+      svc += 'MaxMWMTData';
     }
     options.series.length = 0;
-    report.destroy();
-    report = new Highcharts.Chart(options);
+    if (report !== null && (reportType === 'MWAT' || reportType === 'MWMT')) {
+      report.destroy();
+      report = new Highcharts.Chart(options);
+    }
   }
   });
   $('#ChartStyle').multiselect({ header: false, multiple: false, selectedList: 1, height: 'auto', minWidth: 'auto', 'close': function () {
@@ -50,7 +68,39 @@ $(function () {
   });
   getYears();
   $('.Filter').on('change', function () { getSites(); options.series.length = 0; report.destroy(); report = new Highcharts.Chart(options); });
-  $('#GenReport').button().on('click', updateChart);
+  $('#GenReport').button().on('click', updateReport);
+  $("#tblMax").jqGrid({
+    datatype: function (pdata) {
+      getMaxData(pdata);
+    },
+    colNames: ['Site', 'Year', 'Type', 'Max Temp', 'Days Exceeded', 'Percent', 'Comments'],
+    colModel: [
+      { name: 'Site', index: 'Site', width: '300', sortable: false },
+      { name: 'Year', index: 'Year', width: '75', sortable: false },
+      { name: 'Type', index: 'Type', width: '120', sortable: false },
+      { name: 'MaxTemp', index: 'MaxTemp', width: '80', align: 'right', sortable: false },
+      { name: 'DaysExceeded', index: 'DaysExceeded', width: '80', align: 'right', sortable: false },
+      { name: 'Percent', index: 'Percent', width: '80', align: 'right', sortable: false },
+      { name: 'Comments', index: 'Comments', width: '90', sortable: false }
+    ],
+    autowidth: true,
+    sortable: false,
+    rowNum: 20,
+    rowList: [10, 20, 50, 100],
+    viewrecords: true,
+    gridview: true,
+    caption: 'Max MWMT',
+    footerrow: false,
+    pager: '#navTblMax',
+    toolbar: [true, 'top'],
+    pgbuttons: true,
+    pginput: true
+  });
+  //$("#t_tblMax).append("<input type='button' value='Export to Excel' style='height:20px;font-size:-3;float:right'/>");
+  //$("input", "#t_tblMax").click(function () {
+  //var urlStr = 'GRFService.svc/DownloadData?startYr=' + $('#StartYr').val() + '&site=' + $('#Site').val() + '&type=' + $('#Type').val() + '&from=' + $('#FromDate').val() + '&to=' + $('#ToDate').val();*/
+  //$('#tblMax').jqGrid('excelExport', { url: urlStr });
+  $('#tblMax').setGridHeight('600px'); 
   initChart();
 });
 function getYears() {  
@@ -74,7 +124,8 @@ function clearSites() {
   $('#Sites')[0].options.length = 0;
   $('#Sites').multiselect('refresh');
   options.series.length = 0;
-  chart = new Highchart.Chart(options);
+  chart = new Highcharts.Chart(options);
+  $('#tblMax').jqGrid('clearGridData', true);
 }
 function getSites() {
   var params = getParams(true);
@@ -154,8 +205,14 @@ function initChart() {
     alert(e);
   }
 }
-function updateChart() {
+function updateReport() {
   var reportType = $('#ReportType').val();
+  if (reportType === 'MWAT' || reportType == 'MWMT')
+    updateChart(reportType);
+  else
+    $('#tblMax').trigger('reloadGrid');
+}
+function updateChart(reportType) {
 
   var params = getParams(true);
   if (params === null) return;
@@ -189,5 +246,44 @@ function exportData() {
   $.get('GRFService.svc/ExportChartData', params, function (data) {
     window.location.href = 'data:text/csv;charset=UTF-8,'
             + encodeURIComponent(data);
+  });
+}
+function getMaxData(pdata){
+  var grid = $('#tblMax');
+  $('#tblMax').jqGrid('clearGridData', true);
+
+  var params = {};
+  params.sites = ''
+  $.each($('#Sites').multiselect('getChecked'), function (i, s) {
+    if (params.sites.length > 0)
+      params.sites += ',';
+    params.sites += s.value;
+  });
+  params.startYr = $('#StartYr').val();
+  params.endYr = $('#EndYr').val();
+
+  if (params.sites.length === 0 || params.startYr.length === 0 || params.endYr.length === 0)
+    return;
+  params.pageIndex = pdata.page == null ? grid.jqGrid('getGridParam', 'page') : pdata.page;
+  params.pageSize = pdata.rows == null ? grid.jqGrid('getGridParam', 'rowNum') : pdata.rows;
+  //params.sortIndex = pdata.sidx == null ? grid.jqGrid('getGridParam', 'sortname') : pdata.sidx;
+  //params.sortDirection = pdata.sord == null ? grid.jqGrid('getGridParam', 'sortorder') : pdata.sord;
+
+  $.ajax(
+  {
+    type: "GET",
+    url: svc,
+    datatype: 'json',
+    contentType: "application/json; charset=utf-8",
+    data: params,
+    success: function (data, textStatus) {
+      if (textStatus == "success") {
+        var grid = $("#tblMax")[0];
+        grid.addJSONData(data.d);
+      }
+    },
+    error: function (data, textStatus) {
+      alert('An error has occured retrieving data!');
+    }
   });
 }

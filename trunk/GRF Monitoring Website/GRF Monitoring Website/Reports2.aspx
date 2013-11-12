@@ -10,7 +10,7 @@
 <link rel='Stylesheet' href='Styles/jquery.multiselect.css' />
 <div style='margin-top:20px;margin-left:40px;'>
 From:&nbsp;
-        <select id="StartMon" class='Filter'>
+        <select id="StartMon" class='Filter Graph'>
         <option value="1" selected="selected">Jan</option>
         <option value="2" >Feb</option>
         <option value="3">Mar</option>
@@ -27,7 +27,7 @@ From:&nbsp;
         <select id="StartYr" class='Filter'>
         </select>&nbsp;
         To:&nbsp;
-         <select id="EndMon" class='Filter'>
+         <select id="EndMon" class='Filter Graph'>
          <option value="1" >Jan</option>
         <option value="2" >Feb</option>
         <option value="3">Mar</option>
@@ -50,6 +50,7 @@ From:&nbsp;
        <option value='MWMT'>MWMT</option>
        <option value='MaxMWMT'>Max MWMT</option>
        </select>
+       <span class='Graph'>
        &nbsp;Plot Style:&nbsp;
        <select id='ChartStyle'>
         <option value='line'>Line</option>
@@ -63,6 +64,7 @@ From:&nbsp;
         <option value='false'>No</option>
         <option value='true'>Yes</option>
       </select>
+      </span>
        <br />
        <span class='hdrLabel'>Sites:</span>&nbsp;
        <select id='Sites' >
@@ -70,6 +72,10 @@ From:&nbsp;
        <a href='#' id='GenReport'>Generate Report</a>
 </div>
 <div id="container" style="min-width: 310px; height: 500px; margin: 0 auto"></div>
+<div id='tblcontainer' style='display:none;text-align:center;width:94%'margin-left:3%;margin-right:3%;margin-top:20px;margin-bottom:20px'>
+<table id='tblMax' style='margin-left:auto;margin-right:auto' ></table>
+<div id='navTblMax'></div>
+</div>
 <div id='MWATfootnote' style='display:none' class='footnotes'>
 To calculate mean weekly average temperature (MWAT), first daily average temperatures are determined from the raw water temperature data. Then mean weekly average temperatures are calculated by averaging daily mean temperatures for each 7-day period (with a moving 7-day window) after Welsh et al. (2001).
 <br />* Welsh, H. H., G. R. Hodgson, B. C. Harvey, and M. F. Roche. 2001. Distribution of juvenile coho salmon (Oncorhynchus kisutch) in relation to water temperature in tributaries of the Mattole River, California. North American Journal of Fisheries Management 21: 464-470.
