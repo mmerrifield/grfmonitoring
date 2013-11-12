@@ -1,6 +1,6 @@
 ﻿$(function () {
-  $('#btnUploadDevices').on('click', function () { $('#hobo_upload').uploadifive('upload'); });
-  $('#btnUploadData').on('click', function () { $('#data_upload').uploadifive('upload'); });
+  $('#btnUploadDevices').button().on('click', function () { $('#hobo_upload').uploadifive('upload'); });
+  $('#btnUploadData').button().on('click', function () { $('#data_upload').uploadifive('upload'); });
   $(function () {
     $('#data_upload').uploadifive({
       'multi': true,

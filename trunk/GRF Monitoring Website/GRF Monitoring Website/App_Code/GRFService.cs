@@ -429,7 +429,7 @@ public class GRFService
       DateTime startDate = new DateTime(startYr, startMon, 1);
       DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr,endMon));
       List<ChartSeries> series = new List<ChartSeries>();
-      double nullSpan = new TimeSpan(7,0,0,0).TotalMilliseconds;
+      double nullSpan = new TimeSpan(3,0,0,0).TotalMilliseconds;
 
       DateTime refDate = new DateTime(1970,1,1);
 
@@ -460,7 +460,7 @@ public class GRFService
         return series;
       }
     }
-    catch (Exception ex)
+    catch 
     {
       return null;
     }
@@ -470,36 +470,51 @@ public class GRFService
   [WebGet]
   public List<ChartSeries> MaxMWATData(int startMon, int startYr, int endMon, int endYr, string sites)
   {
+    /*
     try
     {
       DateTime startDate = new DateTime(startYr, startMon, 1);
-      DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr, endMon));
-      List<ChartSeries> series = new List<ChartSeries>();
+      DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr,endMon));
 
-      DateTime refDate = new DateTime(1970, 1, 1);
+      string startYear = startYr.ToString();
+      string endYear = endYr.ToString();
+
+      List<ChartSeries> series = new List<ChartSeries>();
+      double nullSpan = new TimeSpan(3,0,0,0).TotalMilliseconds;
+
+      DateTime refDate = new DateTime(1970,1,1);
 
       using (var context = new GarciaDataContext())
       {
-        foreach (var id in sites.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+        foreach (var id in sites.Split(new string[]{","}, StringSplitOptions.RemoveEmptyEntries))
         {
           ChartSeries cs = new ChartSeries();
-          IEnumerable<FinalMWMT> datapts = context.FinalMWMTs.Where(s => s.SiteID == id && s.Date >= startDate && s.Date <= endDate).OrderBy(s => s.Date);
+          IEnumerable<MWATMax> datapts = context.MWATMaxes.Where(s => s.SiteID == id); // && s.YEAR_ >= startYear && s.YEAR_ <= endYear).OrderBy(s => s.Date);
+          if (datapts.Count() == 0) continue;
           cs.name = datapts.First().SITE_NAME;
           cs.type = "line";
           cs.data = new List<DataPoint>();
+          DataPoint prevPt = null;
           foreach (var pt in datapts)
           {
-            if (pt.movAvg.HasValue)
-              cs.data.Add(new DataPoint { x = (pt.Date.Value - refDate).TotalMilliseconds, y = pt.movAvg.Value });
+            if (pt..HasValue && pt.movAvg.Value != 0.0)
+            {
+              DataPoint newPt = new DataPoint { x = (pt.Date.Value - refDate).TotalMilliseconds, y = pt.movAvg.Value };
+              if (prevPt != null && newPt.x - prevPt.x >= nullSpan)
+                cs.data.Add(new DataPoint { x = prevPt.x + 1, y = null });
+              cs.data.Add(newPt);
+              prevPt = newPt;
+            }
           }
+          series.Add(cs);
         }
         return series;
-      }
     }
-    catch (Exception ex)
+    catch
     {
       return null;
-    }
+    }*/
+    return null;
   }
 
   [OperationContract]
@@ -511,6 +526,7 @@ public class GRFService
       DateTime startDate = new DateTime(startYr, startMon, 1);
       DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr, endMon));
       List<ChartSeries> series = new List<ChartSeries>();
+      double nullSpan = new TimeSpan(3, 0, 0, 0).TotalMilliseconds;
 
       DateTime refDate = new DateTime(1970, 1, 1);
 
@@ -524,17 +540,24 @@ public class GRFService
           cs.name = datapts.First().SITE_NAME;
           cs.type = "line";
           cs.data = new List<DataPoint>();
+          DataPoint prevPt = null;
           foreach (var pt in datapts)
           {
             if (pt.movAvg.HasValue && pt.movAvg.Value != 0.0)
-              cs.data.Add(new DataPoint { x = (pt.Date.Value - refDate).TotalMilliseconds, y = pt.movAvg.Value });
+            {
+              DataPoint newPt = new DataPoint { x = (pt.Date.Value - refDate).TotalMilliseconds, y = pt.movAvg.Value };
+              if (prevPt != null && newPt.x - prevPt.x >= nullSpan)
+                cs.data.Add(new DataPoint { x = prevPt.x + 1, y = null });
+              cs.data.Add(newPt);
+              prevPt = newPt;
+            }
           }
           series.Add(cs);
         } 
         return series;
       }
     }
-    catch (Exception ex)
+    catch 
     {
       return null;
     }
