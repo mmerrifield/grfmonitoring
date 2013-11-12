@@ -13,7 +13,11 @@ namespace ConsoleApplication1
       using (var context = new SLService.SLServiceClient())
       {
         SLService.SilverlightServiceCallResult sr = new SLService.SilverlightServiceCallResult();
-        var yrs = context.getYears(ref sr);
+        string[] sites = new string[]{"GABR4"};
+        var maxmwat = context.getMaxMWATData("2006", sites, ref sr);
+
+        int ct = maxmwat.Count();
+        MaxTemp mt = maxmwat[0];
       }
     }
   }

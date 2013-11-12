@@ -55,9 +55,6 @@ $(function () {
   getYears();
   updateDates();
 });
-function genCSV() {
-  alert('called');
-}
 function getData(pdata) {
   var grid = $('#export');
   clearData();

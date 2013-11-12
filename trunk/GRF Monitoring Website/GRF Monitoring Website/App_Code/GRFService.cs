@@ -429,34 +429,25 @@ public class GRFService
       DateTime startDate = new DateTime(startYr, startMon, 1);
       DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr,endMon));
       List<ChartSeries> series = new List<ChartSeries>();
-      double nullSpan = new TimeSpan(3,0,0,0).TotalMilliseconds;
-
-      DateTime refDate = new DateTime(1970,1,1);
+      IEnumerable<WeeklyData> datapts = null;
+      List<decimal> thresholds = new List<decimal>();
 
       using (var context = new GarciaDataContext())
       {
         foreach (var id in sites.Split(new string[]{","}, StringSplitOptions.RemoveEmptyEntries))
         {
-          ChartSeries cs = new ChartSeries();
-          IEnumerable<FinalMWAT> datapts = context.FinalMWATs.Where(s => s.SiteID == id && s.Date >= startDate && s.Date <= endDate).OrderBy(s => s.Date);
+          datapts = context.FinalMWATs.Where(s => s.SiteID == id && s.Date >= startDate && s.Date <= endDate)
+            .Select(s => new WeeklyData { Name = s.SITE_NAME, SiteId = s.SiteID, Date = s.Date.Value, MovAvg = s.movAvg.Value, Threshold = s.threshold.Value }).OrderBy(s => s.Date);
           if (datapts.Count() == 0) continue;
-          cs.name = datapts.First().SITE_NAME;
-          cs.type = "line";
-          cs.data = new List<DataPoint>();
-          DataPoint prevPt = null;
-          foreach (var pt in datapts)
+          foreach (decimal thresh in datapts.Select(s => s.Threshold).Distinct())
           {
-            if (pt.movAvg.HasValue && pt.movAvg.Value != 0.0)
-            {
-              DataPoint newPt = new DataPoint { x = (pt.Date.Value - refDate).TotalMilliseconds, y = pt.movAvg.Value };
-              if (prevPt != null && newPt.x - prevPt.x >= nullSpan)
-                cs.data.Add(new DataPoint { x = prevPt.x + 1, y = null });
-              cs.data.Add(newPt);
-              prevPt = newPt;
-            }
+            if (!thresholds.Contains(thresh))
+              thresholds.Add(thresh);
           }
-          series.Add(cs);
+          series.Add(GetChartSeries(datapts));
         }
+        AddThresholdLines(series, thresholds);
+
         return series;
       }
     }
@@ -464,6 +455,120 @@ public class GRFService
     {
       return null;
     }
+  }
+
+  [OperationContract]
+  [WebGet]
+  public List<ChartSeries> WeeklyMWMTData(int startMon, int startYr, int endMon, int endYr, string sites)
+  {
+    try
+    {
+      DateTime startDate = new DateTime(startYr, startMon, 1);
+      DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr, endMon));
+      List<ChartSeries> series = new List<ChartSeries>();
+      IEnumerable<WeeklyData> datapts = null;
+      List<decimal> thresholds = new List<decimal>();
+
+      using (var context = new GarciaDataContext())
+      {
+        foreach (var id in sites.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+        {
+          datapts = context.FinalMWMTs.Where(s => s.SiteID == id && s.Date >= startDate && s.Date <= endDate)
+            .Select(s => new WeeklyData { Name = s.SITE_NAME, SiteId = s.SiteID, Date = s.Date.Value, MovAvg = s.movAvg.Value, Threshold = s.threshold.Value }).OrderBy(s => s.Date);
+          if (datapts.Count() == 0) continue;
+          foreach (decimal thresh in datapts.Select(s => s.Threshold).Distinct())
+          {
+            if (!thresholds.Contains(thresh))
+              thresholds.Add(thresh);
+          }
+          series.Add(GetChartSeries(datapts));
+        }
+        AddThresholdLines(series, thresholds);
+
+        return series;
+      }
+    }
+    catch
+    {
+      return null;
+    }
+  }
+
+  private ChartSeries GetChartSeries(IEnumerable<WeeklyData> datapts)
+  {
+    ChartSeries cs = new ChartSeries();
+
+    cs.name = datapts.First().Name;
+    double nullSpan = new TimeSpan(3, 0, 0, 0).TotalMilliseconds;
+    DateTime refDate = new DateTime(1970, 1, 1);
+    DataPoint prevPt = null;
+    foreach (var pt in datapts)
+    {
+      if (pt.MovAvg != 0.0)
+      {
+        DataPoint newPt = new DataPoint { x = (pt.Date - refDate).TotalMilliseconds, y = pt.MovAvg };
+        if (prevPt != null && newPt.x - prevPt.x >= nullSpan)
+          cs.data.Add(new DataPoint { x = prevPt.x + 1, y = null });
+        cs.data.Add(newPt);
+        prevPt = newPt;
+      }
+    }
+    return cs;
+  }
+
+  private void AddThresholdLines(List<ChartSeries> series, List<decimal> thresholds)
+  {
+    double minX = double.MaxValue;
+    double maxX = double.MinValue;
+    foreach (ChartSeries cs in series)
+    {
+      if (cs.data.Count > 0)
+      {
+        minX = Math.Min(minX, cs.data.First().x);
+        maxX = Math.Max(maxX, cs.data.Last().x);
+      }
+    }
+    // Add threshold lines
+    foreach (decimal thresh in thresholds)
+    {
+      ChartSeries cs = new ChartSeries();
+      cs.name = "Threshold";
+      cs.type = "line";
+      cs.connectNulls = true;
+      cs.dashStyle = "dash";
+      cs.color = "#cccccc";
+      cs.data.Add(new DataPoint { x = minX, y = (double)thresh });
+      cs.data.Add(new DataPoint { x = maxX, y = (double)thresh });
+      series.Add(cs);
+    }
+  }
+
+
+  [OperationContract]
+  [WebGet]
+  public Stream ExportChartData(string format, int startMon, int startYr, int endMon, int endYr, string sites)
+  {
+    StringBuilder sb = new StringBuilder();
+
+    if (format == "MWAT")
+    {
+      var series = WeeklyMWATData(startMon, startYr, endMon, endYr, sites);
+      StringBuilder line = new StringBuilder();
+      line.Append("Date");
+      foreach (var cs in series)
+      {
+        line.Append(",");
+        line.Append(cs.name);
+      }
+      sb.AppendLine(line.ToString());
+    }
+    WebOperationContext.Current.OutgoingResponse.ContentType = "application/ms-excel";
+    string filename = "filename=HOBOExport.xls";
+    WebOperationContext.Current.OutgoingResponse.Headers.Add("Content-Disposition", "attachment; " + filename);
+
+    System.Text.ASCIIEncoding encoding = new ASCIIEncoding();
+    Byte[] bytes = encoding.GetBytes(sb.ToString());
+    return new MemoryStream(bytes);
   }
 
   [OperationContract]
@@ -519,50 +624,6 @@ public class GRFService
 
   [OperationContract]
   [WebGet]
-  public List<ChartSeries> WeeklyMWMTData(int startMon, int startYr, int endMon, int endYr, string sites)
-  {
-    try
-    {
-      DateTime startDate = new DateTime(startYr, startMon, 1);
-      DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr, endMon));
-      List<ChartSeries> series = new List<ChartSeries>();
-      double nullSpan = new TimeSpan(3, 0, 0, 0).TotalMilliseconds;
-
-      DateTime refDate = new DateTime(1970, 1, 1);
-
-      using (var context = new GarciaDataContext())
-      {
-        foreach (var id in sites.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
-        {
-          ChartSeries cs = new ChartSeries();
-          IEnumerable<FinalMWMT> datapts = context.FinalMWMTs.Where(s => s.SiteID == id && s.Date >= startDate && s.Date <= endDate).OrderBy(s => s.Date);
-          if (datapts.Count() == 0) continue;
-          cs.name = datapts.First().SITE_NAME;
-          cs.type = "line";
-          cs.data = new List<DataPoint>();
-          DataPoint prevPt = null;
-          foreach (var pt in datapts)
-          {
-            if (pt.movAvg.HasValue && pt.movAvg.Value != 0.0)
-            {
-              DataPoint newPt = new DataPoint { x = (pt.Date.Value - refDate).TotalMilliseconds, y = pt.movAvg.Value };
-              if (prevPt != null && newPt.x - prevPt.x >= nullSpan)
-                cs.data.Add(new DataPoint { x = prevPt.x + 1, y = null });
-              cs.data.Add(newPt);
-              prevPt = newPt;
-            }
-          }
-          series.Add(cs);
-        } 
-        return series;
-      }
-    }
-    catch 
-    {
-      return null;
-    }
-  }
-
   public List<MaxTemp> MaxMWMTData(string year, List<string> sites)
   {
     return MaxTemp.getMaxMWMTData(year, sites);
@@ -578,8 +639,17 @@ public class ReportSite
 
 public class ChartSeries
 {
+  public ChartSeries()
+  {
+    data = new List<DataPoint>();
+    dashStyle = "solid";
+    connectNulls = false;
+    type = "line";
+  }
   public string name { get; set; }
   public string type { get; set; }
+  public string dashStyle { get; set; }
+  public string color { get; set; }
   public bool connectNulls { get; set; }
   public List<DataPoint> data { get; set; }
 }
@@ -588,4 +658,13 @@ public class DataPoint
 {
   public double x { get; set; }
   public double? y { get; set; }
+}
+
+public class WeeklyData
+{
+  public DateTime Date { get; set; }
+  public string SiteId { get; set; }
+  public string Name { get; set; }
+  public double MovAvg { get; set; }
+  public decimal Threshold { get; set; }
 }

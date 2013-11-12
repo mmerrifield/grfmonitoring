@@ -77,7 +77,7 @@ function clearSites() {
   chart = new Highchart.Chart(options);
 }
 function getSites() {
-  var params = getParams();
+  var params = getParams(true);
   if (params === null)
     return;
   $.get('GRFService.svc/ReportSites', params, function (data) {
@@ -88,17 +88,17 @@ function getSites() {
     $('#Sites').multiselect('uncheckAll');
   });
 }
-function getParams(){
+function getParams(clear){
   var params = {};
   params.startMon = $('#StartMon').val();
   params.startYr = $('#StartYr').val();
   params.endMon = $('#EndMon').val();
   params.endYr = $('#EndYr').val();
-  if (params.startYr === null || params.startYr.length === 0 || params.endYr === null || params.endYr.length === 0) {
+  if (clear && params.startYr === null || params.startYr.length === 0 || params.endYr === null || params.endYr.length === 0) {
     clearSites();
     return null;
   }
-  if (parseInt(params.startYr) > parseInt(params.endYr) || (parseInt(params.startYr) == parseInt(params.endYr) && parseInt(params.startMon) > parseInt(params.endMon))) {
+  if (clear && parseInt(params.startYr) > parseInt(params.endYr) || (parseInt(params.startYr) == parseInt(params.endYr) && parseInt(params.startMon) > parseInt(params.endMon))) {
     clearSites();
     return null;
   }
@@ -119,23 +119,25 @@ function initChart() {
     },
     yAxis: [{
       labels: {
-        formatter: function () { return this.value; } //,
-        //style: { color: '#89A54E' }
+        formatter: function () { return this.value; }
       },
-      title: { text: 'Temperature (C)'/*, style: { color: '#89A54E'} */ }
+      title: { text: 'Temperature (°C)' }
     }],
     tooltip: {
       formatter: function () {
-        return '<b>' + this.series.name + '</b><br/>' +
+        if (this.series.name === 'Threshold')
+          return '<b>' + this.series.name + '</b>: ' + this.y.toFixed(2) + ' C';
+        else
+          return '<b>' + this.series.name + '</b><br/>' +
                         Highcharts.dateFormat('%e - %b - %Y',
                                               new Date(this.x))
-                    + '  <br/>' + this.y.toFixed(2) + ' C.';
+                    + '  <br/>' + this.y.toFixed(2) + ' °C';
       }
     },
     plotOptions: {
-      line: { marker: { enabled: false } },
-      area: { marker: { enabled: false } },
-      spline: { marker: { enabled: false } },
+      line: { marker: { enabled: false} },
+      area: { marker: { enabled: false} },
+      spline: { marker: { enabled: false} },
       areaspline: { marker: { enabled: false} }
     },
     series: []
@@ -155,7 +157,7 @@ function initChart() {
 function updateChart() {
   var reportType = $('#ReportType').val();
 
-  var params = getParams();
+  var params = getParams(true);
   if (params === null) return;
   params.sites = [];
   $.each($('#Sites').multiselect('getChecked'), function (i, s) { if (params.sites.length > 0) params.sites += ','; params.sites += s.value; });
@@ -173,4 +175,19 @@ function updateChart() {
     report = new Highcharts.Chart(options);
   });
   $('#container').show();
+}
+function exportData() {
+  if (options.series.length === 0) return;
+  var params = getParams(false);
+  params.format = $('#ReportType').val();
+  params.sites = '';
+  $.each($('#Sites').multiselect('getChecked'), function (i, s) {
+    if (params.sites.length > 0)
+      params.sites += ',';
+    params.sites += s.value;
+  });
+  $.get('GRFService.svc/ExportChartData', params, function (data) {
+    window.location.href = 'data:text/csv;charset=UTF-8,'
+            + encodeURIComponent(data);
+  });
 }
