@@ -1,135 +1,76 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Garcia.master" AutoEventWireup="true" CodeFile="MWAT.aspx.cs" Inherits="MWAT" %>
-
-<%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Charting" tagprefix="telerik" %>
+<%@ MasterType VirtualPath="~/Garcia.master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
-
+    <script type="text/javascript" src="Silverlight.js"></script>
     <script type="text/javascript">
-        
-        function checkboxClick(checkbox){
-            if(checkbox.nextSibling.innerText == "All")
-            {
-                var combo = <%=cboSites.ClientID %>;
-                for(var i=1; i<combo.Items.length; i++)
-                {
-                    var item = combo.Items[i];
-                    document.getElementById(item.ClientID).childNodes[0].childNodes[0].checked = checkbox.checked;
-                }
+        function onSilverlightError(sender, args) {
+            var appSource = "";
+            if (sender != null && sender != 0) {
+                appSource = sender.getHost().Source;
             }
+
+            var errorType = args.ErrorType;
+            var iErrorCode = args.ErrorCode;
+
+            if (errorType == "ImageError" || errorType == "MediaError") {
+                return;
+            }
+
+            var errMsg = "Unhandled Error in Silverlight Application " + appSource + "\n";
+
+            errMsg += "Code: " + iErrorCode + "    \n";
+            errMsg += "Category: " + errorType + "       \n";
+            errMsg += "Message: " + args.ErrorMessage + "     \n";
+
+            if (errorType == "ParserError") {
+                errMsg += "File: " + args.xamlFile + "     \n";
+                errMsg += "Line: " + args.lineNumber + "     \n";
+                errMsg += "Position: " + args.charPosition + "     \n";
+            }
+            else if (errorType == "RuntimeError") {
+                if (args.lineNumber != 0) {
+                    errMsg += "Line: " + args.lineNumber + "     \n";
+                    errMsg += "Position: " + args.charPosition + "     \n";
+                }
+                errMsg += "MethodName: " + args.methodName + "     \n";
+            }
+
+            throw new Error(errMsg);
         }
-            
-        function StopPropagation(e)
-	    {
-            //cancel bubbling 
-	        e.cancelBubble = true; 
-		    if (e.stopPropagation) 
-            {
-			    e.stopPropagation();
-		    }
-	    }
     </script>
 
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-    <asp:ScriptManager runat="server" ID="ScriptManager1"></asp:ScriptManager>
-    
-    <table cellpadding="0" cellspacing="0" align="center">
-        <tr>
-            <td>
-                <div style="margin-top: 20px;">
-                    <div style="width: 780px; padding: 10px; margin-bottom: 20px; background-color: #01743B;">
 
-                        <h4>Report Filter</h4>            
-                        <table cellpadding="0" cellspacing="0" style="margin-left: 20px;">
-                            <tr>
-                                <td>
-                                    Start Date:&nbsp;
-                                </td>
-                                <td>
-                                    <telerik:RadDatePicker Width="100" runat="server" ID="dpStartDate"></telerik:RadDatePicker>
-                                </td>
-                                <td width="10"></td>
-                                <td>
-                                    End Date:&nbsp;
-                                </td>
-                                <td> 
-                                    <telerik:RadDatePicker Width="100" runat="server" ID="dpEndDate"></telerik:RadDatePicker>
-                                </td>
-                                <td width="10"></td>
-                                <td>
-                                    Site(s):&nbsp;
-                                </td>
-                                <td>
-                                <telerik:RadComboBox ID="cboSites" runat="server"  AppendDataBoundItems="true" Text="Select site(s)"
-                                    DataValueField="siteID" DataTextField="siteName" HighlightTemplatedItems="true"
-                                    AllowCustomText="true" Width="250px" DropDownWidth="340px" OnClientSelectedIndexChanging="" >
-                                    <HeaderTemplate>
-                                        <asp:CheckBox runat="server" ID="chk1" Text="All sites" />
-                                    </HeaderTemplate>
-                                    <ItemTemplate>
-                                        <div class="combo-item-template">
-                                            <asp:CheckBox runat="server" ID="chk1" />
-                                            <asp:Label runat="server" ID="Label1" AssociatedControlID="chk1">
-                                                <%# Eval("siteName") %>
-                                            </asp:Label>
-                                        </div>
-                                    </ItemTemplate>
-                                </telerik:RadComboBox>
-                                </td>
-                                <td width="10"></td>
-                                <td>
-                                    <asp:button runat="server" ID="btnGo" Text="Generate" OnClick="btnGo_click" />
-                                </td>
-                            </tr>
-                
-                        </table>
-            
-                    </div>
-                    <telerik:RadChart ID="RadChart1" runat="server" DefaultType="Line"  Visible="false"
-                        Width="1200px" Height="600px">
+    <div style="background-color: #F2F2F2; padding: 20px; min-height: 440px; width: 800px; margin-top: 5px;">
 
-                        <Legend>
-                            <Appearance Corners="Round, Round, Round, Round, 3" Dimensions-AutoSize="True" 
-                                Dimensions-Margins="10,10,10,10">
-                                <ItemTextAppearance AutoTextWrap="True">
-                                </ItemTextAppearance>
-                            </Appearance>
-                        </Legend>
+        <span style="font-size: 14pt; font-weight: bold;">Reports: </span>
+        <span style="font-size: 12pt; font-weight: bold;">MWAT | </span>
+        <a href="MWATMax.aspx" style="font-weight: bold; font-size: 12pt;">MWAT max</a>
+        <span style="font-size: 12pt; font-weight: bold;">| </span>
+        <a href="MWMT.aspx" style="font-weight: bold; font-size: 12pt;">MWMT</a>
+        <span style="font-size: 12pt; font-weight: bold;"> | </span>
+        <a href="MWMT.aspx" style="font-weight: bold; font-size: 12pt;">MWMT max</a>
 
-                        <PlotArea>
-                            <EmptySeriesMessage Visible="True">
-                                <Appearance Visible="True">
-                                </Appearance>
-                            </EmptySeriesMessage>
-                            <XAxis>
-                                <AxisLabel>
-                                    <TextBlock Text="Date">
-                                    </TextBlock>
-                                </AxisLabel>
-                            </XAxis>
-                            <YAxis>
-                                <AxisLabel>
-                                    <TextBlock Text="Temp (Degrees C)"></TextBlock>
-                                </AxisLabel>
-                            </YAxis>
-                            <Appearance Dimensions-Margins="13%, 20%, 12%, 3%" Dimensions-Width="800px" 
-                                Dimensions-AutoSize="False" Dimensions-Height="400px">
-                            </Appearance>
-                        </PlotArea>
-                        <ChartTitle>
-                            <Appearance Position-AlignedPosition="TopLeft">
-                            </Appearance>
-                            <TextBlock Text="Moving Window Average Tempurature (MWAT)">
-                            </TextBlock>
-                        </ChartTitle>
-                    </telerik:RadChart>       
+        <div id="silverlightControlHost" style="margin-top: 20px; ">
+            <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="800" height="700">
+		      <param name="source" value="ClientBin/GarciaCharts.xap"/>
+		      <param name="onError" value="onSilverlightError" />
+		      <param name="background" value="white" />
+		      <param name="minRuntimeVersion" value="4.0.50401.0" />
+		      <param name="autoUpgrade" value="true" />
+		      <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=4.0.50401.0" style="text-decoration:none">
+ 			      <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight" style="border-style:none"/>
+		      </a>
+	        </object><iframe id="_sl_historyFrame" style="visibility:hidden;height:0px;width:0px;border:0px"></iframe>
+        </div>
+
         
-                </div>
-            
-            </td>
-        </tr>
-    </table>
-    
 
+    </div>
+ 
 </asp:Content>
+
 

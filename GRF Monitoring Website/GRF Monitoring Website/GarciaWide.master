@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
   <title>Garcia River Forest Monitoring Database</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
   <link rel="Stylesheet" href="Styles/Styles.css" />
   <link rel="shortcut icon" type="image/ico" href="favicon.ico">
   <link rel='Stylesheet' href='Styles/excite-bike/jquery-ui-1.9.2.custom.min.css' />
