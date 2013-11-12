@@ -8,7 +8,7 @@
 <script src='Scripts/highcharts.js'></script>
 <script src='Scripts/exporting.js'></script>
 <link rel='Stylesheet' href='Styles/jquery.multiselect.css' />
-<div style='margin-top:20px;margin-left:40px'>
+<div style='margin-top:20px;margin-left:40px;'>
 From:&nbsp;
         <select id="StartMon" class='Filter'>
         <option value="1" selected="selected">Jan</option>
@@ -49,7 +49,21 @@ From:&nbsp;
        <option value='MaxMWAT'>Max MWAT</option>
        <option value='MWMT'>MWMT</option>
        <option value='MaxMWMT'>Max MWMT</option>
-       </select><br />
+       </select>
+       &nbsp;Plot Style:&nbsp;
+       <select id='ChartStyle'>
+        <option value='line'>Line</option>
+        <option value='column'>Column</option>
+        <option value='area'>Area</option>
+        <option value='spline'>Spline</option>
+        <option value='areaspline'>Area Spline</option>
+      </select>
+      &nbsp;Show Markers:&nbsp;
+      <select id='ShowMarkers'>
+        <option value='false'>No</option>
+        <option value='true'>Yes</option>
+      </select>
+       <br />
        <span class='hdrLabel'>Sites:</span>&nbsp;
        <select id='Sites' >
        </select><br />
@@ -75,7 +89,7 @@ To calculate mean weekly maximum temperature (MWMT), first daily maximum tempera
 * Welsh, H. H., G. R. Hodgson, B. C. Harvey, and M. F. Roche. 2001. Distribution of juvenile coho salmon (Oncorhynchus kisutch) in relation to water temperature in tributaries of the Mattole River, California. North American Journal of Fisheries Management 21: 464-470.
 </div>
 <div id='MWMTMaxfootnote' style='display:none' class='footnotes'>
-To calculate mean weekly average temperature (MWAT), first daily average temperatures are determined from the raw water temperature data. Then mean weekly average temperatures (MWAT) are calculated by averaging daily mean temperatures for each 7-day period (with a moving 7-day window) after Welsh et al. (2001). Additionally, following Welsh et al. (2001), we report the highest average MWAT for the entire summer for each site sampled. Following Maahs and Barber (2001) and Hines and Ambrose (2000), we also report the number of sample periods, and percentage of total sample periods that MWAT exceeds threshold levels at each sample point.  The MWAT threshold follows that determined by Welsh et al. (2001) for coho salmon in the Mattole River in Northern California, and is 16.7°C.
+To calculate mean weekly mscaa temperature (MWAT), first daily average temperatures are determined from the raw water temperature data. Then mean weekly average temperatures (MWAT) are calculated by averaging daily mean temperatures for each 7-day period (with a moving 7-day window) after Welsh et al. (2001). Additionally, following Welsh et al. (2001), we report the highest average MWAT for the entire summer for each site sampled. Following Maahs and Barber (2001) and Hines and Ambrose (2000), we also report the number of sample periods, and percentage of total sample periods that MWAT exceeds threshold levels at each sample point.  The MWAT threshold follows that determined by Welsh et al. (2001) for coho salmon in the Mattole River in Northern California, and is 16.7°C.
 <br />
 *Hines, D. and J. Ambrose. 2000. Evaluation of Stream Temperatures Based on Observations of Juvenile Coho Salmon in Northern California Streams. Unpublished cooperative report. Campbell Timberland Management, Inc. and National Marine Fisheries Service.
 <br />
