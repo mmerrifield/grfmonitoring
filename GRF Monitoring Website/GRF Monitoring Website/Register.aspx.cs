@@ -70,4 +70,8 @@ public partial class Register : System.Web.UI.Page
       e.Cancel = true;
     }
   }
+  protected void RegisterUser_CancelButtonClick(object sender, EventArgs e)
+  {
+    Response.Redirect("Home.aspx", true);
+  }
 }

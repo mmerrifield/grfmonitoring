@@ -3,10 +3,18 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+  <script type='text/javascript' language='javascript'>
+    $(function () {
+      $('#btns').hide();
+    });
+  </script>
     <table align="center" style="margin-top: 40px;">
         <tr>
             <td valign="top">
-                <asp:CreateUserWizard ID="RegisterUser" runat="server" OnCreatedUser="RegisterUser_CreatedUser" OnSendingMail="RegisterUser_SendingEmail">
+                <asp:CreateUserWizard ID="RegisterUser" runat="server" 
+                  OnCreatedUser="RegisterUser_CreatedUser" 
+                  OnSendingMail="RegisterUser_SendingEmail" DisplayCancelButton="True" 
+                  oncancelbuttonclick="RegisterUser_CancelButtonClick">
                     <TitleTextStyle Font-Bold="true" Font-Names="Verdana" />
                     <WizardSteps>
                         <asp:CreateUserWizardStep ID="CreateUserWizardStep1" runat="server"></asp:CreateUserWizardStep>

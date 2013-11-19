@@ -6,6 +6,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
   <script type='text/javascript' language='javascript'>
     $(function () {
+      $('#btns').buttonset();
       $('#aHome')[0].checked = true;
       $('#aHome').button('refresh');
     });

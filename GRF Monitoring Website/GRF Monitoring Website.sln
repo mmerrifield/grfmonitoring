@@ -27,8 +27,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "GRF Monitoring Website", "G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarciaCharts", "GarciaCharts\GarciaCharts.csproj", "{F0070D4D-B2D9-48B4-8F3B-302CA1F77FC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.csproj", "{7BF884F4-C821-489E-A184-EDA0887FA762}"
-EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -63,16 +61,6 @@ Global
 		{F0070D4D-B2D9-48B4-8F3B-302CA1F77FC3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F0070D4D-B2D9-48B4-8F3B-302CA1F77FC3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F0070D4D-B2D9-48B4-8F3B-302CA1F77FC3}.Release|x86.ActiveCfg = Release|Any CPU
-		{7BF884F4-C821-489E-A184-EDA0887FA762}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{7BF884F4-C821-489E-A184-EDA0887FA762}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{7BF884F4-C821-489E-A184-EDA0887FA762}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{7BF884F4-C821-489E-A184-EDA0887FA762}.Debug|x86.ActiveCfg = Debug|x86
-		{7BF884F4-C821-489E-A184-EDA0887FA762}.Debug|x86.Build.0 = Debug|x86
-		{7BF884F4-C821-489E-A184-EDA0887FA762}.Release|Any CPU.ActiveCfg = Release|x86
-		{7BF884F4-C821-489E-A184-EDA0887FA762}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{7BF884F4-C821-489E-A184-EDA0887FA762}.Release|Mixed Platforms.Build.0 = Release|x86
-		{7BF884F4-C821-489E-A184-EDA0887FA762}.Release|x86.ActiveCfg = Release|x86
-		{7BF884F4-C821-489E-A184-EDA0887FA762}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -33,7 +33,8 @@ public partial class LoginControl : System.Web.UI.UserControl
     protected void lbLogout_Click(object sender, EventArgs e)
     {
         FormsAuthentication.SignOut();
-        Login1.Visible = true;
-        pnlLoggedIn.Visible = false;
+        Response.Redirect("Home.aspx", true);
+        //Login1.Visible = true;
+        //pnlLoggedIn.Visible = false;
     }
 }
