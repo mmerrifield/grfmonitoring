@@ -11,7 +11,6 @@ public partial class ViewMap : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            Master.selectNavButton("map");
             List<GarciaSite> sites = GarciaSite.getSites();
         }
     }

@@ -12,10 +12,4 @@ public partial class GarciaWide : System.Web.UI.MasterPage
     {
 
     }
-
-    public void selectNavButton(string whichButton)
-    {
-      HtmlImage img = FindControl(whichButton) as HtmlImage;
-      img.Src = "Images/" + whichButton + "Button_selected.jpg";
-    }
 }

@@ -6,23 +6,24 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
   <div id='ImportContainer'>
-    <div class='DataMgmtActions'>
-      Import Data | <a href='ExportData.aspx'>Export Data</a> <span id='adminSites' runat='server'>
-        | <a href='ManageSites.aspx'>Manage Sites</a></span></div>
-    <div class='PageCtrls'>
+    <div id='databtns' style='text-align:right;margin-right:190px;margin-top:-15px;margin-bottom:10px'>
+      <input type='radio' id='aImport' name='radio2' class='dataBtn' /><label for='aImport'>Import</label>
+      <input type='radio' id='aExport' name='radio2' class='dataBtn' /><label for='aExport'>Export</label>
+      <input type='radio' id='aManage' name='radio2' class='dataBtn' /><label for='aManage' id='lManage'>Manage</label>
+    </div>    <div class='PageCtrls'>
       <div id='ImportDeviceContainer'>
         <h3>
           Import HOBO Devices</h3>
         <input id="hobo_upload" name="hobo_upload" type="file" multiple="true" />
-        <div style='margin-top:10px'>
-        <a href='#' id='btnUploadDevices' style='margin-left:100px'>Upload Device Files</a></div>
+        <div style='margin-top: 10px'>
+          <a href='#' id='btnUploadDevices' style='margin-left: 100px'>Upload Device Files</a></div>
       </div>
       <div id='ImportDataContainer'>
         <h3>
           Import HOBO Data</h3>
         <input id="data_upload" name="data_upload" type="file" multiple="true" />
-        <div style='margin-top:10px'>
-        <a href="#" id='btnUploadData' style='margin-left:110px'>Upload Data Files</a>
+        <div style='margin-top: 10px'>
+          <a href="#" id='btnUploadData' style='margin-left: 110px'>Upload Data Files</a>
         </div>
       </div>
       <div style='clear: both'>
@@ -30,8 +31,10 @@
     </div>
     <div>
       <div id='ImportNotes'>
-        <b>Remember</b>: You need to upload HOBO device information prior to loading the HOBO data.
-        <br /><br />
+        <b>Remember</b>: You need to upload HOBO device information prior to loading the
+        HOBO data.
+        <br />
+        <br />
         Your HOBO data need to have the following fields: HOBO_ID, Temp, _DateTime. Some
         sensors may include the following fields as well: DewPoint, AbsHumidity, RH.
         <br />
@@ -45,7 +48,8 @@
           <a href='Garcia_template.xlsx'>Download empty Excel workbook template.</a>
         </div>
       </div>
-      <div style='clear:both'></div>
+      <div style='clear: both'>
+      </div>
     </div>
   </div>
   <link rel="Stylesheet" href="Styles/uploadifive.css" />

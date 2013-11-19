@@ -1,4 +1,11 @@
 ﻿$(function () {
+  $('#databtns').buttonset();
+  $('.dataBtn').on('click', function () {
+  });
+  $('#aData')[0].checked = true;
+  $('#aData').button('refresh');
+  $('#aImport')[0].checked = true;
+  $('#aImport').button('refresh');
   $('#btnUploadDevices').button().on('click', function () { $('#hobo_upload').uploadifive('upload'); });
   $('#btnUploadData').button().on('click', function () { $('#data_upload').uploadifive('upload'); });
   $('#data_upload').uploadifive({

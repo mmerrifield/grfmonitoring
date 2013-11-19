@@ -4,12 +4,14 @@
 <%@ MasterType VirtualPath="~/Garcia.master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-  <div style="background-color: #F2F2F2; padding: 20px; min-height: 440px; margin-top: 5px;">
-    <div class='DataMgmtActions'>
-      <a href='ImportData.aspx'>Import Data</a> | Export Data <span id='adminSites' runat='server'>
-        | <a href='ManageSites.aspx'>Manage Sites</a></span></div>
-    <div id='ExportContainer'>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server"> 
+  <div id='ExportContainer'>
+    <div id='databtns' style='text-align:right;margin-right:190px;margin-top:-15px;margin-bottom:10px'>
+      <input type='radio' id='aImport' name='radio2' class='dataBtn' /><label for='aImport'>Import</label>
+      <input type='radio' id='aExport' name='radio2' class='dataBtn' /><label for='aExport'>Export</label>
+      <input type='radio' id='aManage' name='radio2' class='dataBtn' /><label for='aManage' id='lManage'>Manage</label>
+    </div>
+    <div id='ExportDataContainer'>
       <div class='PageCtrls'>
         <p>
           Choose the date range and site below and click the Export button.</p>

@@ -4,7 +4,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
     <table align="center" style="margin-top: 40px;">
         <tr>
             <td>
@@ -12,6 +11,4 @@
             </td>
         </tr>
     </table>
-    
-
 </asp:Content>
