@@ -77,7 +77,10 @@ public class GRFService
       {
         DateTime startDate = new DateTime(startYr, startMon, 1);
         DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr, endMon));
-        return context.SiteInfos.Where(s => s.DataStartDate <= endDate && s.DataEndDate >= startDate).Select(s => new ReportSite { Id = s.Site_ID, Name = s.SITE_NAME }).OrderBy(s => s.Name).ToList();
+        return context.FinalMWATs.Where(s => s.Date <= endDate && s.Date >= startDate)
+          .Select(s => new ReportSite { Id = s.SiteID, Name = s.SITE_NAME })
+          .Distinct()
+          .OrderBy(s => s.Name).ToList();
       }
       catch
       {
@@ -552,22 +555,61 @@ public class GRFService
   [WebGet]
   public Stream ExportChartData(string format, int startMon, int startYr, int endMon, int endYr, string sites)
   {
-    StringBuilder sb = new StringBuilder();
+    List<ChartSeries> series = null;
 
     if (format == "MWAT")
+      series = WeeklyMWATData(startMon, startYr, endMon, endYr, sites);
+    else if (format == "MWMT")
+      series = WeeklyMWMTData(startMon, startYr, endMon, endYr, sites);
+
+    if (series == null || series.Count == 0)
+      return null;
+
+    StringBuilder sb = new StringBuilder();
+    StringBuilder line = new StringBuilder();
+
+    // Write Header Row
+    line.Append("Date");
+    foreach (var cs in series)
     {
-      var series = WeeklyMWATData(startMon, startYr, endMon, endYr, sites);
-      StringBuilder line = new StringBuilder();
-      line.Append("Date");
-      foreach (var cs in series)
+      line.Append("\t");
+      line.Append(cs.name);
+    }
+    sb.AppendLine(line.ToString());
+
+    // Now, get the union of all dates, order those, then write out a row for each data point
+    DateTime refDate = new DateTime(1970, 1, 1);
+    List<double> dates = new List<double>();
+    foreach (var set in series)
+    {
+      dates = dates.Union(set.data.Select(d => d.x)).ToList();
+    }
+
+    // Process each possible row of data.
+    double threshold = 0.0;
+    foreach (var x in dates.OrderBy(d => d))
+    {
+      //double thresh = 0.0;
+      line = new StringBuilder();
+      line.Append(refDate.AddMilliseconds(x).ToString() + "\t");
+      foreach (var set in series)
       {
-        line.Append(",");
-        line.Append(cs.name);
+        var pt = set.data.FirstOrDefault(p => p.x == x);
+        if (string.Compare(set.name, "threshold", true) == 0)
+        {
+          if (pt != null && threshold != pt.y.Value)
+            threshold = pt.y.Value;
+          line.Append(threshold);
+        }
+        else
+          line.AppendFormat("{0}\t", pt != null ? pt.y : null);
       }
       sb.AppendLine(line.ToString());
     }
+
+    // Lastly, stream data back to the user.
     WebOperationContext.Current.OutgoingResponse.ContentType = "application/ms-excel";
-    string filename = "filename=HOBOExport.xls";
+    string filename = string.Format("filename={0}-{1}-{2}_{3}-{4}.xls", format, startMon, startYr, endMon, endYr);
     WebOperationContext.Current.OutgoingResponse.Headers.Add("Content-Disposition", "attachment; " + filename);
 
     System.Text.ASCIIEncoding encoding = new ASCIIEncoding();

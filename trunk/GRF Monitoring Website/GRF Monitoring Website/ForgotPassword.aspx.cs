@@ -22,8 +22,8 @@ public partial class ForgotPassword : System.Web.UI.Page
     try
     {
       MailMessage msg = new MailMessage();
-      string fromEmail = ConfigurationManager.AppSettings["RecoveryEmail"];
-      string fromName = ConfigurationManager.AppSettings["RecoveryEmailUsername"];
+      string fromEmail = ConfigurationManager.AppSettings["AdminEmail"];
+      string fromName = ConfigurationManager.AppSettings["AdminUsername"];
       msg.From = new MailAddress(fromEmail, fromName);
 
       msg.To.Clear();
