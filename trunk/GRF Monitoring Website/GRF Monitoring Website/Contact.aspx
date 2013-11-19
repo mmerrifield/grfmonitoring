@@ -2,7 +2,12 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-    <table align="center" style="margin-top: 30px; font-size: 11pt;">
+  <script type='text/javascript' language='javascript'>
+    $(function () {
+      $('#aContact')[0].checked = true;
+      $('#aContact').button('refresh');
+    });
+  </script>    <table align="center" style="margin-top: 30px; font-size: 11pt;">
         <tr>
             <td>
             <h3 align="center">Contact Information</h3>

@@ -13,20 +13,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="scripts/i18n/grid.locale-en.js" type="text/javascript"></script>
     <script src="Scripts/jquery.jqGrid.min.js"></script>
-    <script type="text/javascript">
-        function mouseOver(img) {
-            if (img.src.indexOf("selected") == -1)
-                img.src = "Images/" + img.id + "Button_over.jpg";
-        }
-        function mouseOut(img) {
-            //alert(img.id + " out");
-            if (img.src.indexOf("selected") == -1)
-                img.src = "Images/" + img.id + "Button_off.jpg";
-        }
-        function pageLoad(sender, e) {
-            displayMessage();
-        }
-    </script>
+    <script src='Scripts/shared.js'></script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -48,48 +35,19 @@
                         </asp:LoginView>
                         <asp:LoginStatus runat="server" ID="LoginStatus1" LogoutAction="Redirect" LoginText="Log in" />
                     </div>
-                    <table cellpadding="0" cellspacing="0" style="" border="0" align="center" width="800">
-                        <tr height="80">
-                            <td width="300" valign="bottom">
-                                <div style="font-size: 17pt; line-height: 1.3em; font-weight: bold;">Garcia River Forest<br />Monitoring Database</div>
-                            </td>
-                            <td width="500" align="right" valign="bottom">
-                                <table cellpadding="0" cellspacing="0">
-                                    <tr>
-                                        <td>
-                                            <a href="Home.aspx">
-                                                <img runat="server" id="home" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)" border="0" src="Images/homeButton_off.jpg" />
-                                            </a>
-                                        </td>
-                                        <td width="5"></td>
-                                        <td>
-                                            <a href="ImportData.aspx">
-                                                <img runat="server" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"  id="data" src="Images/dataButton_off.jpg" />
-                                            </a>
-                                        </td>
-                                        <td width="5"></td>
-                                        <td>
-                                            <a href="Reports2.aspx">
-                                                <img runat="server" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"  id="reports" src="Images/reportsButton_off.jpg" />
-                                            </a>
-                                        </td>
-                                        <td width="5"></td>
-                                        <td>
-                                            <a href="ViewMap.aspx">
-                                                <img runat="server" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"  id="map" src="Images/mapButton_off.jpg" />
-                                            </a>
-                                        </td>
-                                        <td width="5"></td>
-                                        <td>
-                                            <a href="Contact.aspx">
-                                                <img runat="server" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"  id="contact" src="Images/contactButton_off.jpg" />
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
+                    <div id='PageTitle'>Garcia River Forest<br />Monitoring Database</div>
+                    <div id='PageNav'>
+                      <div id='btns'>
+                        <input type='radio' id='aHome' name='radio' class='navBtn' /><label for='aHome'>Home</label>
+                        <input type='radio' id='aData' name='radio' class='navBtn'/><label for='aData'>Data</label>
+                        <input type='radio' id='aReport' name='radio' class='navBtn' /><label for='aReport'>Reports</label>
+                        <input type='radio' id='aMap' name='radio' class='navBtn' /><label for='aMap'>Map</label>
+                        <input type='radio' id='aContact' name='radio' class='navBtn'/><label for='aContact'>Contact</label>
+                        <input type='radio' id='aUsers' name='radio' class='navBtn' /><label for='aUsers' id='lUsers'>User Mgmt</label>
+                      </div>
+                    </div>
+                        <div style='clear: both'>
+    </div>
                     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
                 </td>
             </tr>

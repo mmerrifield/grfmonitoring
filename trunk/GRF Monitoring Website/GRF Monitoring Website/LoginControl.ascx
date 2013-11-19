@@ -1,4 +1,9 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="LoginControl.ascx.cs" Inherits="LoginControl" %>
+  <script type="text/javascript" language='javascript'>
+    $(function () {
+      $('#btns').hide();
+    });
+  </script>
     <div style=" background-image:url(Images/GrayVerticalGradient1.jpg); background-repeat:repeat-x; border: 1px solid black; width: 240px; 
         padding: 5px 10px 10px 10px;">
 

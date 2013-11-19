@@ -11,8 +11,6 @@ public partial class MWAT : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            GarciaSite.getSites();  // pre-loads sites into cache
-            Master.selectNavButton("reports");
         }
     }
 }

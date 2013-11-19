@@ -45,8 +45,9 @@ div.DataMgmtActions
 {
   font-size: 18px;
   font-weight: bold;
-  margin-left: 20px;
   vertical-align:middle;
+  text-align: right;
+  width: 100%;
 }
 div.DataMgmtActions a
 {
@@ -136,8 +137,26 @@ div.footnotes
   width: 96%;
 }
 
-.center { width: 640px; margin-left: auto; margin-right: auto; }
-.center .ui-jqgrid {
-    margin-left: auto;
-    margin-right: auto;
+#PageTitle
+{
+  float: left;
+  /*width: 300px;*/
+  font-size: 17pt; 
+  line-height: 1.3em; 
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom:10px;
+}
+#PageTitle.wide
+{
+  margin-left:50px;
+}
+#PageNav
+{
+  float:right;
+  /*width:500px;*/
+  text-align:right;
+  margin-top:30px;
+  vertical-align:bottom;
+  margin-bottom:10px;
 }

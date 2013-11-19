@@ -1,4 +1,12 @@
 ﻿$(function () {
+  $('#databtns').buttonset();
+  $('.dataBtn').on('click', function () {
+  });
+  $('#aData')[0].checked = true;
+  $('#aData').button('refresh');
+  $('#aManage')[0].checked = true;
+  $('#aManage').button('refresh');
+
   var colorPicker;
   $("#sites").jqGrid({
     datatype: function (pdata) {

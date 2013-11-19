@@ -96,11 +96,20 @@ $(function () {
     pgbuttons: true,
     pginput: true
   });
-  //$("#t_tblMax).append("<input type='button' value='Export to Excel' style='height:20px;font-size:-3;float:right'/>");
-  //$("input", "#t_tblMax").click(function () {
-  //var urlStr = 'GRFService.svc/DownloadData?startYr=' + $('#StartYr').val() + '&site=' + $('#Site').val() + '&type=' + $('#Type').val() + '&from=' + $('#FromDate').val() + '&to=' + $('#ToDate').val();*/
-  //$('#tblMax').jqGrid('excelExport', { url: urlStr });
-  $('#tblMax').setGridHeight('600px'); 
+  $("#t_tblMax").append("<input type='button' value='Export to Excel' style='height:20px;font-size:-3;float:right'/>");
+  $("input", "#t_tblMax").click(function () {
+    var params = getParams(false);
+    params.format = $('#ReportType').val();
+    params.sites = '';
+    $.each($('#Sites').multiselect('getChecked'), function (i, s) {
+      if (params.sites.length > 0)
+        params.sites += ',';
+      params.sites += s.value;
+    });
+    var urlStr = 'GRFService.svc/ExportReport?format=' + params.format + '&startMon=0&endMon=0&startYr=' + params.startYr + '&endYr=' + params.endYr + '&sites=' + params.sites;
+    $('#tblMax').jqGrid('excelExport', { url: urlStr });
+  });
+  $('#tblMax').setGridHeight('450px');
   initChart();
 });
 function getYears() {  
@@ -243,7 +252,7 @@ function exportData() {
       params.sites += ',';
     params.sites += s.value;
   });
-  $.get('GRFService.svc/ExportChartData', params, function (data) {
+  $.get('GRFService.svc/ExportReport', params, function (data) {
     var filename = params.format + '-' + params.startMon + '-' + params.startYr + '_' + params.endMon + '-' + params.endYr + '.xls';
     download(data, filename, 'application/ms-excel;charset=UTF-8');
   });

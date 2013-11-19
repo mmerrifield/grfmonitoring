@@ -11,6 +11,5 @@ public partial class Reports2 : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-      ((GarciaWide)Master).selectNavButton("Reports");
     }
 }

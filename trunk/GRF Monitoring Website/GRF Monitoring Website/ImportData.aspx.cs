@@ -14,10 +14,5 @@ public partial class ImportData : System.Web.UI.Page
 {
   protected void Page_Load(object sender, EventArgs e)
   {
-    ((Garcia)Master).selectNavButton("data");
-    if (!IsPostBack)
-    {
-      adminSites.Visible = Page.User.IsInRole("Admin");
-    }
   }
 }

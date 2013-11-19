@@ -15,6 +15,21 @@ using System.Web;
 public class GRFService
 {
   #region -- Site Management --
+  [WebGet]
+  [OperationContract]
+  public bool Admin()
+  {
+    var isAdmin = HttpContext.Current.User != null && HttpContext.Current.User.IsInRole("Admin");
+    return isAdmin;
+  }
+
+  [WebGet]
+  [OperationContract]
+  public bool Auth()
+  {
+    return HttpContext.Current.User != null;
+  }
+
   /// <summary>
   /// Returns the collection of sites to display in a paged table.
   /// </summary>
@@ -553,18 +568,61 @@ public class GRFService
 
   [OperationContract]
   [WebGet]
-  public Stream ExportChartData(string format, int startMon, int startYr, int endMon, int endYr, string sites)
+  public Stream ExportReport(string format, int startMon, int startYr, int endMon, int endYr, string sites)
   {
     List<ChartSeries> series = null;
-
+    JQGridData maxData = null;
     if (format == "MWAT")
       series = WeeklyMWATData(startMon, startYr, endMon, endYr, sites);
     else if (format == "MWMT")
       series = WeeklyMWMTData(startMon, startYr, endMon, endYr, sites);
+    else if (format == "MaxMWAT")
+      maxData = MaxMWATData(startYr, endYr, sites, 1, int.MaxValue);
+    else if (format == "MaxMWMT")
+      maxData = MaxMWMTData(startYr, endYr, sites, 1, int.MaxValue);
 
-    if (series == null || series.Count == 0)
-      return null;
+    if (series != null)
+      return StreamChartData(series, format, startMon, startYr, endMon, endYr);
+    else if (maxData != null)
+      return StreamTableData(maxData, format, startYr, endYr);
+    return null;
+  }
 
+  /// <summary>
+  /// Writes the jqgrid data to a stream
+  /// </summary>
+  /// <param name="data"></param>
+  /// <param name="format"></param>
+  /// <param name="startYr"></param>
+  /// <param name="endYr"></param>
+  /// <returns></returns>
+  private Stream StreamTableData(JQGridData data, string format, int startYr, int endYr)
+  {
+    StringBuilder sb = new StringBuilder();
+    sb.AppendLine("Site\tYear\tType\tMax Temp\tDays Exceeded\tPercent\tComments");
+    foreach (var row in data.rows)
+    {
+      StringBuilder line = new StringBuilder();
+      foreach (var cell in row.cell)
+      {
+        if (line.Length > 0)
+          line.Append("\t");
+        line.Append(cell);
+      }
+      sb.AppendLine(line.ToString());
+    }
+    // Lastly, stream data back to the user.
+    WebOperationContext.Current.OutgoingResponse.ContentType = "application/ms-excel";
+    string filename = string.Format("filename={0}_{1}-{2}.xls", format, startYr, endYr);
+    WebOperationContext.Current.OutgoingResponse.Headers.Add("Content-Disposition", "attachment; " + filename);
+
+    System.Text.ASCIIEncoding encoding = new ASCIIEncoding();
+    Byte[] bytes = encoding.GetBytes(sb.ToString());
+    return new MemoryStream(bytes);
+  }
+
+  private Stream StreamChartData(IList<ChartSeries> series, string format, int startMon, int startYr, int endMon, int endYr)
+  {
     StringBuilder sb = new StringBuilder();
     StringBuilder line = new StringBuilder();
 
