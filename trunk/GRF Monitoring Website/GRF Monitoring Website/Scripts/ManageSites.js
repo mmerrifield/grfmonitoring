@@ -12,14 +12,16 @@
     datatype: function (pdata) {
       getSites(pdata);
     },
-    colNames: ['Site Id', 'Site Name', 'Directions', 'Color', 'Data Start Date', 'Data End Date'],
+    colNames: ['Site Id', 'Site Name', 'Directions', 'Color', 'Data Start Date', 'Data End Date', 'Latitude', 'Longitude'],
     colModel: [
       { name: 'SiteId', index: 'SiteId', width: '100', editable: true },
       { name: 'SiteName', index: 'SiteName', width: '200', editable: true, edittype: 'textarea', editrules: { required: true }, editoptions: { 'rows': '2', 'cols': '40' }, cellattr: function () { return 'style="white-space: normal";' } },
       { name: 'Directions', index: 'Comment', editable: true, width: '375', edittype: 'textarea', editrules: { required: false }, editoptions: { 'rows': '5', 'cols': '40' }, cellattr: function () { return 'style="white-space: normal";' } },
       { name: 'Color', index: 'Color', editable: true, width: '75', editable: true, edittype: 'custom', editoptions: { custom_element: getColorPicker, custom_value: updateColorValue }, formatter: function (cellValue) { return '<div style="width:20px;height:15px;background-color:' + cellValue + '"><input type="hidden" value="' + cellValue + '"></input></div>' } },
       { name: 'DtStart', index: 'DtStart', editable: false, width: '175', align: 'right', formatter: 'date', editoptions: { dataInit: function (el) { setTimeout(function () { $(el).datepicker(); }, 200); } } },
-      { name: 'DtEnd', index: 'DtEnd', editable: false, width: '175', align: 'right', formatter: 'date', editoptions: { dataInit: function (el) { setTimeout(function () { $(el).datepicker(); }, 200); } } }
+      { name: 'DtEnd', index: 'DtEnd', editable: false, width: '175', align: 'right', formatter: 'date', editoptions: { dataInit: function (el) { setTimeout(function () { $(el).datepicker(); }, 200); } } },
+      { name: 'Lat', index: 'Lat', editable: true, width: '100', align: 'right', sortable: false, formatter: 'number', formatoptions: { decimalPlaces: 4 }, editor: 'number', editoptions: { decimalPlaces: 4} },
+      { name: 'Lng', index: 'Lng', editable: true, width: '100', align: 'right', sortable: false, formatter: 'number', formatoptions: { decimalPlaces: 4 }, editor: 'number', editoptions: { decimalPlaces: 4} }
     ],
     editurl: 'GRFService.svc/UpdateSite',
     autowidth: true,

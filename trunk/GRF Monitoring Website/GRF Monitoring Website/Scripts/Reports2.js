@@ -173,7 +173,7 @@ function initChart() {
     },
     title: { text: '' },
     xAxis: {
-      labels: { format: '{value:%b %y}', rotation: 90, align: 'bottom' },
+      labels: { format: '{value:%b %y}', align: 'bottom' },
       title: { text: 'Date' },
       type: 'datetime'
     },
@@ -230,7 +230,6 @@ function updateChart(reportType) {
   if (params.sites.length === 0)
     return;
   $.get(svc, params, function (data) {
-    //options.chart.height = $('#container').width() * .5;
     options.series.length = 0;
     $.each(data.d, function (idx, series) {
       series.connectNulls = false;
@@ -275,8 +274,6 @@ function getMaxData(pdata){
     return;
   params.pageIndex = pdata.page == null ? grid.jqGrid('getGridParam', 'page') : pdata.page;
   params.pageSize = pdata.rows == null ? grid.jqGrid('getGridParam', 'rowNum') : pdata.rows;
-  //params.sortIndex = pdata.sidx == null ? grid.jqGrid('getGridParam', 'sortname') : pdata.sidx;
-  //params.sortDirection = pdata.sord == null ? grid.jqGrid('getGridParam', 'sortorder') : pdata.sord;
 
   $.ajax(
   {
