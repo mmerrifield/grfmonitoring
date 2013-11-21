@@ -32,12 +32,12 @@ public partial class GarciaDataContext : System.Data.Linq.DataContext
   partial void InsertHOBO(HOBO instance);
   partial void UpdateHOBO(HOBO instance);
   partial void DeleteHOBO(HOBO instance);
-  partial void InsertSiteInfo(SiteInfo instance);
-  partial void UpdateSiteInfo(SiteInfo instance);
-  partial void DeleteSiteInfo(SiteInfo instance);
   partial void InsertSiteHobo(SiteHobo instance);
   partial void UpdateSiteHobo(SiteHobo instance);
   partial void DeleteSiteHobo(SiteHobo instance);
+  partial void InsertSiteInfo(SiteInfo instance);
+  partial void UpdateSiteInfo(SiteInfo instance);
+  partial void DeleteSiteInfo(SiteInfo instance);
   #endregion
 	
 	public GarciaDataContext() : 
@@ -102,14 +102,6 @@ public partial class GarciaDataContext : System.Data.Linq.DataContext
 		}
 	}
 	
-	public System.Data.Linq.Table<SiteInfo> SiteInfos
-	{
-		get
-		{
-			return this.GetTable<SiteInfo>();
-		}
-	}
-	
 	public System.Data.Linq.Table<SiteHobo> SiteHobos
 	{
 		get
@@ -163,6 +155,14 @@ public partial class GarciaDataContext : System.Data.Linq.DataContext
 		get
 		{
 			return this.GetTable<MWMTMax>();
+		}
+	}
+	
+	public System.Data.Linq.Table<SiteInfo> SiteInfos
+	{
+		get
+		{
+			return this.GetTable<SiteInfo>();
 		}
 	}
 }
@@ -696,212 +696,6 @@ public partial class SITE
 			{
 				this._Shape = value;
 			}
-		}
-	}
-}
-
-[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.lut_SITE_INFO")]
-public partial class SiteInfo : INotifyPropertyChanging, INotifyPropertyChanged
-{
-	
-	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-	
-	private int _OBJECTID;
-	
-	private string _Site_ID;
-	
-	private string _SITE_NAME;
-	
-	private string _Directions;
-	
-	private string _Color;
-	
-	private System.Nullable<System.DateTime> _DataStartDate;
-	
-	private System.Nullable<System.DateTime> _DataEndDate;
-	
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnOBJECTIDChanging(int value);
-    partial void OnOBJECTIDChanged();
-    partial void OnSite_IDChanging(string value);
-    partial void OnSite_IDChanged();
-    partial void OnSITE_NAMEChanging(string value);
-    partial void OnSITE_NAMEChanged();
-    partial void OnDirectionsChanging(string value);
-    partial void OnDirectionsChanged();
-    partial void OnColorChanging(string value);
-    partial void OnColorChanged();
-    partial void OnDataStartDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnDataStartDateChanged();
-    partial void OnDataEndDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnDataEndDateChanged();
-    #endregion
-	
-	public SiteInfo()
-	{
-		OnCreated();
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OBJECTID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-	public int OBJECTID
-	{
-		get
-		{
-			return this._OBJECTID;
-		}
-		set
-		{
-			if ((this._OBJECTID != value))
-			{
-				this.OnOBJECTIDChanging(value);
-				this.SendPropertyChanging();
-				this._OBJECTID = value;
-				this.SendPropertyChanged("OBJECTID");
-				this.OnOBJECTIDChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Site_ID", DbType="NVarChar(12)")]
-	public string Site_ID
-	{
-		get
-		{
-			return this._Site_ID;
-		}
-		set
-		{
-			if ((this._Site_ID != value))
-			{
-				this.OnSite_IDChanging(value);
-				this.SendPropertyChanging();
-				this._Site_ID = value;
-				this.SendPropertyChanged("Site_ID");
-				this.OnSite_IDChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SITE_NAME", DbType="NVarChar(150)")]
-	public string SITE_NAME
-	{
-		get
-		{
-			return this._SITE_NAME;
-		}
-		set
-		{
-			if ((this._SITE_NAME != value))
-			{
-				this.OnSITE_NAMEChanging(value);
-				this.SendPropertyChanging();
-				this._SITE_NAME = value;
-				this.SendPropertyChanged("SITE_NAME");
-				this.OnSITE_NAMEChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Directions", DbType="NVarChar(MAX)")]
-	public string Directions
-	{
-		get
-		{
-			return this._Directions;
-		}
-		set
-		{
-			if ((this._Directions != value))
-			{
-				this.OnDirectionsChanging(value);
-				this.SendPropertyChanging();
-				this._Directions = value;
-				this.SendPropertyChanged("Directions");
-				this.OnDirectionsChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Color", DbType="VarChar(15)")]
-	public string Color
-	{
-		get
-		{
-			return this._Color;
-		}
-		set
-		{
-			if ((this._Color != value))
-			{
-				this.OnColorChanging(value);
-				this.SendPropertyChanging();
-				this._Color = value;
-				this.SendPropertyChanged("Color");
-				this.OnColorChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataStartDate", DbType="DateTime")]
-	public System.Nullable<System.DateTime> DataStartDate
-	{
-		get
-		{
-			return this._DataStartDate;
-		}
-		set
-		{
-			if ((this._DataStartDate != value))
-			{
-				this.OnDataStartDateChanging(value);
-				this.SendPropertyChanging();
-				this._DataStartDate = value;
-				this.SendPropertyChanged("DataStartDate");
-				this.OnDataStartDateChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataEndDate", DbType="DateTime")]
-	public System.Nullable<System.DateTime> DataEndDate
-	{
-		get
-		{
-			return this._DataEndDate;
-		}
-		set
-		{
-			if ((this._DataEndDate != value))
-			{
-				this.OnDataEndDateChanging(value);
-				this.SendPropertyChanging();
-				this._DataEndDate = value;
-				this.SendPropertyChanged("DataEndDate");
-				this.OnDataEndDateChanged();
-			}
-		}
-	}
-	
-	public event PropertyChangingEventHandler PropertyChanging;
-	
-	public event PropertyChangedEventHandler PropertyChanged;
-	
-	protected virtual void SendPropertyChanging()
-	{
-		if ((this.PropertyChanging != null))
-		{
-			this.PropertyChanging(this, emptyChangingEventArgs);
-		}
-	}
-	
-	protected virtual void SendPropertyChanged(String propertyName)
-	{
-		if ((this.PropertyChanged != null))
-		{
-			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }
@@ -2062,6 +1856,212 @@ public partial class MWMTMax
 			{
 				this._SiteID = value;
 			}
+		}
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.lut_SITE_INFO")]
+public partial class SiteInfo : INotifyPropertyChanging, INotifyPropertyChanged
+{
+	
+	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+	
+	private int _OBJECTID;
+	
+	private string _Site_ID;
+	
+	private string _SITE_NAME;
+	
+	private string _Directions;
+	
+	private string _Color;
+	
+	private System.Nullable<System.DateTime> _DataStartDate;
+	
+	private System.Nullable<System.DateTime> _DataEndDate;
+	
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnOBJECTIDChanging(int value);
+    partial void OnOBJECTIDChanged();
+    partial void OnSite_IDChanging(string value);
+    partial void OnSite_IDChanged();
+    partial void OnSITE_NAMEChanging(string value);
+    partial void OnSITE_NAMEChanged();
+    partial void OnDirectionsChanging(string value);
+    partial void OnDirectionsChanged();
+    partial void OnColorChanging(string value);
+    partial void OnColorChanged();
+    partial void OnDataStartDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnDataStartDateChanged();
+    partial void OnDataEndDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnDataEndDateChanged();
+    #endregion
+	
+	public SiteInfo()
+	{
+		OnCreated();
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OBJECTID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+	public int OBJECTID
+	{
+		get
+		{
+			return this._OBJECTID;
+		}
+		set
+		{
+			if ((this._OBJECTID != value))
+			{
+				this.OnOBJECTIDChanging(value);
+				this.SendPropertyChanging();
+				this._OBJECTID = value;
+				this.SendPropertyChanged("OBJECTID");
+				this.OnOBJECTIDChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Site_ID", DbType="NVarChar(12)")]
+	public string Site_ID
+	{
+		get
+		{
+			return this._Site_ID;
+		}
+		set
+		{
+			if ((this._Site_ID != value))
+			{
+				this.OnSite_IDChanging(value);
+				this.SendPropertyChanging();
+				this._Site_ID = value;
+				this.SendPropertyChanged("Site_ID");
+				this.OnSite_IDChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SITE_NAME", DbType="NVarChar(150)")]
+	public string SITE_NAME
+	{
+		get
+		{
+			return this._SITE_NAME;
+		}
+		set
+		{
+			if ((this._SITE_NAME != value))
+			{
+				this.OnSITE_NAMEChanging(value);
+				this.SendPropertyChanging();
+				this._SITE_NAME = value;
+				this.SendPropertyChanged("SITE_NAME");
+				this.OnSITE_NAMEChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Directions", DbType="NVarChar(MAX)")]
+	public string Directions
+	{
+		get
+		{
+			return this._Directions;
+		}
+		set
+		{
+			if ((this._Directions != value))
+			{
+				this.OnDirectionsChanging(value);
+				this.SendPropertyChanging();
+				this._Directions = value;
+				this.SendPropertyChanged("Directions");
+				this.OnDirectionsChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Color", DbType="VarChar(15)")]
+	public string Color
+	{
+		get
+		{
+			return this._Color;
+		}
+		set
+		{
+			if ((this._Color != value))
+			{
+				this.OnColorChanging(value);
+				this.SendPropertyChanging();
+				this._Color = value;
+				this.SendPropertyChanged("Color");
+				this.OnColorChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataStartDate", DbType="DateTime")]
+	public System.Nullable<System.DateTime> DataStartDate
+	{
+		get
+		{
+			return this._DataStartDate;
+		}
+		set
+		{
+			if ((this._DataStartDate != value))
+			{
+				this.OnDataStartDateChanging(value);
+				this.SendPropertyChanging();
+				this._DataStartDate = value;
+				this.SendPropertyChanged("DataStartDate");
+				this.OnDataStartDateChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataEndDate", DbType="DateTime")]
+	public System.Nullable<System.DateTime> DataEndDate
+	{
+		get
+		{
+			return this._DataEndDate;
+		}
+		set
+		{
+			if ((this._DataEndDate != value))
+			{
+				this.OnDataEndDateChanging(value);
+				this.SendPropertyChanging();
+				this._DataEndDate = value;
+				this.SendPropertyChanged("DataEndDate");
+				this.OnDataEndDateChanged();
+			}
+		}
+	}
+	
+	public event PropertyChangingEventHandler PropertyChanging;
+	
+	public event PropertyChangedEventHandler PropertyChanged;
+	
+	protected virtual void SendPropertyChanging()
+	{
+		if ((this.PropertyChanging != null))
+		{
+			this.PropertyChanging(this, emptyChangingEventArgs);
+		}
+	}
+	
+	protected virtual void SendPropertyChanged(String propertyName)
+	{
+		if ((this.PropertyChanged != null))
+		{
+			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

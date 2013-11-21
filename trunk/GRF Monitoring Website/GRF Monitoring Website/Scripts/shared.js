@@ -1,11 +1,25 @@
 ﻿$(function () {
   $('#btns').buttonset();
+  /*
+  $.ajax({
+    type: 'GET',
+    url: 'GRFService.svc/Auth',
+    contentType: 'application/json; charset=utf-8;',
+    dataType: 'json',
+    data: {},
+    success: function (resp) {
+      alert(data);
+    },
+    error: function (a, b, c) {
+      alert(c); 
+    }
+  });*/
   $.get('GRFService.svc/Auth', {}, function (resp) {
-    if (!resp.d)
+    if (!resp)
       $('#btns').hide();
   });
   $.get('GRFService.svc/Admin', {}, function (resp) {
-    if (!resp.d) {
+    if (!resp) {
       $('#aUsers').remove();
       $('#lUsers').remove();
       $('#aManage').remove();

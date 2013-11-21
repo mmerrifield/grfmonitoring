@@ -12,7 +12,8 @@
       $('#aReport')[0].checked = true;
       $('#aReport').button('refresh');
     });
-  </script><link rel='Stylesheet' href='Styles/jquery.multiselect.css' />
+  </script>
+  <link rel='Stylesheet' href='Styles/jquery.multiselect.css' />
 <div style='margin-top:20px;margin-left:30px;margin-right:30px;padding:10px 10px 10px 10px;' class='PageCtrls'>
 From:&nbsp;
         <select id="StartMon" class='Filter Graph'>
