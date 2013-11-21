@@ -123,7 +123,7 @@ function getYears() {
     sel1.options[0] = new Option('', '');
     sel2.options.length = 0;
     sel2.options[0] = new Option('', '');
-    $.each(data.d, function (index, yr) {
+    $.each(data, function (index, yr) {
       sel1.options[sel1.options.length] = new Option(yr, yr);
       sel2.options[sel2.options.length] = new Option(yr, yr);
     });
@@ -143,7 +143,7 @@ function getSites() {
   $.get('GRFService.svc/ReportSites', params, function (data) {
     var site = $('#Sites')[0];
     site.options.length = 0;
-    $.each(data.d, function (i, s) { site.options[site.options.length] = new Option(s.Name, s.Id) });
+    $.each(data, function (i, s) { site.options[site.options.length] = new Option(s.Name, s.Id) });
     $('#Sites').multiselect('refresh');
     $('#Sites').multiselect('uncheckAll');
   });
@@ -231,7 +231,7 @@ function updateChart(reportType) {
     return;
   $.get(svc, params, function (data) {
     options.series.length = 0;
-    $.each(data.d, function (idx, series) {
+    $.each(data, function (idx, series) {
       series.connectNulls = false;
       series.type = $('#ChartStyle').val();
       options.series.push(series);
@@ -285,7 +285,7 @@ function getMaxData(pdata){
     success: function (data, textStatus) {
       if (textStatus == "success") {
         var grid = $("#tblMax")[0];
-        grid.addJSONData(data.d);
+        grid.addJSONData(data);
       }
     },
     error: function (data, textStatus) {

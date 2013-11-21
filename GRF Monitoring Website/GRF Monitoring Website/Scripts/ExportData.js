@@ -97,8 +97,8 @@ function getData(pdata) {
     success: function (data, textStatus) {
       if (textStatus == "success") {
         var grid = $("#export")[0];
-        grid.addJSONData(data.d.Data);
-        if (data.d.IsWater) {
+        grid.addJSONData(data.Data);
+        if (data.IsWater) {
           $(grid).hideCol('DewPoint');
           $(grid).hideCol('AbsHumidity');
           $(grid).hideCol('RH');
@@ -141,7 +141,7 @@ function getYears() {
     var sel = $('#Year').get(0);
     sel.options.length = 0;
     sel.options[0] = new Option('', '');
-    $.each(data.d, function (index, yr) {
+    $.each(data, function (index, yr) {
       sel.options[sel.options.length] = new Option(yr, yr);
     });
     $(sel).find('option[value="' + curVal + '"]').attr('selected', true);
@@ -152,18 +152,18 @@ function updateDates() {
   params.year = $('#Year').val();
   params.site = $('#Site').val();
   $.get('GRFService.svc/DateRange', params, function (data) {
-    if (data.d.length === 0) {
+    if (data.length === 0) {
       $('#FromDate').attr('disabled', 'disabled');
       $('#ToDate').attr('disabled', 'disabled');
     } else {
       $('#FromDate').removeAttr('disabled');
       $('#ToDate').removeAttr('disabled');
-      $('#FromDate').datepicker('option', 'minDate', new Date(data.d[0]));
-      $('#FromDate').datepicker('option', 'maxDate', new Date(data.d[1]));
-      $('#FromDate').datepicker('setDate', new Date(data.d[0]));
-      $('#ToDate').datepicker('option', 'minDate', new Date(data.d[0]));
-      $('#ToDate').datepicker('option', 'maxDate', new Date(data.d[1]));
-      $('#ToDate').datepicker('setDate',new Date(data.d[1]));
+      $('#FromDate').datepicker('option', 'minDate', new Date(data[0]));
+      $('#FromDate').datepicker('option', 'maxDate', new Date(data[1]));
+      $('#FromDate').datepicker('setDate', new Date(data[0]));
+      $('#ToDate').datepicker('option', 'minDate', new Date(data[0]));
+      $('#ToDate').datepicker('option', 'maxDate', new Date(data[1]));
+      $('#ToDate').datepicker('setDate',new Date(data[1]));
     }
   });
 }
@@ -176,7 +176,7 @@ function getSites() {
     var sel = $('#Site').get(0);
     sel.options.length = 0;
     sel.options[0] = new Option('', '');
-    $.each(data.d, function (index, site) {
+    $.each(data, function (index, site) {
       sel.options[sel.options.length] = new Option(site.SITE_NAME, site.Site_ID);
     });
     $(sel).find('option[value="' + curVal + '"]').attr('selected', true);
@@ -191,7 +191,7 @@ function getTypes() {
     var sel = $('#Type').get(0);
     sel.options.length = 0;
     sel.options[0] = new Option('', '');
-    $.each(data.d, function (index, t) {
+    $.each(data, function (index, t) {
       sel.options[sel.options.length] = new Option(t, t);
     });
     $(sel).find('option[value="' + curVal + '"]').attr('selected', true);

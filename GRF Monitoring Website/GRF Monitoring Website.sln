@@ -22,7 +22,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "GRF Monitoring Website", "G
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "51332"
+		VWDPort = "54197"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarciaCharts", "GarciaCharts\GarciaCharts.csproj", "{F0070D4D-B2D9-48B4-8F3B-302CA1F77FC3}"

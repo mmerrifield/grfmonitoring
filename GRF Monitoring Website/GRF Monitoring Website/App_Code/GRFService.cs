@@ -9,13 +9,15 @@ using System.Text;
 using System.IO;
 using System.Collections.Specialized;
 using System.Web;
+using System.Web.Script.Serialization;
 
 [ServiceContract(Namespace = "")]
-[AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
+[AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Required)]
+[ServiceBehavior(IncludeExceptionDetailInFaults = true)]
 public class GRFService
 {
   #region -- Site Management --
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   [OperationContract]
   public bool Admin()
   {
@@ -23,7 +25,7 @@ public class GRFService
     return isAdmin;
   }
 
-  [WebGet]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   [OperationContract]
   public bool Auth()
   {
@@ -38,7 +40,7 @@ public class GRFService
   /// <param name="sortIndex"></param>
   /// <param name="sortDirection"></param>
   /// <returns></returns>
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   [OperationContract]
   public JQGridData Sites(int pageIndex, int pageSize, string sortIndex, string sortDirection)
   {
@@ -72,6 +74,8 @@ public class GRFService
         row.cell.Add(si.Color);
         row.cell.Add(si.DataStartDate.HasValue ? si.DataStartDate.Value.ToShortDateString() : string.Empty);
         row.cell.Add(si.DataEndDate.HasValue ? si.DataEndDate.Value.ToShortDateString() : string.Empty);
+        row.cell.Add(string.Empty); //si.Lat.HasValue ? si.Lat.Value.ToString() : string.Empty);
+        row.cell.Add(string.Empty); //si.Lng.HasValue ? si.Lng.Value.ToString() : string.Empty);
         data.rows.Add(row);
       }
       data.page = pageIndex;
@@ -83,7 +87,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   public List<ReportSite> ReportSites(int startMon, int startYr, int endMon, int endYr)
   {
     using (var context = new GarciaDataContext())
@@ -121,6 +125,12 @@ public class GRFService
       string siteName = formData["SiteName"];
       string directions = formData["Directions"];
       string color = formData["Color"];
+      decimal? lat = null;
+      if (!string.IsNullOrEmpty(formData["Lat"]))
+        lat = decimal.Parse(formData["Lat"]);
+      decimal? lng = null;
+      if (!string.IsNullOrEmpty(formData["Lng"]))
+        lng = decimal.Parse(formData["Lng"]);
       if (!string.IsNullOrEmpty(color) && color[0] != '#')
         color = "#" + color;
       if (string.IsNullOrEmpty(color))
@@ -138,7 +148,9 @@ public class GRFService
               Site_ID = siteId,
               SITE_NAME = siteName,
               Directions = directions,
-              Color = color
+              Color = color//,
+              //Lat = lat,
+              //Lng = lng
             };
             context.SiteInfos.InsertOnSubmit(si);
             context.SubmitChanges();
@@ -149,10 +161,12 @@ public class GRFService
         else if (op == "edit")
         {
           SiteInfo si = context.SiteInfos.FirstOrDefault(s => s.OBJECTID == id);
-          if (si != null && string.Compare(si.Directions, directions) != 0 || string.Compare(si.Color, color) != 0)
+          if (si != null) // && string.Compare(si.Directions, directions) != 0 || string.Compare(si.Color, color) != 0)
           {
             si.Directions = directions;
             si.Color = color;
+            //si.Lat = lat;
+            //si.Lng = lng;
             context.SubmitChanges();
           }
           else
@@ -179,7 +193,7 @@ public class GRFService
   /// <param name="sortIndex"></param>
   /// <param name="sortDirection"></param>
   /// <returns></returns>
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   [OperationContract]
   public JQGridData SiteHobos(string siteId)
   {
@@ -226,7 +240,7 @@ public class GRFService
 
   #region -- Export Data --
   [OperationContract]
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   public List<string> Years(string type, string site)
   {
     using (var context = new GarciaDataContext())
@@ -243,7 +257,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   public List<string> SensorTypes(string year, string site)
   {
     using (var context = new GarciaDataContext())
@@ -260,7 +274,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   public List<SiteInfo> AvailSites(string year, string type)
   {
     using (var context = new GarciaDataContext())
@@ -279,7 +293,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   public List<string> DateRange(string year, string site)
   {
     using (var context = new GarciaDataContext())
@@ -321,7 +335,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   public Stream DownloadData(string year, string site, string type, string from, string to)
   {
     using (var context = new GarciaDataContext())
@@ -381,7 +395,7 @@ public class GRFService
 
 
   [OperationContract]
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   public HOBOExport SiteExport(string year, string site, string type, string from, string to,
     int pageIndex, int pageSize, string sortIndex, string sortDirection)
   {
@@ -439,7 +453,7 @@ public class GRFService
 
   #region -- Reporting Support --
   [OperationContract]
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   public List<ChartSeries> WeeklyMWATData(int startMon, int startYr, int endMon, int endYr, string sites)
   {
     try
@@ -477,7 +491,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   public List<ChartSeries> WeeklyMWMTData(int startMon, int startYr, int endMon, int endYr, string sites)
   {
     try
@@ -567,7 +581,7 @@ public class GRFService
 
 
   [OperationContract]
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   public Stream ExportReport(string format, int startMon, int startYr, int endMon, int endYr, string sites)
   {
     List<ChartSeries> series = null;
@@ -676,7 +690,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   public JQGridData MaxMWATData(int startYr, int endYr, string sites, int pageIndex, int pageSize)
   {
     JQGridData data = new JQGridData();
@@ -712,7 +726,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
   public JQGridData MaxMWMTData(int startYr, int endYr, string sites, int pageIndex, int pageSize)
   {
     JQGridData data = new JQGridData();
@@ -745,6 +759,47 @@ public class GRFService
     if (data.total % pageSize != 0 || data.total == 0)
       data.total++;
     return data;
+  }
+  #endregion
+
+  #region -- Mapping Functions --
+  [OperationContract]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  public BoundaryData Boundaries()
+  {
+    BoundaryData data = new BoundaryData();
+    data.Watershed.Add(new LatLngPoint { Lat = 37.3333, Lng = -121.9 });
+    data.Watershed.Add(new LatLngPoint { Lat = 36.6, Lng = -121.9 });
+    data.Watershed.Add(new LatLngPoint { Lat = 37.3, Lng = -120.4833 });
+    data.Watershed.Add(new LatLngPoint { Lat = 37.3333, Lng = -121.9 });
+
+    data.Project.Add(new LatLngPoint { Lat = 37, Lng = -121.9 });
+    data.Project.Add(new LatLngPoint { Lat = 36, Lng = -120.5 });
+    data.Project.Add(new LatLngPoint { Lat = 36.6, Lng = -119.9 });
+    data.Project.Add(new LatLngPoint { Lat = 37, Lng = -121.9 });
+    return data;
+  }
+
+  /// <summary>
+  /// Returns data used to draw information on a map.
+  /// </summary>
+  /// <param name="year">Year the data applies.</param>
+  /// <param name="infographic">Name of the data type to return.</param>
+  /// <returns></returns>
+  [OperationContract]
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  public List<MapMarker> Markers(int year, string infographic)
+  {
+    // TODO: based on infographic and configuration options, generate the appropriate marker information.
+    List<MapMarker> markers = new List<MapMarker>();
+    markers.Add(new MapMarker{Lat = 37.333, Lng = -121.9, 
+      Color = "#00FFAA", 
+      Radius = 40000, 
+      ShowInfographic = !string.IsNullOrEmpty(infographic),
+      Tooltip = "This would be the text that is displayed for the marker",
+      InfoText = "<div><b>HELLO</b> world.  Why don't you resize in a manner that makes the data fit?  Perhaps you are expecting a much longer set of text?</div><br/>"
+    });
+    return markers;
   }
   #endregion
 }
@@ -785,4 +840,34 @@ public class WeeklyData
   public string Name { get; set; }
   public double MovAvg { get; set; }
   public decimal Threshold { get; set; }
+}
+
+public class BoundaryData
+{
+  public BoundaryData()
+  {
+    Watershed = new List<LatLngPoint>();
+    Project = new List<LatLngPoint>();
+  }
+
+  public List<LatLngPoint> Watershed { get; set; }
+  public List<LatLngPoint> Project { get; set; }
+}
+
+public class LatLngPoint
+{
+  public double Lat { get; set; }
+  public double Lng { get; set; }
+}
+
+public class MapMarker
+{
+  public double Lat { get; set; }
+  public double Lng { get; set; }
+  public string Color { get; set; }
+  public double Radius { get; set; }
+  public bool HasData { get; set; }
+  public bool ShowInfographic { get; set; }
+  public string Tooltip { get; set; }
+  public string InfoText { get; set; }
 }
