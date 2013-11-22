@@ -68,6 +68,21 @@ div.Results
   padding: 8px 8px 8px 8px;
 }
 
+#MapContainer
+{
+  background-color: #F2F2F2;
+  width:96%;
+  margin: 10px 2% 10px 2%;
+  padding: 10px 0px 10px 0px;
+}
+#map-canvas
+{
+  height:600px;
+  width:96%;
+  margin-left:2%;
+  margin-right:2%;
+}
+
 /* Divs used on the Import Data page */
 #ImportContainer
 {

@@ -20,11 +20,6 @@
                         <asp:CreateUserWizardStep ID="CreateUserWizardStep1" runat="server"></asp:CreateUserWizardStep>
                         <asp:CompleteWizardStep ID="CompleteWizardStep1" runat="server"></asp:CompleteWizardStep>
                     </WizardSteps>
-
-                    <MailDefinition CC="aedwards@datasushi.net" IsBodyHtml="True"
-                        Subject="New user registered!">
-                    </MailDefinition>
-
                 </asp:CreateUserWizard>
             </td>
         </tr>

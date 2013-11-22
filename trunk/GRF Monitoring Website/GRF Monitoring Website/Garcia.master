@@ -39,7 +39,7 @@
                     <div id='PageNav'>
                       <div id='btns'>
                         <input type='radio' id='aHome' name='radio' class='navBtn' /><label for='aHome'>Home</label>
-                        <input type='radio' id='aData' name='radio' class='navBtn'/><label for='aData'>Data</label>
+                        <input type='radio' id='aData' name='radio' class='navBtn'/><label for='aData' id='lData'>Data</label>
                         <input type='radio' id='aReport' name='radio' class='navBtn' /><label for='aReport'>Reports</label>
                         <input type='radio' id='aMap' name='radio' class='navBtn' /><label for='aMap'>Map</label>
                         <input type='radio' id='aContact' name='radio' class='navBtn'/><label for='aContact'>Contact</label>
