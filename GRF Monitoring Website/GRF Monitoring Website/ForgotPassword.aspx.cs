@@ -22,28 +22,21 @@ public partial class ForgotPassword : System.Web.UI.Page
     try
     {
       MailMessage msg = new MailMessage();
-      string fromEmail = ConfigurationManager.AppSettings["AdminEmail"];
-      string fromName = ConfigurationManager.AppSettings["AdminUsername"];
-      msg.From = new MailAddress(fromEmail, fromName);
 
-      msg.To.Clear();
       msg.To.Add(e.Message.To.ElementAt(0));
       msg.Subject = "Password Reminder";
 
       msg.IsBodyHtml = true;
       msg.Body = e.Message.Body;
 
-      Configuration config = WebConfigurationManager.OpenWebConfiguration(HttpContext.Current.Request.ApplicationPath);
-      MailSettingsSectionGroup settings = (MailSettingsSectionGroup)config.GetSectionGroup("system.net/mailSettings");
-
-      SmtpClient client = new SmtpClient(settings.Smtp.Network.Host, settings.Smtp.Network.Port);
-      client.Credentials = new NetworkCredential(settings.Smtp.Network.UserName, settings.Smtp.Network.Password);
+      SmtpClient client = new SmtpClient(); //settings.Smtp.Network.Host, settings.Smtp.Network.Port);
       client.EnableSsl = true;
       client.Send(msg);
     }
-    catch
+    catch (Exception ex)
     {
       e.Cancel = true;
     }
   }
+
 }

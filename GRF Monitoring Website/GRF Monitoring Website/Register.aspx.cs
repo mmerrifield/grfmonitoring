@@ -34,12 +34,8 @@ public partial class Register : System.Web.UI.Page
     // send the email using SSL
 
     MailMessage msg = new MailMessage();
-    string fromEmail = ConfigurationManager.AppSettings["AdminEmail"];
-    string fromName = ConfigurationManager.AppSettings["AdminUsername"];
-    msg.From = new MailAddress(fromEmail, fromName);
 
-    msg.To.Clear();
-    msg.To.Add(new MailAddress(fromEmail, fromName));
+    msg.To.Add(ConfigurationManager.AppSettings["AdminEmails"]);
     msg.Subject = "New user registered on Garcia River Forest Monitoring site";
 
     msg.IsBodyHtml = true;
@@ -51,18 +47,22 @@ public partial class Register : System.Web.UI.Page
     msg.Body += "<tr><td align=right><b>Email:</b></td><td>" + RegisterUser.Email + "</td></tr>";
 
     msg.Body += "</table>";
-    msg.Body += "<p>To activate this user and modify their roles, click <a href=\"http://www.grfmonitoring.net/ManageUsers.aspx\">here</a>.</p>";
+    string baseUrl = Request.Url.GetLeftPart(UriPartial.Authority);
+    string[] segments = Request.Url.Segments;
+    for (int i = 1; i < Request.Url.Segments.Count() - 1; ++i)
+      baseUrl += Request.Url.Segments[i] + "/";
+    msg.Body += string.Format("<p>To activate this user and modify their roles, click <a href=\"{0}{1}\">here</a>.</p>", baseUrl, "ManageUsers.aspx");
     msg.Body += "</body></html>";
 
     try
     {
       //Configuration config = WebConfigurationManager.OpenWebConfiguration(HttpContext.Current.Request.ApplicationPath);
-      MailSettingsSectionGroup settings = (MailSettingsSectionGroup)ConfigurationManager.GetSection("system.net/mailSettings");
+      //MailSettingsSectionGroup settings = (MailSettingsSectionGroup)ConfigurationManager.GetSection("system.net/mailSettings");
 
-      SmtpClient client = new SmtpClient(settings.Smtp.Network.Host, settings.Smtp.Network.Port);
-      client.Credentials = new NetworkCredential(settings.Smtp.Network.UserName, settings.Smtp.Network.Password);
+      SmtpClient client = new SmtpClient(); //settings.Smtp.Network.Host, settings.Smtp.Network.Port);
+      //client.Credentials = new NetworkCredential(settings.Smtp.Network.UserName, settings.Smtp.Network.Password);
       client.EnableSsl = true;
-      ServicePointManager.ServerCertificateValidationCallback = delegate(object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
+      //ServicePointManager.ServerCertificateValidationCallback = delegate(object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
       client.Send(msg);
     }
     catch

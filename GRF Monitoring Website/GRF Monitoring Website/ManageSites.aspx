@@ -5,7 +5,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div id='databtns' style='text-align:right;margin-right:210px;margin-top:-15px;margin-bottom:10px'>
-      <input type='radio' id='aImport' name='radio2' class='dataBtn' /><label for='aImport'>Import</label>
+      <input type='radio' id='aImport' name='radio2' class='dataBtn' /><label for='aImport' id='lImport'>Import</label>
       <input type='radio' id='aExport' name='radio2' class='dataBtn' /><label for='aExport'>Export</label>
       <input type='radio' id='aManage' name='radio2' class='dataBtn' /><label for='aManage' id='lManage'>Manage</label>
     </div>

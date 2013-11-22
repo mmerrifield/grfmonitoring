@@ -1,21 +1,8 @@
 ﻿$(function () {
   $('#btns').buttonset();
-  /*
-  $.ajax({
-    type: 'GET',
-    url: 'GRFService.svc/Auth',
-    contentType: 'application/json; charset=utf-8;',
-    dataType: 'json',
-    data: {},
-    success: function (resp) {
-      alert(data);
-    },
-    error: function (a, b, c) {
-      alert(c); 
-    }
-  });*/
+
   $.get('GRFService.svc/Auth', {}, function (resp) {
-    if (!resp)
+    if (!resp || resp.length > 10)
       $('#btns').hide();
   });
   $.get('GRFService.svc/Admin', {}, function (resp) {
@@ -24,6 +11,8 @@
       $('#lUsers').remove();
       $('#aManage').remove();
       $('#lManage').remove();
+      $('#aImport').remove();
+      $('#lImport').remove();
     }
   });
   $('.navBtn').on('click', function () {
@@ -31,7 +20,7 @@
     if (id === 'aHome')
       window.location.href = 'Home.aspx';
     else if (id === 'aData')
-      window.location.href = 'ImportData.aspx';
+      window.location.href = 'ExportData.aspx';
     else if (id === 'aReport')
       window.location.href = 'Reports2.aspx';
     else if (id === 'aMap')

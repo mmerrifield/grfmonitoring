@@ -200,7 +200,7 @@ public class GRFService
     JQGridData data = new JQGridData();
     using (var context = new GarciaDataContext())
     {
-      var hobos = context.SiteHobos.OrderByDescending(h => h.YEAR_).ThenBy(h => h.TYPE).ThenBy(h => h.HOBO_ID);
+      var hobos = context.SiteHobos.Where(h => h.SITE_ID == siteId).OrderByDescending(h => h.YEAR_).ThenBy(h => h.TYPE).ThenBy(h => h.HOBO_ID);
       data.records = hobos.Count();
       foreach (SiteHobo hobo in hobos)
       {
