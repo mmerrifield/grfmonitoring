@@ -13,13 +13,17 @@
             <td valign="top">
                 <asp:CreateUserWizard ID="RegisterUser" runat="server" 
                   OnCreatedUser="RegisterUser_CreatedUser" 
-                  OnSendingMail="RegisterUser_SendingEmail" DisplayCancelButton="True" 
-                  oncancelbuttonclick="RegisterUser_CancelButtonClick">
+                  DisplayCancelButton="True" 
+                  oncancelbuttonclick="RegisterUser_CancelButtonClick" BorderColor="#000066" 
+                  BorderStyle="Inset" BorderWidth="4px" 
+                  onsendingmail="RegisterUser_OnSendingEmail">
+                    <CreateUserButtonStyle Width="120px" />
                     <TitleTextStyle Font-Bold="true" Font-Names="Verdana" />
                     <WizardSteps>
                         <asp:CreateUserWizardStep ID="CreateUserWizardStep1" runat="server"></asp:CreateUserWizardStep>
                         <asp:CompleteWizardStep ID="CompleteWizardStep1" runat="server"></asp:CompleteWizardStep>
                     </WizardSteps>
+                    <CancelButtonStyle Width="120px" />
                 </asp:CreateUserWizard>
             </td>
         </tr>

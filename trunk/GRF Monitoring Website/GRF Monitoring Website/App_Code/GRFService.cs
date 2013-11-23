@@ -74,8 +74,8 @@ public class GRFService
         row.cell.Add(si.Color);
         row.cell.Add(si.DataStartDate.HasValue ? si.DataStartDate.Value.ToShortDateString() : string.Empty);
         row.cell.Add(si.DataEndDate.HasValue ? si.DataEndDate.Value.ToShortDateString() : string.Empty);
-        row.cell.Add(si.Lat.HasValue ? si.Lat.Value.ToString() : string.Empty);
-        row.cell.Add(si.Lng.HasValue ? si.Lng.Value.ToString() : string.Empty);
+        row.cell.Add(string.Empty); //si.Lat.HasValue ? si.Lat.Value.ToString() : string.Empty);
+        row.cell.Add(string.Empty); //si.Lng.HasValue ? si.Lng.Value.ToString() : string.Empty);
         data.rows.Add(row);
       }
       data.page = pageIndex;
@@ -148,9 +148,9 @@ public class GRFService
               Site_ID = siteId,
               SITE_NAME = siteName,
               Directions = directions,
-              Color = color,
-              Lat = lat,
-              Lng = lng
+              Color = color//,
+              //Lat = lat,
+              //Lng = lng
             };
             context.SiteInfos.InsertOnSubmit(si);
             context.SubmitChanges();
@@ -165,8 +165,8 @@ public class GRFService
           {
             si.Directions = directions;
             si.Color = color;
-            si.Lat = lat;
-            si.Lng = lng;
+            //si.Lat = lat;
+            //si.Lng = lng;
             context.SubmitChanges();
           }
           else
