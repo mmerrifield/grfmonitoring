@@ -68,10 +68,10 @@
         <elementListCompartment Id="dce0359a-3ac8-45e2-aef9-e1249791dec2" absoluteBounds="9.765, 8.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="59e39419-3408-4bcb-a447-73742831555a" absoluteBounds="8.5, 1.125, 2, 2.5401025390625">
+    <classShape Id="84c633c0-c659-4068-be9b-495822e50988" absoluteBounds="8.375, 1, 2, 2.7324039713541666">
       <DataClassMoniker Name="/GarciaDataContext/SiteInfo" />
       <nestedChildShapes>
-        <elementListCompartment Id="74933ccb-3d81-4299-8306-180cb9ad82c6" absoluteBounds="8.515, 1.585, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="ffbf463d-1ff1-4686-89ef-9b400d0e1a3f" absoluteBounds="8.39, 1.46, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

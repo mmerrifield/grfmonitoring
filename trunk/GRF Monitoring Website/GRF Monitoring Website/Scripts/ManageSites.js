@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿var canEdit = false;
+$(function () {
   $('#databtns').buttonset();
   $('.dataBtn').on('click', function () {
   });
@@ -6,22 +7,33 @@
   $('#aData').button('refresh');
   $('#aManage')[0].checked = true;
   $('#aManage').button('refresh');
-
+  $.ajax({
+    type: "GET",
+    url: 'GRFService.svc/Admin',
+    dataType: 'json',
+    async: false,
+    contentType: "application/json; charset=utf-8;",
+    data: {},
+    success: function (data) {
+      canEdit = data;
+    }
+  });
   var colorPicker;
   $("#sites").jqGrid({
     datatype: function (pdata) {
       getSites(pdata);
     },
-    colNames: ['Site Id', 'Site Name', 'Directions', 'Color', 'Data Start Date', 'Data End Date'], //, 'Latitude', 'Longitude'],
+    colNames: ['Site Id', 'Site Name', 'Directions', 'Color', 'Data Start Date', 'Data End Date', 'Latitude', 'Longitude', 'Hide'],
     colModel: [
       { name: 'SiteId', index: 'SiteId', width: '100', editable: true },
       { name: 'SiteName', index: 'SiteName', width: '200', editable: true, edittype: 'textarea', editrules: { required: true }, editoptions: { 'rows': '2', 'cols': '40' }, cellattr: function () { return 'style="white-space: normal";' } },
       { name: 'Directions', index: 'Comment', editable: true, width: '375', edittype: 'textarea', editrules: { required: false }, editoptions: { 'rows': '5', 'cols': '40' }, cellattr: function () { return 'style="white-space: normal";' } },
       { name: 'Color', index: 'Color', editable: true, width: '75', editable: true, edittype: 'custom', editoptions: { custom_element: getColorPicker, custom_value: updateColorValue }, formatter: function (cellValue) { return '<div style="width:20px;height:15px;background-color:' + cellValue + '"><input type="hidden" value="' + cellValue + '"></input></div>' } },
-      { name: 'DtStart', index: 'DtStart', editable: false, width: '175', align: 'right', formatter: 'date', editoptions: { dataInit: function (el) { setTimeout(function () { $(el).datepicker(); }, 200); } } },
-      { name: 'DtEnd', index: 'DtEnd', editable: false, width: '175', align: 'right', formatter: 'date', editoptions: { dataInit: function (el) { setTimeout(function () { $(el).datepicker(); }, 200); } } },
+      { name: 'DtStart', index: 'DtStart', editable: false, width: '175', align: 'right' /*,formatter: 'date', editoptions: { dataInit: function (el) { setTimeout(function () { $(el).datepicker(); }, 200); } }*/ },
+      { name: 'DtEnd', index: 'DtEnd', editable: false, width: '175', align: 'right' /*, formatter: 'date', editoptions: { dataInit: function (el) { setTimeout(function () { $(el).datepicker(); }, 200); } }*/ },
       { name: 'Lat', index: 'Lat', editable: true, width: '100', align: 'right', sortable: false, formatter: 'number', formatoptions: { decimalPlaces: 4 }, editor: 'number', editoptions: { decimalPlaces: 4} },
-      { name: 'Lng', index: 'Lng', editable: true, width: '100', align: 'right', sortable: false, formatter: 'number', formatoptions: { decimalPlaces: 4 }, editor: 'number', editoptions: { decimalPlaces: 4} }
+      { name: 'Lng', index: 'Lng', editable: true, width: '100', align: 'right', sortable: false, formatter: 'number', formatoptions: { decimalPlaces: 4 }, editor: 'number', editoptions: { decimalPlaces: 4} },
+      { name: 'HideSite', index: 'HideSite', editable: true, width: '75', align: 'center', sortable: false, edittype: 'checkbox', formatter: 'checkbox', align: 'center', editoptions: { value: 'true:false'} }
     ],
     editurl: 'GRFService.svc/UpdateSite',
     autowidth: true,
@@ -46,26 +58,12 @@
         params: ['SiteId']
       }
     ]
-  }).navGrid('#navsites', { view: false, edit: true, add: true, del: false, search: false },
-    { editCaption: 'Edit Site', width: 380, afterSubmit: function (response, postdata) {
-      $('#loading').hide();
-      var v = jQuery.parseJSON(response.responseText);
-      msg = v !== null ? v.d : '';
-      success = msg === null || msg.length === 0;
-      return [success, msg, 0];
+  }).navGrid('#navsites', { view: false, edit: canEdit, add: canEdit, del: false, search: false },
+    { editCaption: 'Edit Site', width: 380, reloadAfterSubmit: true,
+      beforeShowForm: function (formid) { $('#SiteId').attr('readonly', 'readonly'); $('#SiteName').attr('readonly', 'readonly'); }
     },
-      beforeShowForm: function (formid) { $('#SiteId').attr('readonly', 'readonly'); $('#SiteName').attr('readonly', 'readonly'); },
-      afterComplete: function (response, formdata, formid) { $('#loading').hide(); }
-    },
-    { addCaption: 'Add Site', width: 380, afterSubmit: function (response, postdata) {
-      $('#loading').hide();
-      var v = jQuery.parseJSON(response.responseText);
-      msg = v !== null ? v.d : '';
-      success = msg === null || msg.length === 0;
-      return [success, msg, 0];
-    },
-      beforeShowForm: function (formid) { $('#SiteId').removeAttr('readonly'); $('#SiteName').removeAttr('readonly'); },
-      afterComplete: function (response, formdata, formid) { $('#loading').hide(); }
+    { addCaption: 'Add Site', width: 380, reloadAfterSubmit: true,
+      beforeShowForm: function (formid) { $('#SiteId').removeAttr('readonly'); $('#SiteName').removeAttr('readonly'); }
     }
     );
   $('#sites').setGridHeight('500px');

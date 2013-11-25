@@ -14,7 +14,7 @@ $(function () {
     datatype: function (pdata) {
       getData(pdata);
     },
-    colNames: ['Id', 'HOBO Id', 'Site', 'Date/Time', 'Temp', 'Dew Point', 'Abs Humidity', 'RH', 'Date Uploaded', 'Uploaded By'],
+    colNames: ['Id', 'HOBO Id', 'Site', 'Date/Time', 'Temp (C)', 'Dew Point (C)', 'Abs Humidity (%)', 'Rel Humidity (%)', 'Date Uploaded', 'Uploaded By'],
     colModel: [
       { name: 'Id', index: 'Id', width: '60' },
       { name: 'HoboId', index: 'HoboId', width: '75' },
@@ -23,7 +23,7 @@ $(function () {
       { name: 'Temp', index: 'Temp', width: '80', align: 'right' },
       { name: 'DewPoint', index: 'DewPoint', width: '80', align: 'right' },
       { name: 'AbsHumidity', index: 'AbsHumidity', width: '80', align: 'right' },
-      { name: 'RH', index: 'RH', width: '80', align: 'right' },
+      { name: 'RelHumidity', index: 'RelHumidity', width: '80', align: 'right' },
       { name: 'DateUploaded', index: 'DateUploaded', width: '120' },
       { name: 'UploadedBy', index: 'UploadedBy', width: '90' }
     ],
@@ -101,12 +101,12 @@ function getData(pdata) {
         if (data.IsWater) {
           $(grid).hideCol('DewPoint');
           $(grid).hideCol('AbsHumidity');
-          $(grid).hideCol('RH');
+          $(grid).hideCol('RelHumidity');
         }
         else {
           $(grid).showCol('DewPoint');
           $(grid).showCol('AbsHumidity');
-          $(grid).showCol('RH');
+          $(grid).showCol('RelHumidity');
         }
       }
     },
