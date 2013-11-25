@@ -56,6 +56,7 @@ $(function () {
     }
   }
   });
+  $('#Series').multiselect({ header: false, multiple: false, selectedList: 1, height: 'auto', minWidth: 'auto', 'close': updateChart });
   $('#ShowMarkers').multiselect({ header: false, multiple: false, selectedList: 1, height: 'auto', minWidth: 'auto', 'close': function () {
     var isEnabled = $(this).val() === 'true';
     options.plotOptions.line.marker.enabled = isEnabled;
@@ -154,6 +155,7 @@ function getParams(clear){
   params.startYr = $('#StartYr').val();
   params.endMon = $('#EndMon').val();
   params.endYr = $('#EndYr').val();
+  params.format = $('#Series').val();
   if (clear && params.startYr === null || params.startYr.length === 0 || params.endYr === null || params.endYr.length === 0) {
     clearSites();
     return null;
@@ -185,13 +187,17 @@ function initChart() {
     }],
     tooltip: {
       formatter: function () {
-        if (this.series.name.length >= 9 && this.series.name.substring(0,9) === 'Threshold')
-          return false; 
-        else
+        if (this.series.name.length >= 9 && this.series.name.substring(0, 9) === 'Threshold')
+          return false;
+        else if ($('#Series').val() == 'FS') 
           return '<b>' + this.series.name + '</b><br/>' +
                         Highcharts.dateFormat('%e - %b - %Y',
                                               new Date(this.x))
                     + '  <br/>' + this.y.toFixed(2) + ' °C';
+        else
+          return '<b>' + this.series.name + '</b><br/>' +
+            Highcharts.dateFormat('%e - %b', new Date(this.x))
+              + ' <br/>' + this.y.toFixed(2) + ' °C';
       }
     },
     plotOptions: {
@@ -230,6 +236,11 @@ function updateChart(reportType) {
   if (params.sites.length === 0)
     return;
   $.get(svc, params, function (data) {
+    if ($('#Series').val() === 'SS')
+      options.xAxis.labels.format = '{value:%e - %b}';
+    else
+      options.xAxis.labels.format = '{value:%b %y}';
+
     options.series.length = 0;
     $.each(data, function (idx, series) {
       series.connectNulls = false;

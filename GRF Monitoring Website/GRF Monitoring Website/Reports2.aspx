@@ -56,6 +56,13 @@ From:&nbsp;
        <option value='MWMT'>MWMT</option>
        <option value='MaxMWMT'>Max MWMT</option>
        </select>
+       
+       <span class='Graph'>&nbsp;Series Format:&nbsp;
+       <select id='Series'>
+       <option value='TS'>Sequential</option>
+       <option value='SS'>Stacked</option>
+       </select>
+       </span>
        <span class='Graph'>
        &nbsp;Plot Style:&nbsp;
        <select id='ChartStyle'>
