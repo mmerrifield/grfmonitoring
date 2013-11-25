@@ -10,12 +10,15 @@ using System.IO;
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.Script.Serialization;
+using System.Configuration;
 
 [ServiceContract(Namespace = "")]
 [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Required)]
 [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
 public class GRFService
 {
+  private static Dictionary<double, string> MarkerMapping;
+
   #region -- Site Management --
   [WebGet(ResponseFormat=WebMessageFormat.Json)]
   [OperationContract]
@@ -148,9 +151,9 @@ public class GRFService
               Site_ID = siteId,
               SITE_NAME = siteName,
               Directions = directions,
-              Color = color//,
-              //Lat = lat,
-              //Lng = lng
+              Color = color,
+              Lat = lat,
+              Lng = lng
             };
             context.SiteInfos.InsertOnSubmit(si);
             context.SubmitChanges();
@@ -165,8 +168,8 @@ public class GRFService
           {
             si.Directions = directions;
             si.Color = color;
-            //si.Lat = lat;
-            //si.Lng = lng;
+            si.Lat = lat;
+            si.Lng = lng;
             context.SubmitChanges();
           }
           else
@@ -788,18 +791,75 @@ public class GRFService
   /// <returns></returns>
   [OperationContract]
   [WebGet(ResponseFormat=WebMessageFormat.Json)]
-  public List<MapMarker> Markers(int year, string infographic)
+  public List<MapMarker> Markers(int year, bool showData)
   {
-    // TODO: based on infographic and configuration options, generate the appropriate marker information.
-    List<MapMarker> markers = new List<MapMarker>();
-    markers.Add(new MapMarker{Lat = 37.333, Lng = -121.9, 
-      Color = "#00FFAA", 
-      Radius = 40000, 
-      ShowInfographic = !string.IsNullOrEmpty(infographic),
-      Tooltip = "This would be the text that is displayed for the marker",
-      InfoText = "<div><b>HELLO</b> world.  Why don't you resize in a manner that makes the data fit?  Perhaps you are expecting a much longer set of text?</div><br/>"
-    });
-    return markers;
+    using (var context = new GarciaDataContext())
+    {
+      // Get our color mapping 
+      if (MarkerMapping == null)
+      {
+        string[] pctColors = ConfigurationManager.AppSettings["Thresholds"].Split(',');
+        MarkerMapping = new Dictionary<double, string>();
+        foreach (string s in pctColors)
+        {
+          string[] tokens = s.Split(':');
+          if (tokens.Length == 2)
+          {
+            double pct = 0.0;
+            if (double.TryParse(tokens[0], out pct))
+            {
+              MarkerMapping.Add(pct, tokens[1]);
+            }
+          }
+        }
+      }
+
+      // Temporary setting - just for testing
+      double tempLat = 37;
+      double tempLng = -121.9;
+
+      List<MapMarker> markers = new List<MapMarker>();
+      var records = context.MWMTMaxes.Where(m => m.YEAR_ == year.ToString()).OrderBy(m => m.SITE_NAME).ToList();
+      foreach (var site in context.SiteInfos)
+      {
+        // Find our data to display
+        var maxMWMT = records.FirstOrDefault(r => r.SiteID == site.Site_ID);
+        if (maxMWMT == null && showData) continue;
+        
+        // Build out our tooltip
+        string tipText = site.SITE_NAME;
+        if (maxMWMT != null)
+          tipText = string.Format("{0}\r\nDays Exceeding Threshold: {1} ({2})", site.SITE_NAME, maxMWMT.DaysExceed, maxMWMT.Percent.Value.ToString("0.00%"));
+
+        // Determine our marker color
+        string marker = "Images/white.png";
+        if (maxMWMT != null)
+        {
+          foreach (double pct in MarkerMapping.Keys.OrderBy(d => d))
+          {
+            if (maxMWMT.Percent.Value <= pct)
+            {
+              marker = string.Format("Images/{0}.png", MarkerMapping[pct]);
+              break;
+            }
+          }
+        }
+
+        // Add the marker data to return 
+        markers.Add(new MapMarker
+        {
+          Lat = site.Lat.HasValue && site.Lat.Value != 0 ? (double)site.Lat.Value : tempLat,
+          Lng = site.Lng.HasValue && site.Lng.Value != 0 ? (double)site.Lng.Value : tempLng,
+          Marker = marker,
+          Radius = 0.0,
+          Tooltip = tipText,
+          InfoText = string.Empty
+        });
+        tempLat += .03;
+        tempLng += .03;
+      }
+      return markers;
+    }
   }
   #endregion
 }
@@ -864,10 +924,9 @@ public class MapMarker
 {
   public double Lat { get; set; }
   public double Lng { get; set; }
-  public string Color { get; set; }
+  public string Marker { get; set; }
   public double Radius { get; set; }
-  public bool HasData { get; set; }
-  public bool ShowInfographic { get; set; }
+  public string Color { get; set; }
   public string Tooltip { get; set; }
   public string InfoText { get; set; }
 }

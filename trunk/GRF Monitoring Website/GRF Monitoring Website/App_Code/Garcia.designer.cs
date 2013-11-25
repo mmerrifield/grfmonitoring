@@ -1880,6 +1880,10 @@ public partial class SiteInfo : INotifyPropertyChanging, INotifyPropertyChanged
 	
 	private System.Nullable<System.DateTime> _DataEndDate;
 	
+	private System.Nullable<decimal> _Lat;
+	
+	private System.Nullable<decimal> _Lng;
+	
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1898,6 +1902,10 @@ public partial class SiteInfo : INotifyPropertyChanging, INotifyPropertyChanged
     partial void OnDataStartDateChanged();
     partial void OnDataEndDateChanging(System.Nullable<System.DateTime> value);
     partial void OnDataEndDateChanged();
+    partial void OnLatChanging(System.Nullable<decimal> value);
+    partial void OnLatChanged();
+    partial void OnLngChanging(System.Nullable<decimal> value);
+    partial void OnLngChanged();
     #endregion
 	
 	public SiteInfo()
@@ -2041,6 +2049,46 @@ public partial class SiteInfo : INotifyPropertyChanging, INotifyPropertyChanged
 				this._DataEndDate = value;
 				this.SendPropertyChanged("DataEndDate");
 				this.OnDataEndDateChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lat", DbType="Decimal(12,5)")]
+	public System.Nullable<decimal> Lat
+	{
+		get
+		{
+			return this._Lat;
+		}
+		set
+		{
+			if ((this._Lat != value))
+			{
+				this.OnLatChanging(value);
+				this.SendPropertyChanging();
+				this._Lat = value;
+				this.SendPropertyChanged("Lat");
+				this.OnLatChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lng", DbType="Decimal(12,5)")]
+	public System.Nullable<decimal> Lng
+	{
+		get
+		{
+			return this._Lng;
+		}
+		set
+		{
+			if ((this._Lng != value))
+			{
+				this.OnLngChanging(value);
+				this.SendPropertyChanging();
+				this._Lng = value;
+				this.SendPropertyChanged("Lng");
+				this.OnLngChanged();
 			}
 		}
 	}

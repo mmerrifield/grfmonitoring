@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12.625, 10.5" name="Garcia">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12, 10.5" name="Garcia">
   <DataContextMoniker Name="/GarciaDataContext" />
   <nestedChildShapes>
     <classShape Id="e848f0f4-f299-4b4a-9186-2a453472353d" absoluteBounds="5.625, 1, 2, 2.5401025390625">
@@ -68,10 +68,10 @@
         <elementListCompartment Id="dce0359a-3ac8-45e2-aef9-e1249791dec2" absoluteBounds="9.765, 8.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="1fb7a443-b0e0-4301-93af-e7b703ed168b" absoluteBounds="10.375, 1.125, 2, 2.1554996744791666">
+    <classShape Id="59e39419-3408-4bcb-a447-73742831555a" absoluteBounds="8.5, 1.125, 2, 2.5401025390625">
       <DataClassMoniker Name="/GarciaDataContext/SiteInfo" />
       <nestedChildShapes>
-        <elementListCompartment Id="24fe7306-313f-432d-9291-e6096948d526" absoluteBounds="10.39, 1.585, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="74933ccb-3d81-4299-8306-180cb9ad82c6" absoluteBounds="8.515, 1.585, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>
