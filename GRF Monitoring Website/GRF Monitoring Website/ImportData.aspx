@@ -13,17 +13,17 @@
     </div>    <div class='PageCtrls'>
       <div id='ImportDeviceContainer'>
         <h3>
-          Import HOBO Devices</h3>
+          Import Site/HOBO Lookup</h3>
         <input id="hobo_upload" name="hobo_upload" type="file" multiple="true" />
         <div style='margin-top: 10px'>
-          <a href='#' id='btnUploadDevices' style='margin-left: 100px'>Upload Device Files</a></div>
+          <a href='#' id='btnUploadDevices' style='margin-left: 100px'>Import Site/HOBO Lookup</a></div>
       </div>
       <div id='ImportDataContainer'>
         <h3>
           Import HOBO Data</h3>
         <input id="data_upload" name="data_upload" type="file" multiple="true" />
         <div style='margin-top: 10px'>
-          <a href="#" id='btnUploadData' style='margin-left: 110px'>Upload Data Files</a>
+          <a href="#" id='btnUploadData' style='margin-left: 110px'>Upload Lookup</a>
         </div>
       </div>
       <div style='clear: both'>
@@ -31,16 +31,7 @@
     </div>
     <div>
       <div id='ImportNotes'>
-        <b>Remember</b>: You need to upload HOBO device information prior to loading the
-        HOBO data.
-        <br />
-        <br />
-        Your HOBO data need to have the following fields: HOBO_ID, Temp, _DateTime. Some
-        sensors may include the following fields as well: DewPoint, AbsHumidity, RH.
-        <br />
-        <br />
-        The data must be contained in the first worksheet and it should be named Sheet1
-        (the default).
+        <b>Remember</b>: Each year that new data is uploaded, you need to upload the lookup table that relates HOBO IDs to SITE IDs. This lookup table must have the following fields: SITE_ID, HOBO_ID, YEAR_, TYPE (eg. “Water”, “Air_Humidity”, or “Air”), and CONTRIBUTOR. Your HOBO data need to have the following fields: HOBO_ID, Temp, _DateTime. Some sensors may include the following fields as well: DewPoint, AbsHumidity, RH. Temp and Dew Point should be in Celsius, and RH should be a %. The data must be contained in the first worksheet and it should be named Sheet1 (the default).
       </div>
       <div id='ImportImageContainer'>
         <img src="Images/HOBO_sheet.png" style='display: block; margin: auto' />

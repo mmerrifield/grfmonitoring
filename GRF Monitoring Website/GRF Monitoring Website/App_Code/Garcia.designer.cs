@@ -1884,6 +1884,8 @@ public partial class SiteInfo : INotifyPropertyChanging, INotifyPropertyChanged
 	
 	private System.Nullable<decimal> _Lng;
 	
+	private bool _HideSite;
+	
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1906,6 +1908,8 @@ public partial class SiteInfo : INotifyPropertyChanging, INotifyPropertyChanged
     partial void OnLatChanged();
     partial void OnLngChanging(System.Nullable<decimal> value);
     partial void OnLngChanged();
+    partial void OnHideSiteChanging(bool value);
+    partial void OnHideSiteChanged();
     #endregion
 	
 	public SiteInfo()
@@ -2089,6 +2093,26 @@ public partial class SiteInfo : INotifyPropertyChanging, INotifyPropertyChanged
 				this._Lng = value;
 				this.SendPropertyChanged("Lng");
 				this.OnLngChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HideSite", DbType="Bit NOT NULL")]
+	public bool HideSite
+	{
+		get
+		{
+			return this._HideSite;
+		}
+		set
+		{
+			if ((this._HideSite != value))
+			{
+				this.OnHideSiteChanging(value);
+				this.SendPropertyChanging();
+				this._HideSite = value;
+				this.SendPropertyChanged("HideSite");
+				this.OnHideSiteChanged();
 			}
 		}
 	}

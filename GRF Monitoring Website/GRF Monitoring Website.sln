@@ -27,6 +27,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "GRF Monitoring Website", "G
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C83E1BE4-583C-40FC-8E83-28674B8F75A2}"
 	ProjectSection(SolutionItems) = preProject
+		SQL Update Scripts\Add SiteHide Field.sql = SQL Update Scripts\Add SiteHide Field.sql
 		SQL Update Scripts\Add_LatLng_Cols.sql = SQL Update Scripts\Add_LatLng_Cols.sql
 		SQL Update Scripts\Primary Key Updates.sql = SQL Update Scripts\Primary Key Updates.sql
 	EndProjectSection

@@ -185,8 +185,8 @@ function initChart() {
     }],
     tooltip: {
       formatter: function () {
-        if (this.series.name === 'Threshold')
-          return '<b>' + this.series.name + '</b>: ' + this.y.toFixed(2) + ' C';
+        if (this.series.name.length >= 9 && this.series.name.substring(0,9) === 'Threshold')
+          return false; 
         else
           return '<b>' + this.series.name + '</b><br/>' +
                         Highcharts.dateFormat('%e - %b - %Y',
@@ -233,7 +233,10 @@ function updateChart(reportType) {
     options.series.length = 0;
     $.each(data, function (idx, series) {
       series.connectNulls = false;
-      series.type = $('#ChartStyle').val();
+      if (idx === 0)
+        series.type = 'line';
+      else
+        series.type = $('#ChartStyle').val();
       options.series.push(series);
       options.series.pointStart = Date.UTC(1970, 0, 0);
     });

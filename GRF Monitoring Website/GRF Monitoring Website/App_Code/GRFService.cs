@@ -24,8 +24,7 @@ public class GRFService
   [OperationContract]
   public bool Admin()
   {
-    var isAdmin = HttpContext.Current.User != null && HttpContext.Current.User.IsInRole("Admin");
-    return isAdmin;
+    return HttpContext.Current.User != null && HttpContext.Current.User.IsInRole("Admin");
   }
 
   [WebGet(ResponseFormat = WebMessageFormat.Json)]
@@ -51,7 +50,6 @@ public class GRFService
     using (var context = new GarciaDataContext())
     {
       IEnumerable<SiteInfo> sites = context.SiteInfos;
-      //IEnumerable<GarciaSite> sites = GarciaSite.getSites();
       data.records = sites.Count();
 
       // Order our data
@@ -77,8 +75,9 @@ public class GRFService
         row.cell.Add(si.Color);
         row.cell.Add(si.DataStartDate.HasValue ? si.DataStartDate.Value.ToShortDateString() : string.Empty);
         row.cell.Add(si.DataEndDate.HasValue ? si.DataEndDate.Value.ToShortDateString() : string.Empty);
-        row.cell.Add(string.Empty); //si.Lat.HasValue ? si.Lat.Value.ToString() : string.Empty);
-        row.cell.Add(string.Empty); //si.Lng.HasValue ? si.Lng.Value.ToString() : string.Empty);
+        row.cell.Add(si.Lat.HasValue ? si.Lat.Value.ToString() : string.Empty);
+        row.cell.Add(si.Lng.HasValue ? si.Lng.Value.ToString() : string.Empty);
+        row.cell.Add(si.HideSite ? "true" : "false");
         data.rows.Add(row);
       }
       data.page = pageIndex;
@@ -97,9 +96,10 @@ public class GRFService
     {
       try
       {
+        List<string> siteIds = context.SiteInfos.Where(s => !s.HideSite).Select(s => s.Site_ID).ToList();
         DateTime startDate = new DateTime(startYr, startMon, 1);
         DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr, endMon));
-        return context.FinalMWATs.Where(s => s.Date <= endDate && s.Date >= startDate)
+        return context.FinalMWATs.Where(s => s.Date <= endDate && s.Date >= startDate && siteIds.Contains(s.SiteID))
           .Select(s => new ReportSite { Id = s.SiteID, Name = s.SITE_NAME })
           .Distinct()
           .OrderBy(s => s.Name).ToList();
@@ -138,6 +138,7 @@ public class GRFService
         color = "#" + color;
       if (string.IsNullOrEmpty(color))
         color = null;
+      bool hideSite = string.Compare(formData["HideSite"], "true",true) == 0;
 
       using (var context = new GarciaDataContext())
       {
@@ -166,10 +167,18 @@ public class GRFService
           SiteInfo si = context.SiteInfos.FirstOrDefault(s => s.OBJECTID == id);
           if (si != null) 
           {
-            si.Directions = directions;
-            si.Color = color;
-            si.Lat = lat;
-            si.Lng = lng;
+            if (hideSite && context.SiteHobos.Where(s => s.SITE_ID == siteId).Count() == 0)
+            {
+              context.SiteInfos.DeleteOnSubmit(si);
+            }
+            else
+            {
+              si.Directions = directions;
+              si.Color = color;
+              si.Lat = lat;
+              si.Lng = lng;
+              si.HideSite = hideSite;
+            }
             context.SubmitChanges();
           }
           else
@@ -291,7 +300,7 @@ public class GRFService
         siteIds = context.SiteHobos.Where(h => h.TYPE == type).Select(h => h.SITE_ID).Distinct();
       else
         siteIds = context.SiteHobos.Where(h => h.TYPE == type && h.YEAR_ == year).Select(h => h.SITE_ID).Distinct();
-      return context.SiteInfos.Where(si => siteIds.Contains(si.Site_ID)).OrderBy(si => si.SITE_NAME).ToList();
+      return context.SiteInfos.Where(si => siteIds.Contains(si.Site_ID) && !si.HideSite).OrderBy(si => si.SITE_NAME).ToList();
     }
   }
 
@@ -571,14 +580,15 @@ public class GRFService
     foreach (decimal thresh in thresholds)
     {
       ChartSeries cs = new ChartSeries();
-      cs.name = "Threshold";
+      cs.name = string.Format("Threshold ({0} C)", thresh);
       cs.type = "line";
       cs.connectNulls = true;
       cs.dashStyle = "dash";
       cs.color = "#cccccc";
       cs.data.Add(new DataPoint { x = minX, y = (double)thresh });
       cs.data.Add(new DataPoint { x = maxX, y = (double)thresh });
-      series.Add(cs);
+      series.Insert(0, cs);
+      //series.Add(cs);
     }
   }
 
@@ -820,7 +830,7 @@ public class GRFService
 
       List<MapMarker> markers = new List<MapMarker>();
       var records = context.MWMTMaxes.Where(m => m.YEAR_ == year.ToString()).OrderBy(m => m.SITE_NAME).ToList();
-      foreach (var site in context.SiteInfos)
+      foreach (var site in context.SiteInfos.Where(si => !si.HideSite))
       {
         // Find our data to display
         var maxMWMT = records.FirstOrDefault(r => r.SiteID == site.Site_ID);
