@@ -133,6 +133,8 @@
       <Column Name="Color" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
       <Column Name="DataStartDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="DataEndDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Lat" Type="System.Decimal" DbType="Decimal(12,5)" CanBeNull="true" />
+      <Column Name="Lng" Type="System.Decimal" DbType="Decimal(12,5)" CanBeNull="true" />
     </Type>
   </Table>
 </Database>

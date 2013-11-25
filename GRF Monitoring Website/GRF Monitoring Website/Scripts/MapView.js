@@ -15,6 +15,7 @@ $(function () {
   $('#Year').on('change', function () { getMarkers(); });
   $('#showWatershed').on('click', function () { if ($(this).is(':checked')) watershed.setMap(map); else watershed.setMap(null); });
   $('#showProject').on('click', function () { if ($(this).is(':checked')) project.setMap(map); else project.setMap(null); });
+  $('#showDataSites').on('click', getMarkers);
 });
 function getYears() {
   var params = {}
@@ -76,19 +77,19 @@ function getMarkers() {
   clear();
   var params = {};
   params.year = $('#Year').val();
-  params.infographic = '';
-  if (params.year === null || params.year.length === 0) params.year = 2000;
+  params.showData = $('#showDataSites')[0].checked;
+  if (params.year === null || params.year.length === 0) return;
   $.get('GRFService.svc/Markers', params, function (data) {
     $.each(data, function (i, marker) {
       var pos = new google.maps.LatLng(marker.Lat, marker.Lng);
-      var pin = new google.maps.Marker({ position: pos, map: map, title: marker.Tooltip, icon: 'Images/Arrows.png' });
+      var pin = new google.maps.Marker({ position: pos, map: map, title: marker.Tooltip, icon: marker.Marker });
       markers.push(pin);
       if (marker.InfoText.length > 0) {
         var iw = new google.maps.InfoWindow({ content: marker.InfoText, maxWidth: 400 });
         infowindows.push(iw);
         google.maps.event.addListener(pin, 'click', function () { iw.open(map, pin) });
       }
-      if (marker.ShowInfographic) {
+      if (marker.Radius > 0.0) {
         var opt = {
           strokeColor: marker.Color,
           strokeOpacity: 0.8,

@@ -24,7 +24,7 @@
     else if (id === 'aReport')
       window.location.href = 'Reports2.aspx';
     else if (id === 'aMap')
-      window.location.href = 'ViewMap.aspx';
+      window.location.href = 'MapView.aspx';
     else if (id === 'aContact')
       window.location.href = 'Contact.aspx';
     else if (id === 'aUsers')
