@@ -74,7 +74,7 @@ $(function () {
     datatype: function (pdata) {
       getMaxData(pdata);
     },
-    colNames: ['Site', 'Year', 'Type', 'Max Temp', 'Days Exceeded', 'Percent', 'Comments'],
+    colNames: ['Site', 'Year', 'Type', 'Max Temp (C)', 'Days Exceeded', 'Percent', 'Comments'],
     colModel: [
       { name: 'Site', index: 'Site', width: '300', sortable: false },
       { name: 'Year', index: 'Year', width: '75', sortable: false },

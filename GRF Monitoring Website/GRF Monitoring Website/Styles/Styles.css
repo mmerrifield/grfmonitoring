@@ -147,7 +147,7 @@ div.footnotes
   margin-left: 2%;
   margin-right: 2%;
   margin-top:20px;
-  text-align: center;
+  /*text-align: center;*/
   padding: 5px 5px 5px 5px;
   width: 96%;
 }
