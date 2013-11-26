@@ -19,29 +19,8 @@ public class GRFService
 {
   private static Dictionary<double, string> MarkerMapping;
 
-  private static string[] DashStyle = new string[]{
-    "Solid",
-    "ShortDash",
-    "ShortDot",
-    "ShortDashDot",
-    "ShortDashDotDot",
-    "Dot",
-    "Dash",
-    "LongDash",
-    "DashDot",
-    "LongDashDot",
-    "LongDashDotDot"
-  };
+  private static string[] DashStyle = null;
 
-  private static string[] Colors = new string[]{
-    "#FF0000",
-    "#00FF00",
-    "#0000FF",
-    "#FFFF00",
-    "#FF00FF",
-    "#00FFFF",
-    "#FFFFFF"
-  };
 
   #region -- Site Management --
   [WebGet(ResponseFormat=WebMessageFormat.Json)]
@@ -490,7 +469,7 @@ public class GRFService
   #region -- Reporting Support --
   [OperationContract]
   [WebGet(ResponseFormat=WebMessageFormat.Json)]
-  public List<ChartSeries> WeeklyMWATData(int startMon, int startYr, int endMon, int endYr, string sites, string format)
+  public List<ChartSeries> WeeklyMWATData(int startMon, int startYr, int endMon, int endYr, string sites, string format, bool addNullPt)
   {
     try
     {
@@ -513,6 +492,7 @@ public class GRFService
             if (!thresholds.Contains(thresh))
               thresholds.Add(thresh);
           }
+          string[] Colors = ConfigurationManager.AppSettings["ChartColors"].Split(',');
           string color = context.SiteInfos.First(s => s.Site_ID == id).Color;
           if (string.IsNullOrEmpty(color))
           {
@@ -520,7 +500,7 @@ public class GRFService
             if (colorNdx > Colors.Length)
               colorNdx = 0;
           } 
-          series.AddRange(GetChartSeries(datapts, color, format, startMon, endMon));
+          series.AddRange(GetChartSeries(datapts, color, format, startMon, endMon, addNullPt));
         }
         AddThresholdLines(series, thresholds);
 
@@ -535,7 +515,7 @@ public class GRFService
 
   [OperationContract]
   [WebGet(ResponseFormat=WebMessageFormat.Json)]
-  public List<ChartSeries> WeeklyMWMTData(int startMon, int startYr, int endMon, int endYr, string sites, string format)
+  public List<ChartSeries> WeeklyMWMTData(int startMon, int startYr, int endMon, int endYr, string sites, string format, bool addNullPt)
   {
     try
     {
@@ -558,6 +538,7 @@ public class GRFService
             if (!thresholds.Contains(thresh))
               thresholds.Add(thresh);
           }
+          string[] Colors = ConfigurationManager.AppSettings["ChartColores"].Split(',');
           string color = context.SiteInfos.First(s => s.Site_ID == id).Color;
           if (string.IsNullOrEmpty(color))
           {
@@ -565,7 +546,7 @@ public class GRFService
             if (colorNdx > Colors.Length)
               colorNdx = 0;
           }
-          series.AddRange(GetChartSeries(datapts, color, format, startMon, endMon));
+          series.AddRange(GetChartSeries(datapts, color, format, startMon, endMon, addNullPt));
         }
         AddThresholdLines(series, thresholds);
       }
@@ -577,18 +558,11 @@ public class GRFService
     }
   }
 
-  private IEnumerable<ChartSeries> GetChartSeries(IEnumerable<WeeklyData> datapts, string color, string format, int startMon, int endMon)
+  private IEnumerable<ChartSeries> GetChartSeries(IEnumerable<WeeklyData> datapts, string color, string format, int startMon, int endMon, bool addNullPt)
   {
     List<ChartSeries> series = new List<ChartSeries>();
     ChartSeries cs = new ChartSeries();
-
-    List<int> years = new List<int>();
-    if (format == "SS")
-    {
-      years = datapts.Select(d => d.Date.Year).Distinct().OrderBy(y => y).ToList();
-    }
-
-    if (years.Count == 0)
+    if (format == "TS")
     {
       cs.name = datapts.First().Name;
       if (!string.IsNullOrEmpty(color))
@@ -601,7 +575,7 @@ public class GRFService
         if (pt.MovAvg != 0.0)
         {
           DataPoint newPt = new DataPoint { x = (pt.Date - refDate).TotalMilliseconds, y = pt.MovAvg };
-          if (prevPt != null && newPt.x - prevPt.x >= nullSpan)
+          if (prevPt != null && newPt.x - prevPt.x >= nullSpan && addNullPt)
             cs.data.Add(new DataPoint { x = prevPt.x + 1, y = null });
           cs.data.Add(newPt);
           prevPt = newPt;
@@ -611,8 +585,12 @@ public class GRFService
     }
     else
     {
+      if (DashStyle == null)
+        DashStyle = ConfigurationManager.AppSettings["DashStyles"].Split(',');
+
       int dashNdx = 0;
-      foreach (int yr in years)
+
+      foreach (int yr in datapts.Select(d => d.Date.Year).Distinct().OrderBy(y => y))
       {
         cs = new ChartSeries();
         var yearPts = datapts.Where(p => p.Date.Year == yr && p.Date.Month >= startMon && p.Date.Month <= endMon).OrderBy(p => p.Date);
@@ -633,7 +611,7 @@ public class GRFService
           {
             DateTime relDate = new DateTime(1970, pt.Date.Month, pt.Date.Day, pt.Date.Hour, pt.Date.Minute, pt.Date.Second);
             DataPoint newPt = new DataPoint { x = (relDate - refDate).TotalMilliseconds, y = pt.MovAvg };
-            if (prevPt != null && newPt.x - prevPt.x >= nullSpan)
+            if (prevPt != null && newPt.x - prevPt.x >= nullSpan && addNullPt)
               cs.data.Add(new DataPoint { x = prevPt.x + 1, y = null });
             cs.data.Add(newPt);
             prevPt = newPt;
@@ -681,9 +659,9 @@ public class GRFService
     List<ChartSeries> series = null;
     JQGridData maxData = null;
     if (format == "MWAT")
-      series = WeeklyMWATData(startMon, startYr, endMon, endYr, sites, "FS");
+      series = WeeklyMWATData(startMon, startYr, endMon, endYr, sites, "FS", false);
     else if (format == "MWMT")
-      series = WeeklyMWMTData(startMon, startYr, endMon, endYr, sites, "FS");
+      series = WeeklyMWMTData(startMon, startYr, endMon, endYr, sites, "FS", false);
     else if (format == "MaxMWAT")
       maxData = MaxMWATData(startYr, endYr, sites, 1, int.MaxValue);
     else if (format == "MaxMWMT")
