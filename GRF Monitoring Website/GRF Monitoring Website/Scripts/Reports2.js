@@ -235,6 +235,7 @@ function updateChart(reportType) {
   $.each($('#Sites').multiselect('getChecked'), function (i, s) { if (params.sites.length > 0) params.sites += ','; params.sites += s.value; });
   if (params.sites.length === 0)
     return;
+  params.addNullPt = true;
   $.get(svc, params, function (data) {
     if ($('#Series').val() === 'SS')
       options.xAxis.labels.format = '{value:%e - %b}';
@@ -265,6 +266,7 @@ function exportData() {
       params.sites += ',';
     params.sites += s.value;
   });
+  params.addNullPt = false;
   $.get('GRFService.svc/ExportReport', params, function (data) {
     var filename = params.format + '-' + params.startMon + '-' + params.startYr + '_' + params.endMon + '-' + params.endYr + '.xls';
     download(data, filename, 'application/ms-excel;charset=UTF-8');
