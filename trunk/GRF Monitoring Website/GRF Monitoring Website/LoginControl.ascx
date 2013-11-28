@@ -46,12 +46,12 @@
                         style="margin-right: 0px;" />
                     </td>
                 </tr>
-                <tr>
+                <!--<tr>
                     <td colspan="2">
                         <a href="Register.aspx">Register as a new user</a><br />
                         <a href="ForgotPassword.aspx">Forgot password</a>
                     </td>
-                </tr>
+                </tr>-->
             </table>
             </LayoutTemplate>
         </asp:Login>

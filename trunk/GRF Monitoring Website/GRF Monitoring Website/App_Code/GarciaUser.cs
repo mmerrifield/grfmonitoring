@@ -38,6 +38,7 @@ public class GarciaUser
 
     #region Instance Methods
 
+  /*
     public void save()
     {
         // first update user fields
@@ -74,11 +75,12 @@ public class GarciaUser
     {
         Membership.DeleteUser(this.username, true);
     }
-
+  */
     #endregion
 
     #region Static Methods
 
+  /*
     public static GarciaUser getUser(string uName)
     {
         MembershipUser usr = Membership.GetUser(uName);
@@ -99,6 +101,6 @@ public class GarciaUser
 
         return garciaUsers;
     }
-
+  */
     #endregion
 }
