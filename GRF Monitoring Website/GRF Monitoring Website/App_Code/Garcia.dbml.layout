@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12, 10.5" name="Garcia">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12, 16.25" name="Garcia">
   <DataContextMoniker Name="/GarciaDataContext" />
   <nestedChildShapes>
     <classShape Id="e848f0f4-f299-4b4a-9186-2a453472353d" absoluteBounds="5.625, 1, 2, 2.5401025390625">
@@ -74,5 +74,50 @@
         <elementListCompartment Id="ffbf463d-1ff1-4686-89ef-9b400d0e1a3f" absoluteBounds="8.39, 1.46, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="578a30d9-0f94-4796-bb7e-98af49b32091" absoluteBounds="3, 10.25, 2.5, 2.1554996744791666">
+      <DataClassMoniker Name="/GarciaDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="67e24ebc-78b6-44da-a8d8-2e8d9d3c9d47" absoluteBounds="3.0149999999999997, 10.71, 2.4699999999999998, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="25aa0ae8-fc15-4e62-b3f7-7de2298aea44" absoluteBounds="6, 11.125, 2, 4.8477197265625">
+      <DataClassMoniker Name="/GarciaDataContext/Membership" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a406d461-35f6-4d51-ae3e-c75611f60838" absoluteBounds="6.015, 11.585, 1.9700000000000002, 4.2877197265625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 11.7652498372396); (6 : 11.7652498372396)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/GarciaDataContext/User/User_aspnet_Membership" />
+      <nodes>
+        <classShapeMoniker Id="578a30d9-0f94-4796-bb7e-98af49b32091" />
+        <classShapeMoniker Id="25aa0ae8-fc15-4e62-b3f7-7de2298aea44" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="271d7f07-f61b-4105-ad8f-43c6d7754167" absoluteBounds="0.625, 12.125, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/GarciaDataContext/UserRole" />
+      <nestedChildShapes>
+        <elementListCompartment Id="92eb0615-818f-4b7f-9b18-76381b401645" absoluteBounds="0.64, 12.585, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(4.25 : 12.4054996744792); (4.25 : 12.9038505008013); (2.625 : 12.9038505008013)]" fixedFrom="Algorithm" fixedTo="NotFixed">
+      <AssociationMoniker Name="/GarciaDataContext/User/User_aspnet_UsersInRole" />
+      <nodes>
+        <classShapeMoniker Id="578a30d9-0f94-4796-bb7e-98af49b32091" />
+        <classShapeMoniker Id="271d7f07-f61b-4105-ad8f-43c6d7754167" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="1b74dab4-2d47-4ca8-81be-0fdb2f3c4f11" absoluteBounds="1.125, 14.125, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/GarciaDataContext/Role" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2e77a36e-79aa-456b-b9ba-a0c411d1893c" absoluteBounds="1.1400000000000001, 14.585, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(1.875 : 14.125); (1.875 : 13.3189925130208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/GarciaDataContext/Role/aspnet_Role_UserRole" />
+      <nodes>
+        <classShapeMoniker Id="1b74dab4-2d47-4ca8-81be-0fdb2f3c4f11" />
+        <classShapeMoniker Id="271d7f07-f61b-4105-ad8f-43c6d7754167" />
+      </nodes>
+    </associationConnector>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

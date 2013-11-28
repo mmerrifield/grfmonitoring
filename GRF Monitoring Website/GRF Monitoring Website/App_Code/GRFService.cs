@@ -11,6 +11,8 @@ using System.Collections.Specialized;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Configuration;
+using System.Net.Mail;
+using System.Web.Security;
 
 [ServiceContract(Namespace = "")]
 [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Required)]
@@ -35,6 +37,208 @@ public class GRFService
   public bool Auth()
   {
     return HttpContext.Current.User != null;
+  }
+
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
+  [OperationContract]
+  public JQGridData SiteUsers(int pageIndex, int pageSize, string sortIndex, string sortDirection)
+  {
+    if (!Admin())
+      return null;
+
+    using (var context = new GarciaDataContext())
+    {
+      JQGridData data = new JQGridData();
+      List<User> users = new List<User>();
+      if (sortIndex == "UserName")
+        users = sortDirection == "asc" ? context.Users.OrderBy(u => u.UserName).ToList() : context.Users.OrderByDescending(u => u.UserName).ToList();
+      else
+        users = sortDirection == "asc" ? context.Users.OrderBy(u => u.Membership.Email).ToList() : context.Users.OrderByDescending(u => u.Membership.Email).ToList();
+      
+      data.records = users.Count;
+      foreach (var user in users)
+      {
+        JQGridData.Row row = new JQGridData.Row();
+        row.id = user.UserId.ToString();
+        row.cell.Add(user.UserName);
+        row.cell.Add(user.Membership.Email);
+        row.cell.Add((!user.Membership.IsLockedOut).ToString());
+        row.cell.Add(user.UserRoles.FirstOrDefault(ur => ur.Role.RoleName == "Admin") != null ? "true" : "false");
+        row.cell.Add("false");
+        data.rows.Add(row);
+      }
+      data.page = pageIndex;
+      data.total = data.records / pageSize;
+      if (data.total % pageSize != 0 || data.total == 0)
+        data.total++;
+      return data;
+    }
+  }
+
+  [OperationContract]
+  public string UpdateUser(Stream contents)
+  {
+    if (!Admin())
+      return string.Empty;
+    
+    try
+    {
+      var formData = ParseContents(contents);
+      Guid id = Guid.Empty;
+
+      string op = formData["op"];
+      Guid.TryParse(formData["id"], out id);
+      string username = formData["UserName"];
+      string email = formData["Email"];
+      bool active = bool.Parse(formData["Active"]);
+      bool admin = bool.Parse(formData["Admin"]);
+      bool resetPwd = bool.Parse(formData["ResetPwd"]);
+
+      using (var context = new GarciaDataContext())
+      {
+        if (op == "add")
+        {
+          string pwd = GeneratePassword();
+          System.Web.Security.Membership.CreateUser(username, pwd, email);
+          MembershipUser mu = System.Web.Security.Membership.GetUser(username);
+          mu.IsApproved = active;
+          System.Web.Security.Membership.UpdateUser(mu);
+          if (active)
+            mu.UnlockUser();
+          UpdateUserRole(mu.UserName, admin, "Admin");
+          // Send the password to the user
+          SendRegistrationEmail(email, mu.UserName, pwd);
+        }
+        else if (op == "edit")
+        {
+          MembershipUser mu = System.Web.Security.Membership.GetUser(username);
+          mu.Email = email;
+          mu.IsApproved = active;
+          if (resetPwd)
+          {
+            try
+            {
+              string pwd = mu.ResetPassword();
+              SendResetPasswordEmail(email, mu.UserName, pwd);
+            }
+            catch (Exception ex)
+            {
+              string msg = ex.Message;
+            }
+          }
+          System.Web.Security.Membership.UpdateUser(mu);
+          UpdateUserRole(mu.UserName, admin, "Admin");
+        }
+        else if (op == "del" && id != Guid.Empty)
+        {
+          bool del = System.Web.Security.Membership.DeleteUser(username, true);
+          return (!del) ? "The user was not deleted" : string.Empty;
+        }
+      }
+    }
+    catch
+    {
+    }
+    return string.Empty;
+  }
+
+        private void UpdateUserRole(string username, bool addToRole, string role)
+    {
+      if (addToRole)
+      {
+        if (!Roles.IsUserInRole(username, role))
+          Roles.AddUserToRole(username, role);
+      }
+      else
+      {
+        if (Roles.IsUserInRole(username, role))
+          Roles.RemoveUserFromRole(username, role);
+      }
+    }
+  // Creates a temporary password.
+  private string GeneratePassword()
+  {
+    string strPwdchar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    string strPwdnum = "0123456789";
+    string strPwdspec = "!#+@&$";
+    StringBuilder strPwd = new StringBuilder();
+    Random rnd = new Random();
+    for (int j = 0; j < 2; ++j)
+    {
+      for (int i = 0; i < 3; i++)
+        strPwd.Append(strPwdchar[rnd.Next(0, strPwdchar.Length - 1)]);
+      strPwd.Append(strPwdspec[rnd.Next(0, strPwdspec.Length - 1)]);
+      strPwd.Append(strPwdnum[rnd.Next(0, strPwdnum.Length - 1)]);
+    }
+    return strPwd.ToString();
+  }
+
+  /// <summary>
+  /// Sends an email to the newly registered user.
+  /// </summary>
+  /// <param name="email"></param>
+  /// <param name="pwd"></param>
+  private void SendRegistrationEmail(string email, string username, string pwd)
+  {
+    MailMessage msg = new MailMessage();
+    msg.To.Add(email);
+    string[] admins = ConfigurationManager.AppSettings["AdminEmails"].Split(',');
+    msg.From = new MailAddress(admins[0]);
+    msg.IsBodyHtml = true;
+    msg.BodyEncoding = Encoding.ASCII;
+    msg.Subject = "GRFMonitoring.net Login Credentials";
+    StringBuilder sb = new StringBuilder();
+    sb.Append("<h3>Your GRFMonitoring.net login credentials</h3>");
+    sb.Append("<p style='margin:10px'>As an identified project member, we have set up an account for you on the GRFMonitoring.new website. ");
+    sb.Append("Using this account, you can log in to the GRFMonitoring.net website and ");
+    sb.Append("manage site data, view reports and export data.");
+    sb.Append("To login, click the login link at the top-right corner of the website.  Enter in the following username and credentials</p>");
+    sb.AppendFormat("<p style='margin-top:10px;margin-left:40px'>UserName: {0} Password: {1}</p>", username, pwd);
+    sb.Append("<p style='margin:5px'>We recommend you change your password after logging in to the site for the first time.</p>");
+    msg.Body = sb.ToString();
+
+    try
+    {
+      SmtpClient smtpServer = new SmtpClient();
+      smtpServer.Send(msg);
+    }
+    catch
+    {
+    }
+  }
+
+  /// <summary>
+  /// Sends an email to a user with their new, temporary password
+  /// </summary>
+  /// <param name="email"></param>
+  /// <param name="username"></param>
+  /// <param name="pwd"></param>
+  private void SendResetPasswordEmail(string email, string username, string pwd)
+  {
+    MailMessage msg = new MailMessage();
+    msg.To.Add(email);
+    string[] admins = ConfigurationManager.AppSettings["AdminEmails"].Split(',');
+    msg.From = new MailAddress(admins[0]);
+    msg.IsBodyHtml = true;
+    msg.BodyEncoding = Encoding.ASCII;
+    msg.Subject = "GRFMonitoring.net Password Reset";
+    StringBuilder sb = new StringBuilder();
+    sb.Append("<h3>Your GRFMonitoring.net password has been reset</h3>");
+    sb.Append("<p style='margin:10px'>Your password has been reset on the GRF Monitoring site. ");
+    sb.Append("Click the login link at the top-right of the website.  Enter in the following username and credentials:</p>");
+    sb.AppendFormat("<p style='margin-top:10px;margin-left:40px'>UserName: {0} Password: {1}</p>", username, pwd);
+    sb.Append("<p style='margin:5px'>We recommend you change your password after logging in to the site.</p>");
+    msg.Body = sb.ToString();
+
+    try
+    {
+      SmtpClient smtpServer = new SmtpClient();
+      smtpServer.Send(msg);
+    }
+    catch (Exception ex)
+    {
+      string err = ex.Message;
+    }
   }
 
   /// <summary>
@@ -122,7 +326,8 @@ public class GRFService
   [OperationContract]
   public string UpdateSite(Stream contents)
   {
-    try{
+    try
+    {
       var formData = ParseContents(contents);
       int id = 0;
       int.TryParse(formData["id"], out id);

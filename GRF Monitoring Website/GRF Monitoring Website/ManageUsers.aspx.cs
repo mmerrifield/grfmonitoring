@@ -9,12 +9,13 @@ public partial class ManageUsers : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+      /*
         if (!IsPostBack)
         {
             bindUsersGrid();
-        }
+        }*/
     }
-
+  /*
     private void bindUsersGrid()
     {
         List<GarciaUser> users = GarciaUser.getUsers();
@@ -73,4 +74,5 @@ public partial class ManageUsers : System.Web.UI.Page
     {
         Response.Redirect("Register.aspx");
     }
+   * */
 }
