@@ -25,7 +25,7 @@ public class GRFService
 
 
   #region -- Site Management --
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   [OperationContract]
   public bool Admin()
   {
@@ -54,7 +54,7 @@ public class GRFService
         users = sortDirection == "asc" ? context.Users.OrderBy(u => u.UserName).ToList() : context.Users.OrderByDescending(u => u.UserName).ToList();
       else
         users = sortDirection == "asc" ? context.Users.OrderBy(u => u.Membership.Email).ToList() : context.Users.OrderByDescending(u => u.Membership.Email).ToList();
-      
+
       data.records = users.Count;
       foreach (var user in users)
       {
@@ -80,81 +80,90 @@ public class GRFService
   {
     if (!Admin())
       return string.Empty;
-    
+
     try
     {
       var formData = ParseContents(contents);
       Guid id = Guid.Empty;
 
-      string op = formData["op"];
+      string op = formData["oper"];
       Guid.TryParse(formData["id"], out id);
-      string username = formData["UserName"];
-      string email = formData["Email"];
-      bool active = bool.Parse(formData["Active"]);
-      bool admin = bool.Parse(formData["Admin"]);
-      bool resetPwd = bool.Parse(formData["ResetPwd"]);
-
-      using (var context = new GarciaDataContext())
+      string username = string.Empty;
+      string email = string.Empty;
+      bool active = false;
+      bool admin = false;
+      bool resetPwd = false;
+      if (op != "del")
       {
-        if (op == "add")
+        username = formData["UserName"];
+        email = formData["Email"];
+        active = bool.Parse(formData["Active"]);
+        admin = bool.Parse(formData["Admin"]);
+        resetPwd = bool.Parse(formData["ResetPwd"]);
+      }
+
+      if (op == "add")
+      {
+        string pwd = System.Web.Security.Membership.GeneratePassword(8, 2);
+        MembershipCreateStatus status;
+        MembershipUser mu = System.Web.Security.Membership.CreateUser(username, pwd, email, "Username", username, active, out status);
+        if (status == MembershipCreateStatus.Success)
         {
-          string pwd = GeneratePassword();
-          System.Web.Security.Membership.CreateUser(username, pwd, email);
-          MembershipUser mu = System.Web.Security.Membership.GetUser(username);
-          mu.IsApproved = active;
-          System.Web.Security.Membership.UpdateUser(mu);
-          if (active)
-            mu.UnlockUser();
           UpdateUserRole(mu.UserName, admin, "Admin");
           // Send the password to the user
           SendRegistrationEmail(email, mu.UserName, pwd);
         }
-        else if (op == "edit")
+      }
+      else if (op == "edit")
+      {
+        MembershipUser mu = System.Web.Security.Membership.GetUser(username);
+        mu.Email = email;
+        mu.IsApproved = active;
+        if (resetPwd)
         {
-          MembershipUser mu = System.Web.Security.Membership.GetUser(username);
-          mu.Email = email;
-          mu.IsApproved = active;
-          if (resetPwd)
+          try
           {
-            try
-            {
-              string pwd = mu.ResetPassword();
-              SendResetPasswordEmail(email, mu.UserName, pwd);
-            }
-            catch (Exception ex)
-            {
-              string msg = ex.Message;
-            }
+            string pwd = mu.ResetPassword(username);
+            SendResetPasswordEmail(email, mu.UserName, pwd);
           }
-          System.Web.Security.Membership.UpdateUser(mu);
-          UpdateUserRole(mu.UserName, admin, "Admin");
+          catch (Exception ex)
+          {
+            string msg = ex.Message;
+          }
         }
-        else if (op == "del" && id != Guid.Empty)
+        System.Web.Security.Membership.UpdateUser(mu);
+        UpdateUserRole(mu.UserName, admin, "Admin");
+      }
+      else if (op == "del" && id != Guid.Empty)
+      {
+        MembershipUser mu = System.Web.Security.Membership.GetUser(id);
+        if (mu != null)
         {
-          bool del = System.Web.Security.Membership.DeleteUser(username, true);
+          bool del = System.Web.Security.Membership.DeleteUser(mu.UserName, true);
           return (!del) ? "The user was not deleted" : string.Empty;
         }
       }
     }
-    catch
+    catch (Exception ex)
     {
+      string msg = ex.Message;
     }
     return string.Empty;
   }
 
-        private void UpdateUserRole(string username, bool addToRole, string role)
+  private void UpdateUserRole(string username, bool addToRole, string role)
+  {
+    if (addToRole)
     {
-      if (addToRole)
-      {
-        if (!Roles.IsUserInRole(username, role))
-          Roles.AddUserToRole(username, role);
-      }
-      else
-      {
-        if (Roles.IsUserInRole(username, role))
-          Roles.RemoveUserFromRole(username, role);
-      }
+      if (!Roles.IsUserInRole(username, role))
+        Roles.AddUserToRole(username, role);
     }
+    else
+    {
+      if (Roles.IsUserInRole(username, role))
+        Roles.RemoveUserFromRole(username, role);
+    }
+  }
   // Creates a temporary password.
   private string GeneratePassword()
   {
@@ -249,7 +258,7 @@ public class GRFService
   /// <param name="sortIndex"></param>
   /// <param name="sortDirection"></param>
   /// <returns></returns>
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   [OperationContract]
   public JQGridData Sites(int pageIndex, int pageSize, string sortIndex, string sortDirection)
   {
@@ -296,7 +305,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public List<ReportSite> ReportSites(int startMon, int startYr, int endMon, int endYr)
   {
     using (var context = new GarciaDataContext())
@@ -346,7 +355,7 @@ public class GRFService
         color = "#" + color;
       if (string.IsNullOrEmpty(color))
         color = null;
-      bool hideSite = string.Compare(formData["HideSite"], "true",true) == 0;
+      bool hideSite = string.Compare(formData["HideSite"], "true", true) == 0;
 
       using (var context = new GarciaDataContext())
       {
@@ -373,7 +382,7 @@ public class GRFService
         else if (op == "edit")
         {
           SiteInfo si = context.SiteInfos.FirstOrDefault(s => s.OBJECTID == id);
-          if (si != null) 
+          if (si != null)
           {
             if (hideSite && context.SiteHobos.Where(s => s.SITE_ID == siteId).Count() == 0)
             {
@@ -398,7 +407,7 @@ public class GRFService
         return string.Empty;
       }
     }
-    catch(Exception ex)
+    catch (Exception ex)
     {
       return ex.Message;
     }
@@ -413,7 +422,7 @@ public class GRFService
   /// <param name="sortIndex"></param>
   /// <param name="sortDirection"></param>
   /// <returns></returns>
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   [OperationContract]
   public JQGridData SiteHobos(string siteId)
   {
@@ -460,7 +469,7 @@ public class GRFService
 
   #region -- Export Data --
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public List<string> Years(string type, string site)
   {
     using (var context = new GarciaDataContext())
@@ -477,7 +486,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public List<string> SensorTypes(string year, string site)
   {
     using (var context = new GarciaDataContext())
@@ -494,7 +503,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public List<SiteInfo> AvailSites(string year, string type)
   {
     using (var context = new GarciaDataContext())
@@ -513,7 +522,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public List<string> DateRange(string year, string site)
   {
     using (var context = new GarciaDataContext())
@@ -524,12 +533,12 @@ public class GRFService
       if (string.IsNullOrEmpty(year))
       {
         var yrs = context.SiteHobos.Select(s => s.YEAR_).Distinct().OrderBy(y => y).ToList();
-        return new List<string>() { string.Format("01-01-{0}", yrs[0]), string.Format("12-31-{0}", yrs[yrs.Count-1]) };
+        return new List<string>() { string.Format("01-01-{0}", yrs[0]), string.Format("12-31-{0}", yrs[yrs.Count - 1]) };
       }
       else if (!string.IsNullOrEmpty(year) && string.IsNullOrEmpty(site))
       {
         var dates = context.HOBOs.Where(h => h._DateTime.HasValue && h._DateTime.Value.Year == currYr).Select(h => h._DateTime).Distinct().OrderBy(d => d).ToList();
-        return new List<string>() { dates[0].Value.ToShortDateString(), dates[dates.Count-1].Value.ToShortDateString() };
+        return new List<string>() { dates[0].Value.ToShortDateString(), dates[dates.Count - 1].Value.ToShortDateString() };
       }
       else if (!string.IsNullOrEmpty(site) && string.IsNullOrEmpty(year))
       {
@@ -555,12 +564,12 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public Stream DownloadData(string year, string site, string type, string from, string to)
   {
     using (var context = new GarciaDataContext())
     {
-      bool isWater = string.Compare(type,"water",true) == 0;
+      bool isWater = string.Compare(type, "water", true) == 0;
       DateTime fromDate, toDate;
       DateTime.TryParse(from, out fromDate);
       DateTime.TryParse(to, out toDate);
@@ -615,7 +624,7 @@ public class GRFService
 
 
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public HOBOExport SiteExport(string year, string site, string type, string from, string to,
     int pageIndex, int pageSize, string sortIndex, string sortDirection)
   {
@@ -632,7 +641,7 @@ public class GRFService
       var siteInfo = context.SiteInfos.FirstOrDefault(s => s.Site_ID == site);
       var hoboIds = context.SiteHobos.Where(sh => sh.YEAR_ == year && sh.TYPE == type && sh.SITE_ID == site).Select(sh => sh.HOBO_ID).ToList();
       var results = context.HOBOs.Where(h => hoboIds.Contains(h.HOBO_ID) && h._DateTime.HasValue && h._DateTime.Value >= fromDate && h._DateTime.Value <= toDate);
-      
+
       // Order the results
       bool asc = sortDirection == "asc";
       if (sortIndex == "ID")
@@ -645,7 +654,7 @@ public class GRFService
         results = asc ? results.OrderBy(h => h.Temp) : results.OrderByDescending(h => h.Temp);
 
       exp.Data.records = results.Count();
-      foreach (var hobo in results.Skip((pageIndex-1) * pageSize).Take(pageSize))
+      foreach (var hobo in results.Skip((pageIndex - 1) * pageSize).Take(pageSize))
       {
         JQGridData.Row row = new JQGridData.Row();
         row.id = hobo.ID.ToString();
@@ -673,13 +682,13 @@ public class GRFService
 
   #region -- Reporting Support --
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public List<ChartSeries> WeeklyMWATData(int startMon, int startYr, int endMon, int endYr, string sites, string format, bool addNullPt)
   {
     try
     {
       DateTime startDate = new DateTime(startYr, startMon, 1);
-      DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr,endMon));
+      DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr, endMon));
       List<ChartSeries> series = new List<ChartSeries>();
       IEnumerable<WeeklyData> datapts = null;
       List<decimal> thresholds = new List<decimal>();
@@ -687,7 +696,7 @@ public class GRFService
       using (var context = new GarciaDataContext())
       {
         int colorNdx = 0;
-        foreach (var id in sites.Split(new string[]{","}, StringSplitOptions.RemoveEmptyEntries))
+        foreach (var id in sites.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
         {
           datapts = context.FinalMWATs.Where(s => s.SiteID == id && s.Date >= startDate && s.Date <= endDate)
             .Select(s => new WeeklyData { Name = s.SITE_NAME, SiteId = s.SiteID, Date = s.Date.Value, MovAvg = s.movAvg.Value, Threshold = s.threshold.Value }).OrderBy(s => s.Date);
@@ -704,7 +713,7 @@ public class GRFService
             color = Colors[colorNdx++];
             if (colorNdx > Colors.Length)
               colorNdx = 0;
-          } 
+          }
           series.AddRange(GetChartSeries(datapts, color, format, startMon, endMon, addNullPt));
         }
         AddThresholdLines(series, thresholds);
@@ -712,14 +721,14 @@ public class GRFService
         return series;
       }
     }
-    catch 
+    catch
     {
       return null;
     }
   }
 
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public List<ChartSeries> WeeklyMWMTData(int startMon, int startYr, int endMon, int endYr, string sites, string format, bool addNullPt)
   {
     try
@@ -858,7 +867,7 @@ public class GRFService
 
 
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public Stream ExportReport(string format, int startMon, int startYr, int endMon, int endYr, string sites)
   {
     List<ChartSeries> series = null;
@@ -967,7 +976,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public JQGridData MaxMWATData(int startYr, int endYr, string sites, int pageIndex, int pageSize)
   {
     JQGridData data = new JQGridData();
@@ -980,7 +989,7 @@ public class GRFService
     {
       var records = context.MWATMaxes.Where(m => years.Contains(m.YEAR_) && siteIds.Contains(m.SiteID)).OrderBy(m => m.SITE_NAME).ThenBy(m => m.YEAR_);
       data.records = records.Count();
-      foreach (var rec in records.Skip((pageIndex - 1)* pageSize).Take(pageSize) )
+      foreach (var rec in records.Skip((pageIndex - 1) * pageSize).Take(pageSize))
       {
         JQGridData.Row row = new JQGridData.Row();
         row.id = rowCt.ToString();
@@ -1003,7 +1012,7 @@ public class GRFService
   }
 
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public JQGridData MaxMWMTData(int startYr, int endYr, string sites, int pageIndex, int pageSize)
   {
     JQGridData data = new JQGridData();
@@ -1041,7 +1050,7 @@ public class GRFService
 
   #region -- Mapping Functions --
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public BoundaryData Boundaries()
   {
     BoundaryData data = new BoundaryData();
@@ -1064,7 +1073,7 @@ public class GRFService
   /// <param name="infographic">Name of the data type to return.</param>
   /// <returns></returns>
   [OperationContract]
-  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
   public List<MapMarker> Markers(int year, bool showData)
   {
     using (var context = new GarciaDataContext())
@@ -1099,7 +1108,7 @@ public class GRFService
         // Find our data to display
         var maxMWMT = records.FirstOrDefault(r => r.SiteID == site.Site_ID);
         if (maxMWMT == null && showData) continue;
-        
+
         // Build out our tooltip
         string tipText = site.SITE_NAME;
         if (maxMWMT != null)
