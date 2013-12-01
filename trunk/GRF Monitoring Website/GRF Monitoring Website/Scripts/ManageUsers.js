@@ -30,6 +30,7 @@
     { addCaption: 'Add User to Site' }
     );
   $('#users').setGridHeight('300px');
+
 });
 function getData(pdata)
 {

@@ -8,6 +8,8 @@ using System.Web.Security;
 
 public partial class LoginControl : System.Web.UI.UserControl
 {
+  protected TextBox UserName;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Page.User.Identity.IsAuthenticated)

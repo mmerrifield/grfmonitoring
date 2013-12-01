@@ -1,10 +1,16 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="LoginControl.ascx.cs" Inherits="LoginControl" %>
+  <style type="text/css">
+    .style1
+    {
+      width: 100px;
+    }
+  </style>
   <script type="text/javascript" language='javascript'>
     $(function () {
       $('#btns').hide();
     });
   </script>
-    <div style=" background-image:url(Images/GrayVerticalGradient1.jpg); background-repeat:repeat-x; border: 1px solid black; width: 240px; 
+    <div style="border: 1px solid black; width: 240px; 
         padding: 5px 10px 10px 10px;">
 
         <asp:Login runat="server" ID="Login1" TitleText="Login to Continue">                   
@@ -12,7 +18,7 @@
                 
                 <table style="margin-left: 10px; margin-top: 10px;" border="0">
                 <tr>
-                    <td style="font-size: 14pt; font-weight: bold;">
+                    <td style="font-size: 14pt; font-weight: bold;" class="style1">
                         <asp:Label runat="server" ID="lblInstructions">Login</asp:Label>
                     </td>
                     <td>
@@ -20,38 +26,32 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="100" class="labl">user name &nbsp;</td>
+                    <td class="style1">user name &nbsp;</td>
                     <td width="140">
-                        <asp:TextBox runat="server" ID="UserName" MaxLength="50" CssClass="textbox" Width="120"></asp:TextBox>
+                        <asp:TextBox runat="server" ID="UserName" MaxLength="50" CssClass="uname" Width="120"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
-                    <td class="labl">password &nbsp;</td>
+                    <td class="style1">password &nbsp;</td>
                     <td>
                         <asp:TextBox runat="server" ID="Password" TextMode="Password" CssClass="textbox" Width="120"></asp:TextBox>
                     </td>
                 </tr>
 
-                <tr height="5"><td></td></tr>
+                <tr height="5"><td class="style1"></td></tr>
 
                 <tr>
                     <td colspan="2">
                         <asp:CheckBox runat="server" ID="RememberMe" Text="Remember me next time" />
                     </td>
                 </tr>
-                <tr height="5"><td></td></tr>
+                <tr height="5"><td colspan='2' ><p style='margin-top:5px;margin-bottom:10px'>If you forgot your password, <a href='#' id='RequestNewPwd'>click here</a> to send an email to the administrator requesting it be reset.</p></td></tr>
                 <tr>
                     <td colspan="2" align="right">
                         <asp:Button runat="server" ID="Login" CommandName="Login" Text="Submit" BackColor="ButtonFace" 
                         style="margin-right: 0px;" />
                     </td>
                 </tr>
-                <!--<tr>
-                    <td colspan="2">
-                        <a href="Register.aspx">Register as a new user</a><br />
-                        <a href="ForgotPassword.aspx">Forgot password</a>
-                    </td>
-                </tr>-->
             </table>
             </LayoutTemplate>
         </asp:Login>
@@ -68,5 +68,4 @@
                 <a href="ChangePassword.aspx">Change Password</a>
             </div>
         </asp:Panel>
-
     </div>
