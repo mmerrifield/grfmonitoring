@@ -39,6 +39,31 @@ public class GRFService
     return HttpContext.Current.User != null;
   }
 
+  [WebGet(ResponseFormat=WebMessageFormat.Json)]
+  [OperationContract]
+  public bool RequestReset(string username)
+  {
+    MailMessage msg = new MailMessage();
+    msg.To.Add(ConfigurationManager.AppSettings["AdminEmails"]);
+    msg.From = new MailAddress( "resetrequest@grfmonitoring.net");
+    msg.IsBodyHtml = true;
+    msg.BodyEncoding = Encoding.ASCII;
+    msg.Subject = "GRFMonitoring.net Password Reset Request";
+    StringBuilder sb = new StringBuilder();
+    sb.AppendFormat("<p style='margin:10px'>User {0} has requested that their password be reset.</p>", username);
+    msg.Body = sb.ToString();
+    try
+    {
+      SmtpClient smtpServer = new SmtpClient();
+      smtpServer.Send(msg);
+      return true;
+    }
+    catch
+    {
+      return false;
+    }
+  }
+
   [WebGet(ResponseFormat = WebMessageFormat.Json)]
   [OperationContract]
   public JQGridData SiteUsers(int pageIndex, int pageSize, string sortIndex, string sortDirection)
@@ -163,23 +188,6 @@ public class GRFService
       if (Roles.IsUserInRole(username, role))
         Roles.RemoveUserFromRole(username, role);
     }
-  }
-  // Creates a temporary password.
-  private string GeneratePassword()
-  {
-    string strPwdchar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    string strPwdnum = "0123456789";
-    string strPwdspec = "!#+@&$";
-    StringBuilder strPwd = new StringBuilder();
-    Random rnd = new Random();
-    for (int j = 0; j < 2; ++j)
-    {
-      for (int i = 0; i < 3; i++)
-        strPwd.Append(strPwdchar[rnd.Next(0, strPwdchar.Length - 1)]);
-      strPwd.Append(strPwdspec[rnd.Next(0, strPwdspec.Length - 1)]);
-      strPwd.Append(strPwdnum[rnd.Next(0, strPwdnum.Length - 1)]);
-    }
-    return strPwd.ToString();
   }
 
   /// <summary>
