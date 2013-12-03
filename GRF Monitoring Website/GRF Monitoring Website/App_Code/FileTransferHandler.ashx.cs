@@ -271,8 +271,8 @@ namespace GRF
           }
 
           var cols = dt.Columns.Cast<DataColumn>().Select(c => c.ColumnName.ToLower()).ToList();
-          if (!cols.Contains("hobo_id") && !cols.Contains("_datetime") && !cols.Contains("temp")
-            && !cols.Contains("dewpoint") && !cols.Contains("rh") && !cols.Contains("abshumidity"))
+          if (!cols.Contains("hobo_id") || !cols.Contains("_datetime") || !cols.Contains("temp")
+            && !cols.Contains("dewpoint") || !cols.Contains("rh") || !cols.Contains("abshumidity"))
           {
             msg = "File is not a HOBO data file";
             return;
