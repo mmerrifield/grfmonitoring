@@ -13,6 +13,7 @@ using System.Web.Script.Serialization;
 using System.Configuration;
 using System.Net.Mail;
 using System.Web.Security;
+using System.Net;
 
 [ServiceContract(Namespace = "")]
 [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Required)]

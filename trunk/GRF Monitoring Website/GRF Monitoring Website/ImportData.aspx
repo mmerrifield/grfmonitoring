@@ -15,6 +15,7 @@
         <h3>
           Import Site/HOBO Lookup</h3>
         <input id="hobo_upload" name="hobo_upload" type="file" multiple="true" />
+        <input id='hobo_swf' name='hobo_swf' type='file' multiple='true' style='display:none'/>
         <div style='margin-top: 10px'>
           <a href='#' id='btnUploadDevices' style='margin-left: 100px'>Import Site/HOBO Lookup</a></div>
       </div>
@@ -22,6 +23,7 @@
         <h3>
           Import HOBO Data</h3>
         <input id="data_upload" name="data_upload" type="file" multiple="true" />
+        <input id='data_swf' name='data_swf' type='file' multiple='true' style='display:none'/>
         <div style='margin-top: 10px'>
           <a href="#" id='btnUploadData' style='margin-left: 110px'>Upload Lookup</a>
         </div>
@@ -36,7 +38,8 @@
       <div id='ImportImageContainer'>
         <img src="Images/HOBO_sheet.png" style='display: block; margin: auto' />
         <div style="font-size: 8pt; text-align: center; margin-top: 5px; margin-bottom: 0px;">
-          <a href='Garcia_template.xlsx'>Download empty Excel workbook template.</a>
+          <a href='Garcia_template.xlsx'>Download empty Excel workbook template.</a><br />
+          <a href='Site_hobo_template.xlsx'>Download empty Site HOBO workbook template</a>
         </div>
       </div>
       <div style='clear: both'>
@@ -44,6 +47,8 @@
     </div>
   </div>
   <link rel="Stylesheet" href="Styles/uploadifive.css" />
+  <link rel='Stylesheet' href='Styles/uploadify.css' />
   <script src="Scripts/jquery.uploadifive.min.js"></script>
+  <script src='Scripts/jquery.uploadify.min.js'></script>
   <script src="Scripts/ImportData.js"></script>
 </asp:Content>
