@@ -46,6 +46,7 @@
         multi: true,
         auto: false,
         buttonText: 'Select Files',
+        swf: 'Scripts/uploadify.swf',
         uploader: 'HoboDeviceFileTransfer.ashx',
         onUploadComplete: function (file, data) {
           if (data !== '1')
@@ -56,6 +57,7 @@
         multi: true,
         auto: false,
         buttonText: 'Select Files',
+        swf: 'Scripts/uploadify.swf',
         uploader: 'HoboDataFileTransfer.ashx',
         onUploadComplete: function (file, data) {
           if (data !== '1')
