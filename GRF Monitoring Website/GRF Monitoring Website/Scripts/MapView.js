@@ -6,10 +6,11 @@ var infographics = [];
 var infowindows = [];
 $(function () {
   var mapOptions = {
-    zoom: 8,
-    center: new google.maps.LatLng(38.954444, -123.733611)
+    zoom: 6,
+    center: new google.maps.LatLng(37.194, -121.312)
   };
   map = new google.maps.Map($('#map-canvas')[0], mapOptions);
+
   getBoundaries();
   getYears();
   $('#Year').on('change', function () { getMarkers(); });
