@@ -5,7 +5,7 @@
     <table align="center" style="margin-top: 40px;">
         <tr>
             <td valign="top">
-                <asp:ChangePassword runat="server" ID="ChangePassword1" BorderStyle="Groove" BackColor="AliceBlue" 
+                <asp:ChangePassword runat="server" ID="ChangePassword1" BorderStyle="Groove" 
                     ContinueDestinationPageUrl="Home.aspx" 
                   OnSendingMail="ChangePassword1_SendingMail" 
                   oncancelbuttonclick="ChangePassword1_CancelButtonClick">
