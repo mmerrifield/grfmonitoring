@@ -13,7 +13,9 @@
     <div style="border: 1px solid black; width: 240px; 
         padding: 5px 10px 10px 10px;">
 
-        <asp:Login runat="server" ID="Login1" TitleText="Login to Continue">                   
+        <asp:Login runat="server" ID="Login1" TitleText="Login to Continue" 
+          BorderColor="#000066" BorderStyle="Inset" BorderWidth="3px" 
+          DestinationPageUrl="Home.aspx">                   
             <LayoutTemplate>
                 
                 <table style="margin-left: 10px; margin-top: 10px;" border="0">
