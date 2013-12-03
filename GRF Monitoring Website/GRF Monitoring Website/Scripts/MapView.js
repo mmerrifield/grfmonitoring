@@ -16,6 +16,7 @@ $(function () {
   $('#showWatershed').on('click', function () { if ($(this).is(':checked')) watershed.setMap(map); else watershed.setMap(null); });
   $('#showProject').on('click', function () { if ($(this).is(':checked')) project.setMap(map); else project.setMap(null); });
   $('#showDataSites').on('click', getMarkers);
+  $('#PinFormat').on('change', getMarkers);
 });
 function getYears() {
   var params = {}
@@ -78,6 +79,7 @@ function getMarkers() {
   var params = {};
   params.year = $('#Year').val();
   params.showData = $('#showDataSites')[0].checked;
+  params.format = $('#PinFormat').val();
   if (params.year === null || params.year.length === 0) return;
   $.get('GRFService.svc/Markers', params, function (data) {
     $.each(data, function (i, marker) {
