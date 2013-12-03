@@ -1083,7 +1083,7 @@ public class GRFService
   /// <returns></returns>
   [OperationContract]
   [WebGet(ResponseFormat = WebMessageFormat.Json)]
-  public List<MapMarker> Markers(int year, bool showData)
+  public List<MapMarker> Markers(int year, bool showData, string format)
   {
     using (var context = new GarciaDataContext())
     {
@@ -1106,49 +1106,92 @@ public class GRFService
         }
       }
 
-      // Temporary setting - just for testing
-      double tempLat = 37;
-      double tempLng = -121.9;
-
       List<MapMarker> markers = new List<MapMarker>();
-      var records = context.MWMTMaxes.Where(m => m.YEAR_ == year.ToString()).OrderBy(m => m.SITE_NAME).ToList();
-      foreach (var site in context.SiteInfos.Where(si => !si.HideSite))
+      if (format == "MWAT")
       {
-        // Find our data to display
-        var maxMWMT = records.FirstOrDefault(r => r.SiteID == site.Site_ID);
-        if (maxMWMT == null && showData) continue;
-
-        // Build out our tooltip
-        string tipText = site.SITE_NAME;
-        if (maxMWMT != null)
-          tipText = string.Format("{0}\r\nDays Exceeding Threshold: {1} ({2})", site.SITE_NAME, maxMWMT.DaysExceed, maxMWMT.Percent.Value.ToString("0.00%"));
-
-        // Determine our marker color
-        string marker = "Images/white.png";
-        if (maxMWMT != null)
+        var records = context.MWATMaxes.Where(m => m.YEAR_ == year.ToString()).OrderBy(m => m.SITE_NAME).ToList();
+        foreach (var site in context.SiteInfos.Where(si => !si.HideSite))
         {
-          foreach (double pct in MarkerMapping.Keys.OrderBy(d => d))
+          // Find our data to display
+          var maxMWAT = records.FirstOrDefault(r => r.SiteID == site.Site_ID);
+          if (maxMWAT == null && showData) continue;
+
+          // Build out our tooltip
+          string tipText = site.SITE_NAME;
+          if (maxMWAT != null)
+            tipText = string.Format("{0}\r\nMWAT Days Exceeding Threshold: {1} ({2})", site.SITE_NAME, maxMWAT.DaysExceed, maxMWAT.Percent.Value.ToString("0.00%"));
+
+          // Determine our marker color
+          string marker = "Images/white.png";
+          if (maxMWAT != null)
           {
-            if (maxMWMT.Percent.Value <= pct)
+            foreach (double pct in MarkerMapping.Keys.OrderBy(d => d))
             {
-              marker = string.Format("Images/{0}.png", MarkerMapping[pct]);
-              break;
+              if (maxMWAT.Percent.Value <= pct)
+              {
+                marker = string.Format("Images/{0}.png", MarkerMapping[pct]);
+                break;
+              }
             }
           }
-        }
 
-        // Add the marker data to return 
-        markers.Add(new MapMarker
+          // Add the marker data to return 
+          if (site.Lat.HasValue && site.Lng.HasValue)
+          {
+            markers.Add(new MapMarker
+            {
+              Lat = (double)site.Lat.Value,
+              Lng = (double)site.Lng.Value,
+              Marker = marker,
+              Radius = 0.0,
+              Tooltip = tipText,
+              InfoText = string.Empty
+            });
+          }
+        }
+      }
+      else
+      {
+        var records = context.MWMTMaxes.Where(m => m.YEAR_ == year.ToString()).OrderBy(m => m.SITE_NAME).ToList();
+        foreach (var site in context.SiteInfos.Where(si => !si.HideSite))
         {
-          Lat = site.Lat.HasValue && site.Lat.Value != 0 ? (double)site.Lat.Value : tempLat,
-          Lng = site.Lng.HasValue && site.Lng.Value != 0 ? (double)site.Lng.Value : tempLng,
-          Marker = marker,
-          Radius = 0.0,
-          Tooltip = tipText,
-          InfoText = string.Empty
-        });
-        tempLat += .03;
-        tempLng += .03;
+          // Find our data to display
+          var maxMWMT = records.FirstOrDefault(r => r.SiteID == site.Site_ID);
+          if (maxMWMT == null && showData) continue;
+
+          // Build out our tooltip
+          string tipText = site.SITE_NAME;
+          if (maxMWMT != null)
+            tipText = string.Format("{0}\r\nMWMT Days Exceeding Threshold: {1} ({2})", site.SITE_NAME, maxMWMT.DaysExceed, maxMWMT.Percent.Value.ToString("0.00%"));
+
+          // Determine our marker color
+          string marker = "Images/white.png";
+          if (maxMWMT != null)
+          {
+            foreach (double pct in MarkerMapping.Keys.OrderBy(d => d))
+            {
+              if (maxMWMT.Percent.Value <= pct)
+              {
+                marker = string.Format("Images/{0}.png", MarkerMapping[pct]);
+                break;
+              }
+            }
+          }
+
+          // Add the marker data to return 
+          if (site.Lat.HasValue && site.Lng.HasValue)
+          {
+            markers.Add(new MapMarker
+            {
+              Lat = (double)site.Lat.Value,
+              Lng = (double)site.Lng.Value,
+              Marker = marker,
+              Radius = 0.0,
+              Tooltip = tipText,
+              InfoText = string.Empty
+            });
+          }
+        }
       }
       return markers;
     }
