@@ -18,7 +18,13 @@ $(function () {
   $('#showProject').on('click', function () { if ($(this).is(':checked')) project.setMap(map); else project.setMap(null); });
   $('#showDataSites').on('click', getMarkers);
   $('#PinFormat').on('change', getMarkers);
+  $(window).resize(recalcHeight);
+  recalcHeight();
 });
+var recalcHeight = function () {
+  $("#map-canvas").height($(window).height() - 300); //Example
+  map && google.maps.event.trigger(map, 'resize'); //(*) Don't understand this line
+};
 function getYears() {
   var params = {}
   params.site = ''

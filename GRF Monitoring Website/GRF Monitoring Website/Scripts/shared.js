@@ -9,10 +9,6 @@
     if (!resp) {
       $('#aUsers').remove();
       $('#lUsers').remove();
-      //$('#aManage').remove();
-      //$('#lManage').remove();
-      //$('#aImport').remove();
-      //$('#lImport').remove();
     }
   });
   $('.navBtn').on('click', function () {
