@@ -1060,19 +1060,16 @@ public class GRFService
   #region -- Mapping Functions --
   [OperationContract]
   [WebGet(ResponseFormat = WebMessageFormat.Json)]
-  public BoundaryData Boundaries()
+  public List<string> Boundaries()
   {
-    BoundaryData data = new BoundaryData();
-    data.Watershed.Add(new LatLngPoint { Lat = 37.3333, Lng = -121.9 });
-    data.Watershed.Add(new LatLngPoint { Lat = 36.6, Lng = -121.9 });
-    data.Watershed.Add(new LatLngPoint { Lat = 37.3, Lng = -120.4833 });
-    data.Watershed.Add(new LatLngPoint { Lat = 37.3333, Lng = -121.9 });
-
-    data.Project.Add(new LatLngPoint { Lat = 37, Lng = -121.9 });
-    data.Project.Add(new LatLngPoint { Lat = 36, Lng = -120.5 });
-    data.Project.Add(new LatLngPoint { Lat = 36.6, Lng = -119.9 });
-    data.Project.Add(new LatLngPoint { Lat = 37, Lng = -121.9 });
-    return data;
+    List<string> urls = new List<string>();
+    string url = ConfigurationManager.AppSettings["WatershedUrl"];
+    if (!string.IsNullOrEmpty(url))
+      urls.Add(url);
+    url = ConfigurationManager.AppSettings["PropertyUrl"];
+    if (!string.IsNullOrEmpty(url))
+      urls.Add(url);
+    return urls;
   }
 
   /// <summary>
