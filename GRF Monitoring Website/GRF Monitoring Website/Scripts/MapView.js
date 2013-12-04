@@ -6,8 +6,8 @@ var infographics = [];
 var infowindows = [];
 $(function () {
   var mapOptions = {
-    zoom: 6,
-    center: new google.maps.LatLng(37.194, -121.312)
+    zoom: 12,
+    center: new google.maps.LatLng(38.9, -123.5)
   };
   map = new google.maps.Map($('#map-canvas')[0], mapOptions);
 
@@ -39,35 +39,24 @@ function getYears() {
   });
 }
 function getBoundaries() {
+  var wsUrl, propUrl;
   $.get('GRFService.svc/Boundaries', {}, function (data) {
-    var watershedPts = [];
-    $.each(data.Watershed, function (i, pt) {
-      watershedPts.push(new google.maps.LatLng(pt.Lat, pt.Lng));
-    });
-    watershed = new google.maps.Polygon({
-      paths: watershedPts,
-      strokeColor: '#0000FF',
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: '#FFF',
-      fillOpacity: 0
-    });
-    watershed.setMap(map);
+    if (data.length === 2) {
+      wsUrl = data[0];
+      propUrl = data[1];
+      watershed = new google.maps.KmlLayer({ url: wsUrl, clickable: false, preserveViewport: true });
+      watershed.setMap(map);
 
-    var projectPts = [];
-    $.each(data.Project, function (i, pt) {
-      projectPts.push(new google.maps.LatLng(pt.Lat, pt.Lng));
-    });
-    project = new google.maps.Polygon({
-      paths: projectPts,
-      strokeColor: '#000',
-      strokeOpacity: 1.0,
-      stroekWeight: 2,
-      fillColor: '#FFF',
-      fillOpacity: 0
-    });
-    project.setMap(map);
+      project = new google.maps.KmlLayer({ url: propUrl, clickable: false, preserveViewport: true });
+      project.setMap(map);
+    }
   });
+}
+function printMap() {
+  var content = window.document.getElementById("map-canvas"); // get you map details
+  var newWindow = window.open(); // open a new window
+  newWindow.document.write(content.innerHTML); // write the map into the new window
+  newWindow.print(); // print the new window
 }
 function setAllMap(map) {
   $.each(markers, function (i, marker) { marker.setMap(map); });
