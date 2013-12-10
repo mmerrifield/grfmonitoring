@@ -145,6 +145,8 @@ public class GRFService
         MembershipUser mu = System.Web.Security.Membership.GetUser(username);
         mu.Email = email;
         mu.IsApproved = active;
+        if (mu.IsLockedOut && active)
+          mu.UnlockUser();
         if (resetPwd)
         {
           try

@@ -198,7 +198,7 @@ namespace GRF
           procCt++;
           try
           {
-            SiteHobo existingSH = context.SiteHobos.FirstOrDefault(s => s.SITE_ID == sh.SITE_ID && s.HOBO_ID == sh.HOBO_ID);
+            SiteHobo existingSH = context.SiteHobos.FirstOrDefault(s => s.SITE_ID == sh.SITE_ID && s.HOBO_ID == sh.HOBO_ID && s.YEAR_ == sh.YEAR_);
             if (existingSH == null)
             {
               context.SiteHobos.InsertOnSubmit(sh);
@@ -472,7 +472,7 @@ namespace GRF
         DSTableAdapters.FinalMWMTTableAdapter daFinalMWMT = new DSTableAdapters.FinalMWMTTableAdapter();
         daFinalMWMT.deleteFinalMWMTData(hoboID, newStartDate, newEndDate);
 
-        // STEP 9: write FinalMWAT and FinalMWMT rows (Qureies 70 & 71)
+        // STEP 9: write FinalMWAT and FinalMWMT rows (Queries 70 & 71)
         int j = 0;
         foreach (DailyStat stat in dailyStats)
         {
@@ -484,8 +484,8 @@ namespace GRF
         daFinalMWAT.Dispose();
         daFinalMWMT.Dispose();
 
-        GarciaSite.clearSites();    // forces a refresh
-        DB.clearMWATAndMWMTData();
+        //GarciaSite.clearSites();    // forces a refresh
+        //DB.clearMWATAndMWMTData();
 
         // adjust dataStartDate and dataEndDate for this site, if necessary
         if (!drSite.IsDataStartDateNull())
