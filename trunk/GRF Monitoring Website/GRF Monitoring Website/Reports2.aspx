@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-<script src='Scripts/jquery.multiselect.min.js'></script>
+  <script src='Scripts/jquery.multiselect.min.js'></script>
 <script src='Scripts/Reports2.js'></script>
 <script src='Scripts/highcharts.js'></script>
 <script src='Scripts/exporting.js'></script>
@@ -76,6 +76,14 @@ From:&nbsp;
       <select id='ShowMarkers'>
         <option value='false'>No</option>
         <option value='true'>Yes</option>
+      </select>
+      &nbsp;Theme:&nbsp;
+      <select id='Theme'>
+        <option value='Default'>Default</option>
+        <option value='Grid'>Grid</option>
+        <option value='Gray'>Gray</option>
+        <option value='DarkBlue'>Dark Blue</option>
+        <option value='DarkGreen'>Dark Green</option>
       </select>
       </span>
        <br />
