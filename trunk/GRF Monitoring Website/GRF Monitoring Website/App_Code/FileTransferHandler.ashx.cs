@@ -484,6 +484,7 @@ namespace GRF
         daFinalMWAT.Dispose();
         daFinalMWMT.Dispose();
 
+        // Disabled because of negative impacts on multi-file processing.
         //GarciaSite.clearSites();    // forces a refresh
         //DB.clearMWATAndMWMTData();
 
