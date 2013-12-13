@@ -1075,10 +1075,11 @@ public class GRFService
   }
 
   /// <summary>
-  /// Returns data used to draw information on a map.
+  /// Returns the marker data for the map.
   /// </summary>
-  /// <param name="year">Year the data applies.</param>
-  /// <param name="infographic">Name of the data type to return.</param>
+  /// <param name="year">The year to display</param>
+  /// <param name="showData">If true, only markers that have valid data are returned</param>
+  /// <param name="format">The format (MWAT or MWMT) for data returned</param>
   /// <returns></returns>
   [OperationContract]
   [WebGet(ResponseFormat = WebMessageFormat.Json)]
@@ -1109,7 +1110,8 @@ public class GRFService
       if (format == "MWAT")
       {
         var records = context.MWATMaxes.Where(m => m.YEAR_ == year.ToString()).OrderBy(m => m.SITE_NAME).ToList();
-        foreach (var site in context.SiteInfos.Where(si => !si.HideSite))
+        var sites = context.SiteInfos.Where(si => !si.HideSite).ToList();
+        foreach (var site in sites) //context.SiteInfos.Where(si => !si.HideSite))
         {
           // Find our data to display
           var maxMWAT = records.FirstOrDefault(r => r.SiteID == site.Site_ID);
@@ -1121,7 +1123,7 @@ public class GRFService
             tipText = string.Format("{0}\r\nMWAT Days Exceeding Threshold: {1} ({2})", site.SITE_NAME, maxMWAT.DaysExceed, maxMWAT.Percent.Value.ToString("0.00%"));
 
           // Determine our marker color
-          string marker = "Images/white.png";
+          string marker = string.Format("Images/{0}.png", MarkerMapping[-1]); // NOTE use -1 to denote a case with no value
           if (maxMWAT != null)
           {
             foreach (double pct in MarkerMapping.Keys.OrderBy(d => d))
