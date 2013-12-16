@@ -17,7 +17,7 @@
         <input id="hobo_upload" name="hobo_upload" type="file" multiple="true" />
         <input id='hobo_swf' name='hobo_swf' type='file' multiple='true' style='display:none'/>
         <div style='margin-top: 10px'>
-          <a href='#' id='btnUploadDevices' style='margin-left: 100px'>Import Site/HOBO Lookup</a></div>
+          <a href='#' id='btnUploadDevices' style='margin-left: 100px'>Import Lookup</a></div>
       </div>
       <div id='ImportDataContainer'>
         <h3>
@@ -25,7 +25,7 @@
         <input id="data_upload" name="data_upload" type="file" multiple="true" />
         <input id='data_swf' name='data_swf' type='file' multiple='true' style='display:none'/>
         <div style='margin-top: 10px'>
-          <a href="#" id='btnUploadData' style='margin-left: 110px'>Upload Lookup</a>
+          <a href="#" id='btnUploadData' style='margin-left: 110px'>Import Data</a>
         </div>
       </div>
       <div style='clear: both'>
@@ -33,13 +33,13 @@
     </div>
     <div>
       <div id='ImportNotes'>
-        <b>Remember</b>: Each year that new data is uploaded, you need to upload the lookup table that relates HOBO IDs to SITE IDs. This lookup table must have the following fields: SITE_ID, HOBO_ID, YEAR_, TYPE (eg. “Water”, “Air_Humidity”, or “Air”), and CONTRIBUTOR. Your HOBO data need to have the following fields: HOBO_ID, Temp, _DateTime. Some sensors may include the following fields as well: DewPoint, AbsHumidity, RH. Temp and Dew Point should be in Celsius, and RH should be a %. The data must be contained in the first worksheet and it should be named Sheet1 (the default).
+        <b>Remember</b>: Each year that data is collected, it’s necessary to first upload the lookup table that relates HOBO IDs to SITE IDs, and then upload the raw HOBO data.  The lookup table must contain fields exactly as are displayed in the Site/HOBO template; please download the template using the link in lower right corner.  After uploading the Site/HOBO lookup, you can then upload your HOBO data.  HOBO data must have the fields HOBO_ID, Temp, _DateTime.  Some sensors may also include the fields DewPoint, AbsHumidity, RH. Temp and Dew Point should be in Celsius, and RH should be a %. The HOBO data must be contained in the first worksheet and it should be named Sheet1 (this is the default).  A template for HOBO data is also available for download in lower right corner.
       </div>
       <div id='ImportImageContainer'>
         <img src="Images/HOBO_sheet.png" style='display: block; margin: auto' />
-        <div style="font-size: 8pt; text-align: center; margin-top: 5px; margin-bottom: 0px;">
-          <a href='Garcia_template.xlsx'>Download empty Excel workbook template.</a><br />
-          <a href='Site_hobo_template.xlsx'>Download empty Site HOBO workbook template</a>
+        <div style="font-size: 8pt; text-align: center; margin-top: 5px; margin-bottom: 0px;"><br />
+          <a href='Site_hobo_template.xlsx'>Download empty Site/HOBO Excel template</a><br /><br />
+          <a href='Garcia_template.xlsx'>Download empty HOBO data Excel template</a>
         </div>
       </div>
       <div style='clear: both'>

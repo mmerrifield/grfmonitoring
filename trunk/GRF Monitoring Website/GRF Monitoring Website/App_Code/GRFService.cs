@@ -207,10 +207,12 @@ public class GRFService
     msg.IsBodyHtml = true;
     msg.BodyEncoding = Encoding.ASCII;
     msg.Subject = "GRFMonitoring.net Login Credentials";
+
+    string site = ConfigurationManager.AppSettings["SiteUrl"] ?? "GRFMonitoring.net";
     StringBuilder sb = new StringBuilder();
     sb.Append("<h3>Your GRFMonitoring.net login credentials</h3>");
-    sb.Append("<p style='margin:10px'>As an identified project member, we have set up an account for you on the GRFMonitoring.new website. ");
-    sb.Append("Using this account, you can log in to the GRFMonitoring.net website and ");
+    sb.AppendFormat("<p style='margin:10px'>As an identified project member, we have set up an account for you on the <a href='http://{0}'>{0}</a> website. ", site);
+    sb.AppendFormat("Using this account, you can log in to the {0} website and ", site);
     sb.Append("manage site data, view reports and export data.");
     sb.Append("To login, click the login link at the top-right corner of the website.  Enter in the following username and credentials</p>");
     sb.AppendFormat("<p style='margin-top:10px;margin-left:40px'>UserName: {0} Password: {1}</p>", username, pwd);
