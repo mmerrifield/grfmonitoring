@@ -1,6 +1,7 @@
 ﻿var map;
 var watershed;
 var project;
+var streams;
 var markers = [];
 var infographics = [];
 var infowindows = [];
@@ -16,6 +17,7 @@ $(function () {
   $('#Year').on('change', function () { getMarkers(); });
   $('#showWatershed').on('click', function () { if ($(this).is(':checked')) watershed.setMap(map); else watershed.setMap(null); });
   $('#showProject').on('click', function () { if ($(this).is(':checked')) project.setMap(map); else project.setMap(null); });
+  $('#showStreams').on('click', function () { if ($(this).is(':checked')) streams.setMap(map); else streams.setMap(null); });
   $('#showDataSites').on('click', getMarkers);
   $('#PinFormat').on('change', getMarkers);
   $(window).resize(recalcHeight);
@@ -41,15 +43,23 @@ function getYears() {
 function getBoundaries() {
   var wsUrl, propUrl;
   $.get('GRFService.svc/Boundaries', {}, function (data) {
-    if (data.length === 2) {
-      wsUrl = data[0];
-      propUrl = data[1];
-      watershed = new google.maps.KmlLayer({ url: wsUrl, clickable: false, preserveViewport: true });
-      watershed.setMap(map);
-
-      project = new google.maps.KmlLayer({ url: propUrl, clickable: false, preserveViewport: true });
-      project.setMap(map);
-    }
+    $.each(data, function (i, d) {
+      var tokens = d.split('=');
+      if (tokens.length == 2) {
+        if (tokens[0] == "Watershed") {
+          watershed = new google.maps.KmlLayer({ url: tokens[1], clickable: false, preserveViewport: true });
+          watershed.setMap(map);
+        }
+        else if (tokens[0] == "Property") {
+          project = new google.maps.KmlLayer({ url: tokens[1], clickable: false, preserveViewport: true });
+          project.setMap(map);
+        }
+        else if (tokens[0] == "Streams") {
+          streams = new google.maps.KmlLayer({ url: tokens[1], clickable: false, preserveViewport: true });
+          streams.setMap(map);
+        }
+      }
+    });
   });
 }
 function printMap() {
