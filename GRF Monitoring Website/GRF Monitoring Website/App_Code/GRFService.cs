@@ -211,7 +211,7 @@ public class GRFService
     string site = ConfigurationManager.AppSettings["SiteUrl"] ?? "GRFMonitoring.net";
     StringBuilder sb = new StringBuilder();
     sb.Append("<h3>Your GRFMonitoring.net login credentials</h3>");
-    sb.AppendFormat("<p style='margin:10px'>As an identified project member, we have set up an account for you on the <a href='http://{0}'>{0}</a> website. ", site);
+    sb.AppendFormat("<p style='margin:10px'>As an identified project member, we have set up an account for you on the <a href='//{0}'>{0}</a> website. ", site);
     sb.AppendFormat("Using this account, you can log in to the {0} website and ", site);
     sb.Append("manage site data, view reports and export data.");
     sb.Append("To login, click the login link at the top-right corner of the website.  Enter in the following username and credentials</p>");
@@ -1069,10 +1069,13 @@ public class GRFService
     List<string> urls = new List<string>();
     string url = ConfigurationManager.AppSettings["WatershedUrl"];
     if (!string.IsNullOrEmpty(url))
-      urls.Add(url);
+      urls.Add(string.Format("Watershed={0}", url));
     url = ConfigurationManager.AppSettings["PropertyUrl"];
     if (!string.IsNullOrEmpty(url))
-      urls.Add(url);
+      urls.Add(string.Format("Property={0}",url));
+    url = ConfigurationManager.AppSettings["StreamsUrl"];
+    if (!string.IsNullOrEmpty(url))
+      urls.Add(string.Format("Streams={0}",url));
     return urls;
   }
 
