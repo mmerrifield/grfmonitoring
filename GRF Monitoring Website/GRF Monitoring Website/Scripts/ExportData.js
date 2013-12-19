@@ -16,7 +16,7 @@ $(function () {
     },
     colNames: ['Id', 'HOBO Id', 'Site', 'Date/Time', 'Temp (C)', 'Dew Point (C)', 'Abs Humidity (%)', 'Rel Humidity (%)', 'Date Uploaded', 'Uploaded By'],
     colModel: [
-      { name: 'Id', index: 'Id', width: '60' },
+      { name: 'Id', index: 'Id', width: '0' },
       { name: 'HoboId', index: 'HoboId', width: '75' },
       { name: 'Site', index: 'Site', width: '300' },
       { name: 'DateTime', index: 'DateTime', width: '120' },
@@ -24,8 +24,8 @@ $(function () {
       { name: 'DewPoint', index: 'DewPoint', width: '80', align: 'right' },
       { name: 'AbsHumidity', index: 'AbsHumidity', width: '80', align: 'right' },
       { name: 'RelHumidity', index: 'RelHumidity', width: '80', align: 'right' },
-      { name: 'DateUploaded', index: 'DateUploaded', width: '120' },
-      { name: 'UploadedBy', index: 'UploadedBy', width: '90' }
+      { name: 'DateUploaded', index: 'DateUploaded', width: '0' },
+      { name: 'UploadedBy', index: 'UploadedBy', width: '0' }
     ],
     autowidth: true,
     sortname: 'Id',

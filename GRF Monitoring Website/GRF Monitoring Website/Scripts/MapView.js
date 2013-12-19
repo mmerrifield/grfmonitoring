@@ -11,7 +11,6 @@ $(function () {
     center: new google.maps.LatLng(38.9, -123.5)
   };
   map = new google.maps.Map($('#map-canvas')[0], mapOptions);
-
   getBoundaries();
   getYears();
   $('#Year').on('change', function () { getMarkers(); });
@@ -20,13 +19,30 @@ $(function () {
   $('#showStreams').on('click', function () { if ($(this).is(':checked')) streams.setMap(map); else streams.setMap(null); });
   $('#showDataSites').on('click', getMarkers);
   $('#PinFormat').on('change', getMarkers);
+  $('#legendPos').on('change', showLegend);
   $(window).resize(recalcHeight);
   recalcHeight();
+  showLegend();
 });
 var recalcHeight = function () {
-  $("#map-canvas").height($(window).height() - 300); //Example
-  map && google.maps.event.trigger(map, 'resize'); //(*) Don't understand this line
+  $("#map-canvas").height($(window).height() - 300); 
+  map && google.maps.event.trigger(map, 'resize'); 
 };
+function showLegend() {
+  $('#legend').hide();
+  var val = $('#legendPos').val();
+  if (val != 'hide'){
+    if (val == 'top-left')
+      $('#legend').css({ 'left': '2%', 'top': 0, 'bottom': '', 'right': '' });
+    else if (val == 'top-right')
+      $('#legend').css({ 'right': '2%', 'top': 0, 'bottom' : '', 'left':''});
+    else if (val == 'bottom-left')
+      $('#legend').css({ 'left': '2%', 'bottom': 0, 'top': '', 'right': '' });
+    else
+      $('#legend').css({ 'right': '2%', 'bottom': 0, 'top': '','left': '' });
+    $('#legend').show();
+  }
+}
 function getYears() {
   var params = {}
   params.site = ''
@@ -48,25 +64,22 @@ function getBoundaries() {
       if (tokens.length == 2) {
         if (tokens[0] == "Watershed") {
           watershed = new google.maps.KmlLayer({ url: tokens[1], clickable: false, preserveViewport: true });
-          watershed.setMap(map);
+          if ($('#showWatershed').is(':checked'))
+            watershed.setMap(map);
         }
         else if (tokens[0] == "Property") {
           project = new google.maps.KmlLayer({ url: tokens[1], clickable: false, preserveViewport: true });
-          project.setMap(map);
+          if ($('#showProject').is(':checked'))
+            project.setMap(map);
         }
         else if (tokens[0] == "Streams") {
           streams = new google.maps.KmlLayer({ url: tokens[1], clickable: false, preserveViewport: true });
-          streams.setMap(map);
+          if ($('#showStreams').is(':checked'))
+            streams.setMap(map);
         }
       }
     });
   });
-}
-function printMap() {
-  var content = window.document.getElementById("map-canvas"); // get you map details
-  var newWindow = window.open(); // open a new window
-  newWindow.document.write(content.innerHTML); // write the map into the new window
-  newWindow.print(); // print the new window
 }
 function setAllMap(map) {
   $.each(markers, function (i, marker) { marker.setMap(map); });

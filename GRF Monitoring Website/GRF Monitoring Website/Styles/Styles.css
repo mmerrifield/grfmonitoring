@@ -81,7 +81,11 @@ div.Results
   margin-left:2%;
   margin-right:2%;
 }
-
+#legend
+{
+  position: absolute;
+  z-index: 99;
+}
 /* Divs used on the Import Data page */
 #ImportContainer
 {
