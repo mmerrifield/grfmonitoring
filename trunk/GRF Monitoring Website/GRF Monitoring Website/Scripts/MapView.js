@@ -33,13 +33,13 @@ function showLegend() {
   var val = $('#legendPos').val();
   if (val != 'hide'){
     if (val == 'top-left')
-      $('#legend').css({ 'left': '2%', 'top': 0, 'bottom': '', 'right': '' });
+      $('#legend').css({ 'left': '2%', 'top': '0%', 'bottom': '', 'right': '' });
     else if (val == 'top-right')
-      $('#legend').css({ 'right': '2%', 'top': 0, 'bottom' : '', 'left':''});
+      $('#legend').css({ 'right': '2%', 'top': '0%', 'bottom' : '', 'left':''});
     else if (val == 'bottom-left')
-      $('#legend').css({ 'left': '2%', 'bottom': 0, 'top': '', 'right': '' });
+      $('#legend').css({ 'left': '2%', 'bottom': '0%', 'top': '', 'right': '' });
     else
-      $('#legend').css({ 'right': '2%', 'bottom': 0, 'top': '','left': '' });
+      $('#legend').css({ 'right': '2%', 'bottom': '0%', 'top': '','left': '' });
     $('#legend').show();
   }
 }
