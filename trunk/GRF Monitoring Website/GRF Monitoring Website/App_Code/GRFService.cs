@@ -211,7 +211,7 @@ public class GRFService
     string site = ConfigurationManager.AppSettings["SiteUrl"] ?? "GRFMonitoring.net";
     StringBuilder sb = new StringBuilder();
     sb.Append("<h3>Your GRFMonitoring.net login credentials</h3>");
-    sb.AppendFormat("<p style='margin:10px'>As an identified project member, we have set up an account for you on the <a href='//{0}'>{0}</a> website. ", site);
+    sb.AppendFormat("<p style='margin:10px'>You have been given an account to the <a href='//{0}'>Garcia River Forest Monitoring website.</a>. ", site);
     sb.AppendFormat("Using this account, you can log in to the {0} website and ", site);
     sb.Append("manage site data, view reports and export data.");
     sb.Append("To login, click the login link at the top-right corner of the website.  Enter in the following username and credentials</p>");
@@ -325,7 +325,8 @@ public class GRFService
     {
       try
       {
-        List<string> siteIds = context.SiteInfos.Where(s => !s.HideSite).Select(s => s.Site_ID).ToList();
+        //List<string> siteIds = context.SiteInfos.Where(s => !s.HideSite).Select(s => s.Site_ID).ToList();
+        List<string> siteIds = context.SiteInfos.Select(s => s.Site_ID).ToList();
         DateTime startDate = new DateTime(startYr, startMon, 1);
         DateTime endDate = new DateTime(endYr, endMon, DateTime.DaysInMonth(endYr, endMon));
         return context.FinalMWATs.Where(s => s.Date <= endDate && s.Date >= startDate && siteIds.Contains(s.SiteID))
@@ -530,7 +531,8 @@ public class GRFService
         siteIds = context.SiteHobos.Where(h => h.TYPE == type).Select(h => h.SITE_ID).Distinct();
       else
         siteIds = context.SiteHobos.Where(h => h.TYPE == type && h.YEAR_ == year).Select(h => h.SITE_ID).Distinct();
-      return context.SiteInfos.Where(si => siteIds.Contains(si.Site_ID) && !si.HideSite).OrderBy(si => si.SITE_NAME).ToList();
+      return context.SiteInfos.Where(si => siteIds.Contains(si.Site_ID)).OrderBy(si => si.SITE_NAME).ToList();
+      //return context.SiteInfos.Where(si => siteIds.Contains(si.Site_ID) && !si.HideSite).OrderBy(si => si.SITE_NAME).ToList();
     }
   }
 
@@ -1115,8 +1117,7 @@ public class GRFService
       if (format == "MWAT")
       {
         var records = context.MWATMaxes.Where(m => m.YEAR_ == year.ToString()).OrderBy(m => m.SITE_NAME).ToList();
-        var sites = context.SiteInfos.Where(si => !si.HideSite).ToList();
-        foreach (var site in sites) //context.SiteInfos.Where(si => !si.HideSite))
+        foreach (var site in context.SiteInfos) 
         {
           // Find our data to display
           var maxMWAT = records.FirstOrDefault(r => r.SiteID == site.Site_ID);
@@ -1159,7 +1160,7 @@ public class GRFService
       else
       {
         var records = context.MWMTMaxes.Where(m => m.YEAR_ == year.ToString()).OrderBy(m => m.SITE_NAME).ToList();
-        foreach (var site in context.SiteInfos.Where(si => !si.HideSite))
+        foreach (var site in context.SiteInfos) 
         {
           // Find our data to display
           var maxMWMT = records.FirstOrDefault(r => r.SiteID == site.Site_ID);
@@ -1171,7 +1172,7 @@ public class GRFService
             tipText = string.Format("{0}\r\nMWMT Days Exceeding Threshold: {1} ({2})", site.SITE_NAME, maxMWMT.DaysExceed, maxMWMT.Percent.Value.ToString("0.00%"));
 
           // Determine our marker color
-          string marker = "Images/white.png";
+          string marker = string.Format("Images/{0}.png", MarkerMapping[-1]); // NOTE use -1 to denote a case with no value
           if (maxMWMT != null)
           {
             foreach (double pct in MarkerMapping.Keys.OrderBy(d => d))
