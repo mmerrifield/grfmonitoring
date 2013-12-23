@@ -84,20 +84,9 @@ public class GRFService
         users = sortDirection == "asc" ? context.Users.OrderBy(u => u.Membership.Email).ToList() : context.Users.OrderByDescending(u => u.Membership.Email).ToList();
 
       data.records = users.Count;
-      foreach (var user in users)
+      foreach (var user in users.Skip((pageIndex - 1) * pageSize).Take(pageSize))
       {
         JQGridData.Row row = new JQGridData.Row();
-        MembershipUser mu = null;
-        string pwd = string.Empty;
-        try
-        {
-          mu = System.Web.Security.Membership.GetUser(user.UserName);
-          pwd = mu.GetPassword(user.Membership.PasswordAnswer);
-        }
-        catch (Exception ex)
-        {
-          string wtf = ex.Message;
-        }
         row.id = user.UserId.ToString();
         row.cell.Add(user.UserName);
         row.cell.Add(user.Membership.Email);
@@ -108,7 +97,7 @@ public class GRFService
       }
       data.page = pageIndex;
       data.total = data.records / pageSize;
-      if (data.total % pageSize != 0 || data.total == 0)
+      if (data.total == 0 || pageSize * data.total < data.records)
         data.total++;
       return data;
     }
@@ -157,6 +146,12 @@ public class GRFService
           UpdateUserRole(mu.UserName, admin, "Admin");
           // Send the password to the user
           GetRegistrationEmail(username, pwd, ui);
+          using (var context = new GarciaDataContext())
+          {
+            User u = context.Users.FirstOrDefault(ur => ur.UserName == mu.UserName);
+            if (u != null)
+              ui.UserId = u.UserId.ToString();
+          }
         }
       }
       else if (op == "edit")
@@ -222,12 +217,10 @@ public class GRFService
 
     string site = ConfigurationManager.AppSettings["SiteUrl"] ?? "GRFMonitoring.net";
     StringBuilder sb = new StringBuilder();
-    sb.AppendFormat("You have been given an account to the <a href='//{0}'>Garcia River Forest Monitoring website.</a>. ", site);
-    sb.AppendFormat("Using this account, you can log in to the {0} website and ", site);
-    sb.Append("manage site data, view reports and export data.");
-    sb.AppendLine("");
-    sb.Append("To login, click the login link at the top-right corner of the website.  Enter in the following username and password:");
-    sb.AppendFormat("UserName: {0} Password: {1}", username, pwd);
+    sb.AppendFormat("You have been given an account to the {0} website. ", site);
+    sb.AppendFormat("Using this account, you can log in to manage site data, view reports and export data.");
+    sb.AppendLine(" ");
+    sb.AppendFormat(" Use the following username: {0} and password: {1} to access the site.", username, pwd);
     sb.AppendLine("");
     sb.AppendLine("We recommend you change your password after logging in to the site for the first time.");
     ui.Body = sb.ToString();
@@ -299,7 +292,7 @@ public class GRFService
       }
       data.page = pageIndex;
       data.total = data.records / pageSize;
-      if (data.total % pageSize != 0 || data.total == 0)
+      if (data.total == 0 || data.total * pageSize < data.records)
         data.total++;
     }
     return data;
@@ -1266,4 +1259,5 @@ public class UserInfo
   public string Email { get; set; }
   public string Subject { get; set; }
   public string Body { get; set; }
+  public string UserId { get; set; }
 }
