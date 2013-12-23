@@ -14,6 +14,7 @@
   </table>
   <script type='text/javascript' language='javascript'>
     $(function () {
+    /*
       $('#RequestNewPwd').on('click', function () {
         var params = {};
         params.username = $('.uname').val();
@@ -39,6 +40,6 @@
           }
         });
       });
-    });
+    });*/
   </script>
 </asp:Content>
