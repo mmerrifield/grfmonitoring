@@ -25,8 +25,8 @@
     pgbuttons: true,
     pginput: true
   }).navGrid('#navusers', { view: false, edit: true, add: true, del: true, search: false },
-    { editCaption: 'Edit Selected User', afterSubmit: function (resp, postdata) { openEmail(resp.responseText); } },
-    { addCaption: 'Add User to Site', afterSubmit: function (resp, postdata) { openEmail(resp.responseText); } }
+    { editCaption: 'Edit Selected User', afterComplete: function (resp, postdata) { openEmail(resp.responseText); } },
+    { addCaption: 'Add User to Site', afterComplete: function (resp, postdata) { openEmail(resp.responseText); } }
     );
   $('#users').setGridHeight('300px');
 
@@ -55,7 +55,7 @@ function getData(pdata)
         grid.addJSONData(data);
       }
     },
-    error: function (data, textStatus)
+    error: function (a, b, c)
     {
       alert('An error has occured retrieving data!');
     }
