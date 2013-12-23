@@ -47,7 +47,6 @@
                         <asp:CheckBox runat="server" ID="RememberMe" Text="Remember me next time" />
                     </td>
                 </tr>
-                <tr height="5"><td colspan='2' ><p style='margin-top:5px;margin-bottom:10px'>If you forgot your password, <a href='#' id='RequestNewPwd'>click here</a> to send an email to the administrator requesting it be reset.</p></td></tr>
                 <tr>
                     <td colspan="2" align="right">
                         <asp:Button runat="server" ID="Login" CommandName="Login" Text="Submit" BackColor="ButtonFace" 
@@ -57,7 +56,7 @@
             </table>
             </LayoutTemplate>
         </asp:Login>
-    
+        <p>If you forgot your password <asp:HyperLink ID="requestNewPwd" runat='server' Text='click here' NavigateUrl='http://www.motoringfile.com'></asp:HyperLink></p>
         <asp:Panel runat="server" ID="pnlLoggedIn" Visible="false">
             <h1 style="margin-top: 0px; margin-bottom: 0px;">
                 Logged in

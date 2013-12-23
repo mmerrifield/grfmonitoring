@@ -1,7 +1,6 @@
 ﻿$(function () {
   $("#users").jqGrid({
-    datatype: function (pdata)
-    {
+    datatype: function (pdata) {
       getData(pdata);
     },
     colNames: ['User Name', 'Email', 'Active', 'Admin', 'Reset Pwd'],
@@ -26,8 +25,8 @@
     pgbuttons: true,
     pginput: true
   }).navGrid('#navusers', { view: false, edit: true, add: true, del: true, search: false },
-    { editCaption: 'Edit Selected User' },
-    { addCaption: 'Add User to Site' }
+    { editCaption: 'Edit Selected User', afterSubmit: function (resp, postdata) { openEmail(resp.responseText); } },
+    { addCaption: 'Add User to Site', afterSubmit: function (resp, postdata) { openEmail(resp.responseText); } }
     );
   $('#users').setGridHeight('300px');
 
@@ -61,4 +60,9 @@ function getData(pdata)
       alert('An error has occured retrieving data!');
     }
   });
+}
+function openEmail(respText) {
+  var obj = JSON.parse(respText);
+  if (obj.Body !== null && obj.Body.length > 0)
+    window.location.href = "mailto:" + obj.Email + "?subject=" + obj.Subject + "&body=" + obj.Body;
 }

@@ -40,6 +40,7 @@ public class GRFService
     return HttpContext.Current.User != null;
   }
 
+  /*
   [WebGet(ResponseFormat=WebMessageFormat.Json)]
   [OperationContract]
   public bool RequestReset(string username)
@@ -64,6 +65,7 @@ public class GRFService
       return false;
     }
   }
+  */
 
   [WebGet(ResponseFormat = WebMessageFormat.Json)]
   [OperationContract]
@@ -85,6 +87,17 @@ public class GRFService
       foreach (var user in users)
       {
         JQGridData.Row row = new JQGridData.Row();
+        MembershipUser mu = null;
+        string pwd = string.Empty;
+        try
+        {
+          mu = System.Web.Security.Membership.GetUser(user.UserName);
+          pwd = mu.GetPassword(user.Membership.PasswordAnswer);
+        }
+        catch (Exception ex)
+        {
+          string wtf = ex.Message;
+        }
         row.id = user.UserId.ToString();
         row.cell.Add(user.UserName);
         row.cell.Add(user.Membership.Email);
@@ -102,10 +115,13 @@ public class GRFService
   }
 
   [OperationContract]
-  public string UpdateUser(Stream contents)
+  [WebInvoke(Method="POST",ResponseFormat=WebMessageFormat.Json)]
+  public UserInfo UpdateUser(Stream contents)
   {
+    UserInfo ui = new UserInfo();
+
     if (!Admin())
-      return string.Empty;
+      return ui;
 
     try
     {
@@ -119,6 +135,8 @@ public class GRFService
       bool active = false;
       bool admin = false;
       bool resetPwd = false;
+
+
       if (op != "del")
       {
         username = formData["UserName"];
@@ -126,6 +144,7 @@ public class GRFService
         active = bool.Parse(formData["Active"]);
         admin = bool.Parse(formData["Admin"]);
         resetPwd = bool.Parse(formData["ResetPwd"]);
+        ui.Email = email;
       }
 
       if (op == "add")
@@ -137,7 +156,7 @@ public class GRFService
         {
           UpdateUserRole(mu.UserName, admin, "Admin");
           // Send the password to the user
-          SendRegistrationEmail(email, mu.UserName, pwd);
+          GetRegistrationEmail(username, pwd, ui);
         }
       }
       else if (op == "edit")
@@ -151,8 +170,8 @@ public class GRFService
         {
           try
           {
-            string pwd = mu.ResetPassword(username);
-            SendResetPasswordEmail(email, mu.UserName, pwd);
+            string pwd = mu.ResetPassword();
+            GetResetPasswordEmail(username, pwd, ui);
           }
           catch (Exception ex)
           {
@@ -168,7 +187,6 @@ public class GRFService
         if (mu != null)
         {
           bool del = System.Web.Security.Membership.DeleteUser(mu.UserName, true);
-          return (!del) ? "The user was not deleted" : string.Empty;
         }
       }
     }
@@ -176,7 +194,7 @@ public class GRFService
     {
       string msg = ex.Message;
     }
-    return string.Empty;
+    return ui;
   }
 
   private void UpdateUserRole(string username, bool addToRole, string role)
@@ -198,35 +216,21 @@ public class GRFService
   /// </summary>
   /// <param name="email"></param>
   /// <param name="pwd"></param>
-  private void SendRegistrationEmail(string email, string username, string pwd)
+  private void GetRegistrationEmail(string username, string pwd, UserInfo ui)
   {
-    MailMessage msg = new MailMessage();
-    msg.To.Add(email);
-    string[] admins = ConfigurationManager.AppSettings["AdminEmails"].Split(',');
-    msg.From = new MailAddress(admins[0]);
-    msg.IsBodyHtml = true;
-    msg.BodyEncoding = Encoding.ASCII;
-    msg.Subject = "GRFMonitoring.net Login Credentials";
+    ui.Subject = "GRFMonitoring.net Login Credentials";
 
     string site = ConfigurationManager.AppSettings["SiteUrl"] ?? "GRFMonitoring.net";
     StringBuilder sb = new StringBuilder();
-    sb.Append("<h3>Your GRFMonitoring.net login credentials</h3>");
-    sb.AppendFormat("<p style='margin:10px'>You have been given an account to the <a href='//{0}'>Garcia River Forest Monitoring website.</a>. ", site);
+    sb.AppendFormat("You have been given an account to the <a href='//{0}'>Garcia River Forest Monitoring website.</a>. ", site);
     sb.AppendFormat("Using this account, you can log in to the {0} website and ", site);
     sb.Append("manage site data, view reports and export data.");
-    sb.Append("To login, click the login link at the top-right corner of the website.  Enter in the following username and credentials</p>");
-    sb.AppendFormat("<p style='margin-top:10px;margin-left:40px'>UserName: {0} Password: {1}</p>", username, pwd);
-    sb.Append("<p style='margin:5px'>We recommend you change your password after logging in to the site for the first time.</p>");
-    msg.Body = sb.ToString();
-
-    try
-    {
-      SmtpClient smtpServer = new SmtpClient();
-      smtpServer.Send(msg);
-    }
-    catch
-    {
-    }
+    sb.AppendLine("");
+    sb.Append("To login, click the login link at the top-right corner of the website.  Enter in the following username and password:");
+    sb.AppendFormat("UserName: {0} Password: {1}", username, pwd);
+    sb.AppendLine("");
+    sb.AppendLine("We recommend you change your password after logging in to the site for the first time.");
+    ui.Body = sb.ToString();
   }
 
   /// <summary>
@@ -235,32 +239,16 @@ public class GRFService
   /// <param name="email"></param>
   /// <param name="username"></param>
   /// <param name="pwd"></param>
-  private void SendResetPasswordEmail(string email, string username, string pwd)
+  private void GetResetPasswordEmail(string username, string pwd, UserInfo ui)
   {
-    MailMessage msg = new MailMessage();
-    msg.To.Add(email);
-    string[] admins = ConfigurationManager.AppSettings["AdminEmails"].Split(',');
-    msg.From = new MailAddress(admins[0]);
-    msg.IsBodyHtml = true;
-    msg.BodyEncoding = Encoding.ASCII;
-    msg.Subject = "GRFMonitoring.net Password Reset";
+    ui.Subject = "GRFMonitoring.net Password Reset";
     StringBuilder sb = new StringBuilder();
-    sb.Append("<h3>Your GRFMonitoring.net password has been reset</h3>");
-    sb.Append("<p style='margin:10px'>Your password has been reset on the GRF Monitoring site. ");
-    sb.Append("Click the login link at the top-right of the website.  Enter in the following username and credentials:</p>");
-    sb.AppendFormat("<p style='margin-top:10px;margin-left:40px'>UserName: {0} Password: {1}</p>", username, pwd);
-    sb.Append("<p style='margin:5px'>We recommend you change your password after logging in to the site.</p>");
-    msg.Body = sb.ToString();
-
-    try
-    {
-      SmtpClient smtpServer = new SmtpClient();
-      smtpServer.Send(msg);
-    }
-    catch (Exception ex)
-    {
-      string err = ex.Message;
-    }
+    sb.Append("Your password has been reset on the GRF Monitoring site. ");
+    sb.Append("Use the following username and password to log in to the site. ");
+    sb.AppendFormat("UserName: {0} Password: {1}", username, pwd);
+    sb.AppendLine(" ");
+    sb.AppendLine(" We recommend you change your password after logging in to the site.");
+    ui.Body = sb.ToString();
   }
 
   /// <summary>
@@ -1271,4 +1259,11 @@ public class MapMarker
   public string Color { get; set; }
   public string Tooltip { get; set; }
   public string InfoText { get; set; }
+}
+
+public class UserInfo
+{
+  public string Email { get; set; }
+  public string Subject { get; set; }
+  public string Body { get; set; }
 }

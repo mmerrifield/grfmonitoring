@@ -5,18 +5,21 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Security;
+using System.Configuration;
+using System.Web.UI.HtmlControls;
 
 public partial class LoginControl : System.Web.UI.UserControl
 {
-  protected TextBox UserName;
-
+  protected override void Construct()
+  {
+    base.Construct();
+  }
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Page.User.Identity.IsAuthenticated)
         {
             Login1.Visible = false;
             pnlLoggedIn.Visible = true;
-
             string username = Page.User.Identity.Name;
             lblWelcome.Text = "You are logged in as: " + username;
         }
@@ -25,7 +28,9 @@ public partial class LoginControl : System.Web.UI.UserControl
             Login1.Visible = true;
             pnlLoggedIn.Visible = false;
         }
+        requestNewPwd.NavigateUrl = string.Format("mailto:{0}?subject=Forgot my password&body=I forgot my password, please reset it.", ConfigurationManager.AppSettings["AdminEmails"]);
     }
+
 
     public override void Focus()
     {
