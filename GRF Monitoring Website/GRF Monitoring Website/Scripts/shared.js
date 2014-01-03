@@ -5,7 +5,7 @@
     if (!resp || resp.length > 10)
       $('#btns').hide();
   });
-  $.get('GRFService.svc/Admin', {}, function (resp) {
+  $.get('GRFService.svc/IsAdmin', {}, function (resp) {
     if (!resp) {
       $('#aUsers').remove();
       $('#lUsers').remove();

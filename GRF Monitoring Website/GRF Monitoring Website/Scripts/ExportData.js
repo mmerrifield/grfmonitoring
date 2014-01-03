@@ -18,7 +18,7 @@ $(function () {
     colModel: [
       { name: 'Id', index: 'Id', width: '0' },
       { name: 'HoboId', index: 'HoboId', width: '75' },
-      { name: 'Site', index: 'Site', width: '300' },
+      { name: 'Site', index: 'Site', width: '280' },
       { name: 'DateTime', index: 'DateTime', width: '120' },
       { name: 'Temp', index: 'Temp', width: '80', align: 'right' },
       { name: 'DewPoint', index: 'DewPoint', width: '80', align: 'right' },
@@ -28,6 +28,7 @@ $(function () {
       { name: 'UploadedBy', index: 'UploadedBy', width: '0' }
     ],
     autowidth: true,
+    shrinkToFit: false,
     sortname: 'Id',
     sortorder: 'asc',
     rowNum: 100,
