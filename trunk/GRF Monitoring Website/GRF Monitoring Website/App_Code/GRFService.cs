@@ -35,6 +35,13 @@ public class GRFService
 
   [WebGet(ResponseFormat = WebMessageFormat.Json)]
   [OperationContract]
+  public string IsAdmin()
+  {
+    return Admin().ToString();
+  }
+
+  [WebGet(ResponseFormat = WebMessageFormat.Json)]
+  [OperationContract]
   public bool Auth()
   {
     return HttpContext.Current.User != null;
@@ -748,7 +755,7 @@ public class GRFService
             if (!thresholds.Contains(thresh))
               thresholds.Add(thresh);
           }
-          string[] Colors = ConfigurationManager.AppSettings["ChartColores"].Split(',');
+          string[] Colors = ConfigurationManager.AppSettings["ChartColors"].Split(',');
           string color = context.SiteInfos.First(s => s.Site_ID == id).Color;
           if (string.IsNullOrEmpty(color))
           {

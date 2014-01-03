@@ -9,16 +9,44 @@ $(function () {
   $('#aManage').button('refresh');
   $.ajax({
     type: "GET",
-    url: 'GRFService.svc/Admin',
+    url: 'GRFService.svc/IsAdmin',
     dataType: 'json',
-    async: false,
     contentType: "application/json; charset=utf-8;",
     data: {},
     success: function (data) {
       canEdit = data;
+      completePage();
     }
   });
   var colorPicker;
+});
+function getSites(pdata) {
+  var grid = $('#sites');
+  var params = {};
+  params.pageIndex = pdata.page == null ? grid.jqGrid('getGridParam', 'page') : pdata.page;
+  params.pageSize = pdata.rows == null ? grid.jqGrid('getGridParam', 'rowNum') : pdata.rows;
+  params.sortIndex = pdata.sidx == null ? grid.jqGrid('getGridParam', 'sortname') : pdata.sidx;
+  params.sortDirection = pdata.sord == null ? grid.jqGrid('getGridParam', 'sortorder') : pdata.sord;
+
+  $.ajax(
+  {
+    type: "GET",
+    url: 'GRFService.svc/Sites',
+    dataType: 'json',
+    contentType: "application/json; charset=utf-8;",
+    data: params,
+    success: function (data, textStatus) {
+      if (textStatus == "success") {
+        var grid = $("#sites")[0];
+        grid.addJSONData(data);
+      }
+    },
+    error: function (a, b, c) {
+      alert('An error has occured retrieving data!');
+    }
+  });
+}
+function completePage() {
   $("#sites").jqGrid({
     datatype: function (pdata) {
       getSites(pdata);
@@ -67,32 +95,6 @@ $(function () {
     }
     );
   $('#sites').setGridHeight('500px');
-});
-function getSites(pdata) {
-  var grid = $('#sites');
-  var params = {};
-  params.pageIndex = pdata.page == null ? grid.jqGrid('getGridParam', 'page') : pdata.page;
-  params.pageSize = pdata.rows == null ? grid.jqGrid('getGridParam', 'rowNum') : pdata.rows;
-  params.sortIndex = pdata.sidx == null ? grid.jqGrid('getGridParam', 'sortname') : pdata.sidx;
-  params.sortDirection = pdata.sord == null ? grid.jqGrid('getGridParam', 'sortorder') : pdata.sord;
-
-  $.ajax(
-  {
-    type: "GET",
-    url: 'GRFService.svc/Sites',
-    dataType: 'json',
-    contentType: "application/json; charset=utf-8;",
-    data: params,
-    success: function (data, textStatus) {
-      if (textStatus == "success") {
-        var grid = $("#sites")[0];
-        grid.addJSONData(data);
-      }
-    },
-    error: function (a, b, c) {
-      alert('An error has occured retrieving data!');
-    }
-  });
 }
 function getHobos(rowidprm) {
   var grid = $('#sites')[0];
