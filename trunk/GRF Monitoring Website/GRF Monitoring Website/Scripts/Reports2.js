@@ -115,7 +115,8 @@ $(function () {
   $('#tblMax').setGridHeight('450px');
   initChart();
 });
-function getYears() {  
+
+function getYears() { 
   var params = {}
   params.site = ''
   params.type = '';

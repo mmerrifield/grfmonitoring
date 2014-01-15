@@ -615,8 +615,9 @@ public class GRFService
       }
       sb.Append("</table>");
 
-      WebOperationContext.Current.OutgoingResponse.ContentType = "application/ms-excel";
-      string filename = "filename=HOBOExport.xls";
+      //WebOperationContext.Current.OutgoingResponse.ContentType = "application/ms-excel";
+      WebOperationContext.Current.OutgoingResponse.ContentType = "text/csv";
+      string filename = "filename=HOBOExport.csv";
       WebOperationContext.Current.OutgoingResponse.Headers.Add("Content-Disposition", "attachment; " + filename);
 
       System.Text.ASCIIEncoding encoding = new ASCIIEncoding();
@@ -915,8 +916,8 @@ public class GRFService
       sb.AppendLine(line.ToString());
     }
     // Lastly, stream data back to the user.
-    WebOperationContext.Current.OutgoingResponse.ContentType = "application/ms-excel";
-    string filename = string.Format("filename={0}_{1}-{2}.xls", format, startYr, endYr);
+    WebOperationContext.Current.OutgoingResponse.ContentType = "text/csv";
+    string filename = string.Format("filename={0}_{1}-{2}.csv", format, startYr, endYr);
     WebOperationContext.Current.OutgoingResponse.Headers.Add("Content-Disposition", "attachment; " + filename);
 
     System.Text.ASCIIEncoding encoding = new ASCIIEncoding();
@@ -969,8 +970,8 @@ public class GRFService
     }
 
     // Lastly, stream data back to the user.
-    WebOperationContext.Current.OutgoingResponse.ContentType = "application/ms-excel";
-    string filename = string.Format("filename={0}-{1}-{2}_{3}-{4}.xls", format, startMon, startYr, endMon, endYr);
+    WebOperationContext.Current.OutgoingResponse.ContentType = "text/csv";
+    string filename = string.Format("filename={0}-{1}-{2}_{3}-{4}.csv", format, startMon, startYr, endMon, endYr);
     WebOperationContext.Current.OutgoingResponse.Headers.Add("Content-Disposition", "attachment; " + filename);
 
     System.Text.ASCIIEncoding encoding = new ASCIIEncoding();

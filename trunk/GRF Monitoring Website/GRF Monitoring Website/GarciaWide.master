@@ -20,7 +20,7 @@
 <body>
 <div id='wrap'>
   <form id="form1" runat="server">
-  <div id='main'>
+  <div id='main' style='padding-bottom:0px'>
   <!-- Header -->
   <div  align="right" style="margin-top: 10px; margin-right: 20px">
     <asp:LoginView ID="LoginView1" runat="server">
@@ -40,10 +40,10 @@
   </div>
   <!-- end header -->
   <!-- Nav Controls -->
-  <div>
+  <div style='height:45px'>
     <div id='PageTitle' class='wide'>
-      Garcia River Forest<br />Monitoring Database</div>
-    <div id='PageNav' style='margin-right: 20px'>
+      Garcia River Forest Monitoring Database</div>
+    <div id='PageNav' style='margin-right: 20px;margin-top:10px'>
       <div id='btns'>
         <input type='radio' id='aHome' name='radio' class='navBtn' /><label for='aHome'>Home</label>
         <input type='radio' id='aData' name='radio' class='navBtn' /><label for='aData' id='lData'>Data</label>
@@ -65,7 +65,7 @@
 
   </div>
   <!-- Footer -->
-  <div id='footer' style='text-align: center'>
+  <div id='footer' style='text-align: center;' >
     <table cellpadding="0" cellspacing="0" style="margin: 20 auto 0 auto" width="800"
       align="center">
       <tr>
@@ -82,9 +82,9 @@
           <a href="http://www.nature.org/aboutus/misc/art5096.html?src=f9">Legal Disclosure</a>
         </td>
         <td>
-          <a href="http://www.tnc.org">
+          <!--<a href="http://www.tnc.org">
             <img src="Images/TNCLogo.jpg" />
-          </a>
+          </a>-->
         </td>
       </tr>
     </table>

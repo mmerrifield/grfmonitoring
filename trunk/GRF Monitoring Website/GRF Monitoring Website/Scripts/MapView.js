@@ -25,7 +25,7 @@ $(function () {
   showLegend();
 });
 var recalcHeight = function () {
-  $("#map-canvas").height($(window).height() - 300); 
+  $("#map-canvas").height($(window).height() - 180); 
   map && google.maps.event.trigger(map, 'resize'); 
 };
 function showLegend() {

@@ -11,8 +11,8 @@
 <label for='legendPos'>Legend:</label><select id='legendPos'>
 <option value='top-left'>Top-Left</option>
 <option value='top-right'>Top-Right</option>
-<option value='bottom-left' selected='selected'>Bottom-Left</option>
-<option value='bottom-right'>Bottom-Right</option>
+<option value='bottom-left'>Bottom-Left</option>
+<option value='bottom-right' selected='selected'>Bottom-Right</option>
 <option value='hide'>Hide</option>
 </select>
 </div>
