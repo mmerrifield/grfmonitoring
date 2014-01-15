@@ -584,15 +584,14 @@ public class GRFService
       var results = context.HOBOs.Where(h => hoboIds.Contains(h.HOBO_ID) && h._DateTime.HasValue && h._DateTime.Value >= fromDate && h._DateTime.Value <= toDate);
 
       StringBuilder sb = new StringBuilder();
-      sb.Append("<table>");
       if (isWater)
-        sb.Append("<tr><td>Id</td><td>Hobo Id</td><td>Site</td><td>Date-Time</td><td>Temp</td><td>Date Uploaded</td><td>Uploaded By</td></tr>");
+        sb.AppendLine("Id,Hobo Id,Site,Date-Time,Temp,Date Uploaded,Uploaded By");
       else
-        sb.Append("<tr><td>Id</td><td>Hobo Id</td><td>Site</td><td>Date-Time</td><td>Temp</td><td>Dew Point</td><td>Abs Humidity</td><td>RH</td><td>Date Uploaded</td><td>Uploaded By</td></tr>");
+        sb.AppendLine("Id,Hobo Id,Site,Date-Time,Temp,Dew Point,Abs Humidity,RH,Date Uploaded,Uploaded By");
       foreach (var hobo in results)
       {
         if (isWater)
-          sb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td></tr>",
+          sb.AppendFormat("{0},{1},{2},{3},{4},{5},{6}\r\n",
           hobo.ID.ToString(),
           hobo.HOBO_ID,
           siteInfo != null ? siteInfo.SITE_NAME : string.Empty,
@@ -601,7 +600,7 @@ public class GRFService
           hobo.DateUploaded.HasValue ? hobo.DateUploaded.Value.ToString() : string.Empty,
           hobo.UploadedBy);
         else
-          sb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td>{7}</td><td>{8}</td><td>{9}</td></tr>",
+          sb.AppendFormat("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}\r\n",
           hobo.ID.ToString(),
           hobo.HOBO_ID,
           siteInfo != null ? siteInfo.SITE_NAME : string.Empty,
@@ -613,7 +612,6 @@ public class GRFService
           hobo.DateUploaded.HasValue ? hobo.DateUploaded.Value.ToString() : string.Empty,
           hobo.UploadedBy);
       }
-      sb.Append("</table>");
 
       //WebOperationContext.Current.OutgoingResponse.ContentType = "application/ms-excel";
       WebOperationContext.Current.OutgoingResponse.ContentType = "text/csv";
@@ -916,8 +914,8 @@ public class GRFService
       sb.AppendLine(line.ToString());
     }
     // Lastly, stream data back to the user.
-    WebOperationContext.Current.OutgoingResponse.ContentType = "text/csv";
-    string filename = string.Format("filename={0}_{1}-{2}.csv", format, startYr, endYr);
+    WebOperationContext.Current.OutgoingResponse.ContentType = "text/text";
+    string filename = string.Format("filename={0}_{1}-{2}.txt", format, startYr, endYr);
     WebOperationContext.Current.OutgoingResponse.Headers.Add("Content-Disposition", "attachment; " + filename);
 
     System.Text.ASCIIEncoding encoding = new ASCIIEncoding();
@@ -970,8 +968,8 @@ public class GRFService
     }
 
     // Lastly, stream data back to the user.
-    WebOperationContext.Current.OutgoingResponse.ContentType = "text/csv";
-    string filename = string.Format("filename={0}-{1}-{2}_{3}-{4}.csv", format, startMon, startYr, endMon, endYr);
+    WebOperationContext.Current.OutgoingResponse.ContentType = "text/text";
+    string filename = string.Format("filename={0}-{1}-{2}_{3}-{4}.txt", format, startMon, startYr, endMon, endYr);
     WebOperationContext.Current.OutgoingResponse.Headers.Add("Content-Disposition", "attachment; " + filename);
 
     System.Text.ASCIIEncoding encoding = new ASCIIEncoding();
