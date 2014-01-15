@@ -42,7 +42,7 @@ $(function () {
     pgbuttons: true,
     pginput: true
   });
-  $("#t_export").append("<input type='button' value='Export to Excel' style='height:20px;font-size:-3;float:right'/>");
+  $("#t_export").append("<input type='button' value='Download Data' style='height:20px;font-size:-3;float:right'/>");
   $("input", "#t_export").click(function () {
     var urlStr = 'GRFService.svc/DownloadData?year=' + $('#Year').val() + '&site=' + $('#Site').val() + '&type=' + $('#Type').val() + '&from=' + $('#FromDate').val() + '&to=' + $('#ToDate').val();
     $('#export').jqGrid('excelExport', { url: urlStr });

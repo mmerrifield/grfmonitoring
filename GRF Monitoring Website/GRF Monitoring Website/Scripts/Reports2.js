@@ -99,7 +99,7 @@ $(function () {
     pgbuttons: true,
     pginput: true
   });
-  $("#t_tblMax").append("<input type='button' value='Export to Excel' style='height:20px;font-size:-3;float:right'/>");
+  $("#t_tblMax").append("<input type='button' value='Download Data' style='height:20px;font-size:-3;float:right'/>");
   $("input", "#t_tblMax").click(function () {
     var params = getParams(false);
     params.format = $('#ReportType').val();
