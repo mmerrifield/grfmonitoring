@@ -584,6 +584,63 @@ public class GRFService
       var results = context.HOBOs.Where(h => hoboIds.Contains(h.HOBO_ID) && h._DateTime.HasValue && h._DateTime.Value >= fromDate && h._DateTime.Value <= toDate);
 
       StringBuilder sb = new StringBuilder();
+      sb.Append("<table>");
+      if (isWater)
+        sb.Append("<tr><td>Id</td><td>Hobo Id</td><td>Site</td><td>Date-Time</td><td>Temp</td><td>Date Uploaded</td><td>Uploaded By</td></tr>");
+      else
+        sb.Append("<tr><td>Id</td><td>Hobo Id</td><td>Site</td><td>Date-Time</td><td>Temp</td><td>Dew Point</td><td>Abs Humidity</td><td>RH</td><td>Date Uploaded</td><td>Uploaded By</td></tr>");
+      foreach (var hobo in results)
+      {
+        if (isWater)
+          sb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td></tr>",
+          hobo.ID.ToString(),
+          hobo.HOBO_ID,
+          siteInfo != null ? siteInfo.SITE_NAME : string.Empty,
+          hobo._DateTime.ToString(),
+          hobo.Temp.HasValue ? hobo.Temp.Value.ToString("0.00") : string.Empty,
+          hobo.DateUploaded.HasValue ? hobo.DateUploaded.Value.ToString() : string.Empty,
+          hobo.UploadedBy);
+        else
+          sb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td><td>{7}</td><td>{8}</td><td>{9}</td></tr>",
+          hobo.ID.ToString(),
+          hobo.HOBO_ID,
+          siteInfo != null ? siteInfo.SITE_NAME : string.Empty,
+          hobo._DateTime.ToString(),
+          hobo.Temp.HasValue ? hobo.Temp.Value.ToString("0.00") : string.Empty,
+          hobo.DewPoint.HasValue ? hobo.DewPoint.Value.ToString("0.00") : string.Empty,
+          hobo.AbsHumidity.HasValue ? hobo.AbsHumidity.Value.ToString("0.00") : string.Empty,
+          hobo.RH.HasValue ? hobo.RH.Value.ToString("0.00") : string.Empty,
+          hobo.DateUploaded.HasValue ? hobo.DateUploaded.Value.ToString() : string.Empty,
+          hobo.UploadedBy);
+      }
+      sb.Append("</table>");
+
+      WebOperationContext.Current.OutgoingResponse.ContentType = "application/ms-excel";
+      string filename = "filename=HOBOExport.xls";
+      WebOperationContext.Current.OutgoingResponse.Headers.Add("Content-Disposition", "attachment; " + filename);
+
+      System.Text.ASCIIEncoding encoding = new ASCIIEncoding();
+      Byte[] bytes = encoding.GetBytes(sb.ToString());
+      return new MemoryStream(bytes);
+    }
+  }
+  /*
+  public Stream DownloadData(string year, string site, string type, string from, string to)
+  {
+    using (var context = new GarciaDataContext())
+    {
+      bool isWater = string.Compare(type, "water", true) == 0;
+      DateTime fromDate, toDate;
+      DateTime.TryParse(from, out fromDate);
+      DateTime.TryParse(to, out toDate);
+      fromDate = new DateTime(fromDate.Year, fromDate.Month, fromDate.Day, 0, 0, 0);
+      toDate = new DateTime(toDate.Year, toDate.Month, toDate.Day, 23, 59, 59);
+
+      var siteInfo = context.SiteInfos.FirstOrDefault(s => s.Site_ID == site);
+      var hoboIds = context.SiteHobos.Where(sh => sh.YEAR_ == year && sh.TYPE == type && sh.SITE_ID == site).Select(sh => sh.HOBO_ID).ToList();
+      var results = context.HOBOs.Where(h => hoboIds.Contains(h.HOBO_ID) && h._DateTime.HasValue && h._DateTime.Value >= fromDate && h._DateTime.Value <= toDate);
+
+      StringBuilder sb = new StringBuilder();
       if (isWater)
         sb.AppendLine("Id,Hobo Id,Site,Date-Time,Temp,Date Uploaded,Uploaded By");
       else
@@ -623,7 +680,7 @@ public class GRFService
       return new MemoryStream(bytes);
     }
   }
-
+  */
 
   [OperationContract]
   [WebGet(ResponseFormat = WebMessageFormat.Json)]
@@ -901,21 +958,27 @@ public class GRFService
   private Stream StreamTableData(JQGridData data, string format, int startYr, int endYr)
   {
     StringBuilder sb = new StringBuilder();
-    sb.AppendLine("Site\tYear\tType\tMax Temp\tDays Exceeded\tPercent\tComments");
+    sb.Append("<table>");
+    //sb.AppendLine("Site\tYear\tType\tMax Temp\tDays Exceeded\tPercent\tComments");
+    sb.AppendLine("<tr><td>Site</td><td>Year</td><td>Type</td><td>Max Temp</td><td>Days Exceeded</td><td>Percent</td><td>Comments</td></tr>");
     foreach (var row in data.rows)
     {
       StringBuilder line = new StringBuilder();
+      line.Append("<tr>");
       foreach (var cell in row.cell)
       {
-        if (line.Length > 0)
-          line.Append("\t");
-        line.Append(cell);
+        //if (line.Length > 0)
+        //  line.Append("\t");
+        //line.Append(cell);
+        line.AppendFormat("<td>{0}</td>", cell);
       }
+      line.Append("</tr>");
       sb.AppendLine(line.ToString());
     }
+    sb.Append("</table>");
     // Lastly, stream data back to the user.
-    WebOperationContext.Current.OutgoingResponse.ContentType = "text/text";
-    string filename = string.Format("filename={0}_{1}-{2}.txt", format, startYr, endYr);
+    WebOperationContext.Current.OutgoingResponse.ContentType = "application/ms-excel";
+    string filename = string.Format("filename={0}_{1}-{2}.xls", format, startYr, endYr);
     WebOperationContext.Current.OutgoingResponse.Headers.Add("Content-Disposition", "attachment; " + filename);
 
     System.Text.ASCIIEncoding encoding = new ASCIIEncoding();
@@ -927,13 +990,14 @@ public class GRFService
   {
     StringBuilder sb = new StringBuilder();
     StringBuilder line = new StringBuilder();
-
+    sb.Append("<table>");
     // Write Header Row
-    line.Append("Date");
+    line.Append("<td>Date</td>");
     foreach (var cs in series)
     {
-      line.Append("\t");
-      line.Append(cs.name);
+      //line.Append("\t");
+      //line.Append(cs.name);
+      line.AppendFormat("<td>{0}</td>", cs.name);
     }
     sb.AppendLine(line.ToString());
 
@@ -951,7 +1015,10 @@ public class GRFService
     {
       //double thresh = 0.0;
       line = new StringBuilder();
-      line.Append(refDate.AddMilliseconds(x).ToString() + "\t");
+      line.Append("<tr>");
+      
+      //line.Append(refDate.AddMilliseconds(x).ToString() + "\t");
+      line.AppendFormat("<td>{0}</td>", refDate.AddMilliseconds(x).ToString());
       foreach (var set in series)
       {
         var pt = set.data.FirstOrDefault(p => p.x == x);
@@ -959,17 +1026,22 @@ public class GRFService
         {
           if (pt != null && threshold != pt.y.Value)
             threshold = pt.y.Value;
-          line.Append(threshold);
+          //line.Append(threshold);
+          line.AppendFormat("<td>{0}</td>", threshold);
         }
         else
-          line.AppendFormat("{0}\t", pt != null ? pt.y : null);
+        {
+          //line.AppendFormat("{0}\t", pt != null ? pt.y : null);
+          line.AppendFormat("<td>{0}</td>", pt != null ? pt.y : null);
+        }
       }
       sb.AppendLine(line.ToString());
     }
+    sb.Append("</table>");
 
     // Lastly, stream data back to the user.
-    WebOperationContext.Current.OutgoingResponse.ContentType = "text/text";
-    string filename = string.Format("filename={0}-{1}-{2}_{3}-{4}.txt", format, startMon, startYr, endMon, endYr);
+    WebOperationContext.Current.OutgoingResponse.ContentType = "application/ms-excel";
+    string filename = string.Format("filename={0}-{1}-{2}_{3}-{4}.xls", format, startMon, startYr, endMon, endYr);
     WebOperationContext.Current.OutgoingResponse.Headers.Add("Content-Disposition", "attachment; " + filename);
 
     System.Text.ASCIIEncoding encoding = new ASCIIEncoding();
