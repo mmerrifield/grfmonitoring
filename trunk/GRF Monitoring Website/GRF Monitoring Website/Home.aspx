@@ -79,7 +79,7 @@
               <td width="25">
               </td>
               <td width="230">
-                <a class="bigWhiteLink" href="Reports.aspx">
+                <a class="bigWhiteLink" href="Reports2.aspx">
                   <h2 style="color: White; margin-bottom: 8px;">
                     Reports</h2>
                 </a>
@@ -108,7 +108,7 @@
               <td width="25">
               </td>
               <td width="230">
-                <a href="ViewMap.aspx" class="bigWhiteLink">
+                <a href="MapView.aspx" class="bigWhiteLink">
                   <h2 style="color: White; margin-bottom: 8px;">
                     Maps</h2>
                 </a>
@@ -117,7 +117,7 @@
                   <table cellpadding="0" cellspacing="0" style="">
                     <tr>
                       <td>
-                        <a href="ViewMap.aspx">
+                        <a href="MapView.aspx">
                           <img style="margin: 15px 10px 10px 10px;" src="Images/Map1.png" />
                         </a>
                       </td>
