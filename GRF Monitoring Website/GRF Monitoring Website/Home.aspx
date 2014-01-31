@@ -31,8 +31,7 @@
                 towards meeting goals of restoring forests and streams, and inform future restoration
                 and management efforts. This data portal houses some of that monitoring data - the
                 available water temperature data for the watershed - and allows for automated data
-                upload, data access and data reporting. In the future this portal will also house
-                water flow, and stream habitat assessment data.
+                upload, data access and data reporting.
               </td>
             </tr>
             <tr>

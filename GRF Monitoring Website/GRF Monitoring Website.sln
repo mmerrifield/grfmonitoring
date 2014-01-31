@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "GRF Monitoring Website", "GRF Monitoring Website\", "{001226DD-09AC-48AA-97B0-DE0D6F782445}"
 	ProjectSection(WebsiteProperties) = preProject
 		SccProjectName = "Svn"
@@ -23,6 +25,12 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "GRF Monitoring Website", "G
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "62168"
+		SlnRelativePath = "GRF Monitoring Website\"
+	EndProjectSection
+	ProjectSection(SvnOrigin) = preProject
+		@Keys = Enlist,Svn.Uri
+		Enlist = Required
+		Svn.Uri = GRF%20Monitoring%20Website/
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C83E1BE4-583C-40FC-8E83-28674B8F75A2}"
@@ -52,11 +60,13 @@ Global
 		{001226DD-09AC-48AA-97B0-DE0D6F782445}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{001226DD-09AC-48AA-97B0-DE0D6F782445}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{001226DD-09AC-48AA-97B0-DE0D6F782445}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{001226DD-09AC-48AA-97B0-DE0D6F782445}.Debug|x86.Build.0 = Debug|Any CPU
 		{001226DD-09AC-48AA-97B0-DE0D6F782445}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{001226DD-09AC-48AA-97B0-DE0D6F782445}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{001226DD-09AC-48AA-97B0-DE0D6F782445}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{001226DD-09AC-48AA-97B0-DE0D6F782445}.Release|Mixed Platforms.Build.0 = Debug|Any CPU
 		{001226DD-09AC-48AA-97B0-DE0D6F782445}.Release|x86.ActiveCfg = Debug|Any CPU
+		{001226DD-09AC-48AA-97B0-DE0D6F782445}.Release|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
