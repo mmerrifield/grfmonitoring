@@ -12,6 +12,7 @@
       { name: 'ResetPwd', index: 'ResetPwd', editable: true, width: '75', edittype: 'checkbox', formatter: 'checkbox', align: 'center', editoptions: { value: 'true:false' }, visible: false, sortable: false }
     ],
     editurl: 'GRFService.svc/UpdateUser',
+    ajaxGridOptions: { cache: false },
     autowidth: true,
     sortname: 'UserName',
     sortorder: 'asc',

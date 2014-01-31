@@ -178,7 +178,7 @@ function initChart() {
     },
     title: { text: '' },
     xAxis: {
-      labels: { format: '{value:%b %y}', align: 'bottom' },
+      labels: { format: '{value:%m/%d/%y}', align: 'bottom' },
       title: { text: 'Date' },
       type: 'datetime'
     },
@@ -192,14 +192,14 @@ function initChart() {
       formatter: function () {
         if (this.series.name.length >= 9 && this.series.name.substring(0, 9) === 'Threshold')
           return false;
-        else if ($('#Series').val() == 'FS') 
+        else if ($('#Series').val() == 'TS') 
           return '<b>' + this.series.name + '</b><br/>' +
-                        Highcharts.dateFormat('%e - %b - %Y',
+                        Highcharts.dateFormat('%m/%d/%Y',
                                               new Date(this.x))
                     + '  <br/>' + this.y.toFixed(2) + ' °C';
         else
           return '<b>' + this.series.name + '</b><br/>' +
-            Highcharts.dateFormat('%e - %b', new Date(this.x))
+            Highcharts.dateFormat('%m/%d', new Date(this.x))
               + ' <br/>' + this.y.toFixed(2) + ' °C';
       }
     },
@@ -242,9 +242,9 @@ function updateChart(reportType) {
   params.addNullPt = true;
   $.get(svc, params, function (data) {
     if ($('#Series').val() === 'SS')
-      options.xAxis.labels.format = '{value:%e - %b}';
+      options.xAxis.labels.format = '{value:%m/%d}';
     else
-      options.xAxis.labels.format = '{value:%b %y}';
+      options.xAxis.labels.format = '{value:%m/%d/%y}';
 
     options.series.length = 0;
     $.each(data, function (idx, series) {
@@ -321,16 +321,15 @@ function download(strData, strFileName, strMimeType) {
         n = A[1],
         t = A[2] || "text/plain";
 
-  //build download link:
-  a.href = "data:" + strMimeType + "," + escape(strData);
-
 
   if (window.MSBlobBuilder) { // IE10
-    var bb = new MSBlobBuilder();
-    bb.append(strData);
-    return navigator.msSaveBlob(bb, strFileName);
+    var fileData = [strData];
+    blobObject = new Blob(fileData);
+    window.navigator.msSaveOrOpenBlob(blobObject, strFileName); // Now the user will have the option of clicking the Save button and the Open button.
   } /* end if(window.MSBlobBuilder) */
-
+  
+  //build download link:
+  a.href = "data:" + strMimeType + "," + escape(strData);
 
 
   if ('download' in a) { //FF20, CH19

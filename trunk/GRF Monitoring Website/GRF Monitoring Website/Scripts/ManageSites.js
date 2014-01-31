@@ -64,6 +64,7 @@ function completePage() {
       { name: 'HideSite', index: 'HideSite', editable: true, width: '75', align: 'center', sortable: false, edittype: 'checkbox', formatter: 'checkbox', align: 'center', editoptions: { value: 'true:false'} }
     ],
     editurl: 'GRFService.svc/UpdateSite',
+    ajaxGridOptions: {cache: false},
     autowidth: true,
     sortname: 'SiteId',
     sortorder: 'asc',

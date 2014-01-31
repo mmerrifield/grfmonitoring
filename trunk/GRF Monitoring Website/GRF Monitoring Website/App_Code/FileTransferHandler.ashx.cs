@@ -516,12 +516,12 @@ namespace GRF
           drSite.DataEndDate = endDate;
           DB.saveSiteInfoRow(drSite);
         }
+        msg = "Completed import of HOBO data";
       }
       catch (Exception ex)
       {
         msg = string.Format("<span style='font-color:red'>Error writing {0} to database: {1}</span><br/>", fileName, ex.Message);
       }
-      msg = "Completed import of HOBO data";
     }
 
     private class HoboRecord
