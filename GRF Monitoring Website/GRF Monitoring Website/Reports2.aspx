@@ -113,7 +113,7 @@ To calculate mean weekly average temperature (MWAT), first daily average tempera
 * Welsh, H. H., G. R. Hodgson, B. C. Harvey, and M. F. Roche. 2001. Distribution of juvenile coho salmon (Oncorhynchus kisutch) in relation to water temperature in tributaries of the Mattole River, California. North American Journal of Fisheries Management 21: 464-470.
 </div>
 <div id='MWMTfootnote' style='display:none' class='footnotes'>
-To calculate mean weekly maximum temperature (MWMT), first daily maximum temperatures are determined from the raw water temperature data. Then mean weekly maximum temperatures (MWMT) are calculated by averaging daily mean temperatures for each 7-day period (with a moving 7-day window) after Welsh et al. (2001). The MWMT threshold follows that determined by Welsh et al. (2001) for coho salmon in the Mattole River in Northern California, and is 18.0°C. 
+To calculate mean weekly maximum temperature (MWMT), first daily maximum temperatures are determined from the raw water temperature data. Then mean weekly maximum temperatures are calculated by averaging daily maximum temperatures for each 7-day period (with a moving 7-day window) after Welsh et al. (2001). The MWMT threshold follows that determined by Welsh et al. (2001) for coho salmon in the Mattole River in Northern California, and is 18.0°C. 
 <br/>* Welsh, H. H., G. R. Hodgson, B. C. Harvey, and M. F. Roche. 2001. Distribution of juvenile coho salmon (Oncorhynchus kisutch) in relation to water temperature in tributaries of the Mattole River, California. North American Journal of Fisheries Management 21: 464-470.
 </div>
 <div id='MWMTMaxfootnote' style='display:none' class='footnotes'>

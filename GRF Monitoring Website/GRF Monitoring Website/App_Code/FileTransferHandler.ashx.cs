@@ -125,10 +125,27 @@ namespace GRF
     {
       if (context.Request.Files.Count == 1)
       {
-        base.UploadFile(context);
-        string msg;
-        UploadHoboDeviceData(GetServerPath(context.Server, context.Request.Files[0].FileName), out msg);
-        WriteJsonIframeSafe(context, msg);
+        try
+        {
+          base.UploadFile(context);
+          string msg;
+          UploadHoboDeviceData(GetServerPath(context.Server, context.Request.Files[0].FileName), out msg);
+          WriteJsonIframeSafe(context, msg);
+        }
+        catch (Exception ex)
+        {
+          WriteJsonIframeSafe(context, ex.Message);
+          using (System.IO.TextWriter w = new System.IO.StreamWriter(GetServerPath(context.Server, "error.txt"), true))
+          {
+            w.WriteLine(ex.Message);
+            w.WriteLine(ex.StackTrace);
+            if (ex.InnerException != null)
+            {
+              w.WriteLine(ex.InnerException.Message);
+              w.WriteLine(ex.InnerException.StackTrace);
+            }
+          }
+        }
       }
       else
         WriteJsonIframeSafe(context, "No file reached the server");
@@ -237,10 +254,27 @@ namespace GRF
     {
       if (context.Request.Files.Count == 1)
       {
-        base.UploadFile(context);
-        string msg;
-        UploadHoboData(context, GetServerPath(context.Server, context.Request.Files[0].FileName), out msg);
-        WriteJsonIframeSafe(context, msg);
+        try
+        {
+          base.UploadFile(context);
+          string msg;
+          UploadHoboData(context, GetServerPath(context.Server, context.Request.Files[0].FileName), out msg);
+          WriteJsonIframeSafe(context, msg);
+        }
+        catch (Exception ex)
+        {
+          WriteJsonIframeSafe(context, ex.Message);
+          using (System.IO.TextWriter w = new System.IO.StreamWriter(GetServerPath(context.Server, "error.txt"),true))
+          {
+            w.WriteLine(ex.Message);
+            w.WriteLine(ex.StackTrace);
+            if (ex.InnerException != null)
+            {
+              w.WriteLine(ex.InnerException.Message);
+              w.WriteLine(ex.InnerException.StackTrace);
+            }
+          }
+        }
       }
       else
         WriteJsonIframeSafe(context, "No file reached the server");

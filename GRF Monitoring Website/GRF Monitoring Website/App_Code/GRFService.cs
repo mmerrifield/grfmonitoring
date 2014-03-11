@@ -172,7 +172,8 @@ public class GRFService
         {
           try
           {
-            string pwd = mu.ResetPassword();
+            string pwd = System.Web.Security.Membership.GeneratePassword(8, 2);
+            mu.ChangePassword(mu.ResetPassword(), pwd);
             GetResetPasswordEmail(username, pwd, ui);
           }
           catch (Exception ex)
@@ -596,7 +597,7 @@ public class GRFService
           hobo.ID.ToString(),
           hobo.HOBO_ID,
           siteInfo != null ? siteInfo.SITE_NAME : string.Empty,
-          hobo._DateTime.ToString(),
+          hobo._DateTime.Value.ToString(),
           hobo.Temp.HasValue ? hobo.Temp.Value.ToString("0.00") : string.Empty,
           hobo.DateUploaded.HasValue ? hobo.DateUploaded.Value.ToString() : string.Empty,
           hobo.UploadedBy);
@@ -605,7 +606,7 @@ public class GRFService
           hobo.ID.ToString(),
           hobo.HOBO_ID,
           siteInfo != null ? siteInfo.SITE_NAME : string.Empty,
-          hobo._DateTime.ToString(),
+          hobo._DateTime.Value.ToString(),
           hobo.Temp.HasValue ? hobo.Temp.Value.ToString("0.00") : string.Empty,
           hobo.DewPoint.HasValue ? hobo.DewPoint.Value.ToString("0.00") : string.Empty,
           hobo.AbsHumidity.HasValue ? hobo.AbsHumidity.Value.ToString("0.00") : string.Empty,
@@ -932,9 +933,9 @@ public class GRFService
     List<ChartSeries> series = null;
     JQGridData maxData = null;
     if (format == "MWAT")
-      series = WeeklyMWATData(startMon, startYr, endMon, endYr, sites, "FS", false);
+      series = WeeklyMWATData(startMon, startYr, endMon, endYr, sites, "TS", false);
     else if (format == "MWMT")
-      series = WeeklyMWMTData(startMon, startYr, endMon, endYr, sites, "FS", false);
+      series = WeeklyMWMTData(startMon, startYr, endMon, endYr, sites, "TS", false);
     else if (format == "MaxMWAT")
       maxData = MaxMWATData(startYr, endYr, sites, 1, int.MaxValue);
     else if (format == "MaxMWMT")
@@ -1017,8 +1018,9 @@ public class GRFService
       line = new StringBuilder();
       line.Append("<tr>");
       
-      //line.Append(refDate.AddMilliseconds(x).ToString() + "\t");
-      line.AppendFormat("<td>{0}</td>", refDate.AddMilliseconds(x).ToString());
+      DateTime dt = refDate.AddMilliseconds(x);
+      //if (dt.Year == refDate.Year) continue;
+      line.AppendFormat("<td>{0}</td>", dt.ToShortDateString()); 
       foreach (var set in series)
       {
         var pt = set.data.FirstOrDefault(p => p.x == x);
@@ -1026,13 +1028,11 @@ public class GRFService
         {
           if (pt != null && threshold != pt.y.Value)
             threshold = pt.y.Value;
-          //line.Append(threshold);
           line.AppendFormat("<td>{0}</td>", threshold);
         }
         else
         {
-          //line.AppendFormat("{0}\t", pt != null ? pt.y : null);
-          line.AppendFormat("<td>{0}</td>", pt != null ? pt.y : null);
+         line.AppendFormat("<td>{0}</td>", pt != null ? pt.y : null);
         }
       }
       sb.AppendLine(line.ToString());

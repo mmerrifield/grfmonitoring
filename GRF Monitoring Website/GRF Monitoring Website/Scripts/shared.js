@@ -1,6 +1,6 @@
 ﻿$(function () {
   $('#btns').buttonset();
-
+  $.ajaxSetup({cache: false});
   $.get('GRFService.svc/Auth', {}, function (resp) {
     if (!resp || resp.length > 10)
       $('#btns').hide();

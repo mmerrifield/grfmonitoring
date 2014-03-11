@@ -87,6 +87,7 @@ $(function () {
       { name: 'Comments', index: 'Comments', width: '90', sortable: false }
     ],
     autowidth: true,
+    ajaxGridOptions: { cache: false },
     sortable: false,
     rowNum: 20,
     rowList: [10, 20, 50, 100],

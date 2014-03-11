@@ -28,6 +28,7 @@ $(function () {
       { name: 'UploadedBy', index: 'UploadedBy', width: '0' }
     ],
     autowidth: true,
+    ajaxGridOptions: { cache: false },
     shrinkToFit: false,
     sortname: 'Id',
     sortorder: 'asc',
